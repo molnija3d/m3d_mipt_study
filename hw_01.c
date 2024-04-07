@@ -1,9 +1,7 @@
 #include <stdio.h>
-#include <locale.h>
 
  int main(void)
  {
-     setlocale(LC_ALL, "ru_RU.utf8");
      printf("Hello world!\n");
  return 0;
  }

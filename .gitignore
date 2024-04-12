@@ -1,8 +1,3 @@
-hello.exe
-hw_01.exe
-hw_01.o
-hw_02.exe
-hw_02.o
-hw_03.exe
-hw_03.o
+*.exe
+*.o
 .vscode

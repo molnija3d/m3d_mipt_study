@@ -13,7 +13,7 @@
       printf("spring\n");
    else if (a < 9)
       printf("summer\n");
-   else if (a < 12)
+   else
       printf("autumn\n");   
  return 0;
  }

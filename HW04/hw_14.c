@@ -5,7 +5,7 @@
  {
    int32_t a,d1,d2,d3,mx;
 
-   scanf("%d",&a);
+   scanf("%"SCNd32,&a);
 
    d1 = a%10;
    d2 = (a/10) % 10;
@@ -14,6 +14,6 @@
    mx = d1 > d2 ? d1:d2;
    mx = mx > d3 ? mx:d3;
 
-   printf("%d\n",mx);
+   printf("%"PRId32"\n",mx);
  return 0;
  }

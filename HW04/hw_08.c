@@ -4,9 +4,9 @@
  int main(void)
  {
    int32_t a,b,c,mx;
-   scanf("%d%d%d",&a,&b,&c);
+   scanf("%"SCNd32"%"SCNd32"%"SCNd32,&a,&b,&c);
    mx = a > b ? a:b;
    mx = mx > c ? mx:c;  
-   printf("%d\n",mx);
+   printf("%"PRId32"\n",mx);
  return 0;
  }

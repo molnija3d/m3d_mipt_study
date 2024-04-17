@@ -5,7 +5,7 @@
  {
    int32_t a,b;
 
-   scanf("%d%d",&a,&b);
+   scanf("%"SCNd32"%"SCNd32,&a,&b);
  
    if (a == b) 
       printf("Equal\n");

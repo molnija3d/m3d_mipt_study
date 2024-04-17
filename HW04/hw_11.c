@@ -4,7 +4,7 @@
  int main(void)
  {
    int32_t a,b,c,d,e,mn,mx;
-   scanf("%d%d%d%d%d",&a,&b,&c,&d,&e);
+   scanf("%"SCNd32"%"SCNd32"%"SCNd32"%"SCNd32"%"SCNd32,&a,&b,&c,&d,&e);
 
    if (a>b)
    {
@@ -26,6 +26,6 @@
    mn = mn < e ? mn : e;
    mx = mx > e ? mx : e;
    
-   printf("%d\n",mn+mx);
+   printf("%"PRId32"\n",mn+mx);
  return 0;
  }

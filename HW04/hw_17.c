@@ -5,7 +5,7 @@
  {
    int32_t a;
 
-   scanf("%d",&a);
+   scanf("%"SCNd32,&a);
  
    if (a > 11 || a < 3) 
       printf("winter\n");

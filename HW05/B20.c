@@ -19,4 +19,3 @@ int main(void)
      (a>1)? printf("YES\n"):printf("NO\n");
     return 0;
 }
-

@@ -10,7 +10,7 @@ int main(void)
     while(a!=0)
     {
         if(!(a%2))
-			++cnt;
+           ++cnt;
         scanf("%"SCNd32,&a);
     } 
     

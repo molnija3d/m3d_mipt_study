@@ -9,7 +9,7 @@ int main(void)
     do
     {
         if(a%10==9)
-			++cnt;
+          ++cnt;
     }
     while(a/=10);
     (cnt == 1)? printf("YES\n"):printf("NO\n");

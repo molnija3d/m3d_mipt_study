@@ -4,14 +4,18 @@
 
 int main(void)
 {
-    int32_t a,cnt=0;
+    int32_t a;
     scanf("%"SCNd32,&a);
     do
     {
-        if(a%10==9)++cnt;;
+        if(( a%10)%2)
+        {
+          printf("NO\n");
+          return 0;  
+        }
     }
     while(a/=10);
-    (cnt == 1)? printf("YES\n"):printf("NO\n");
+    printf("YES\n");
 
     return 0;
 }

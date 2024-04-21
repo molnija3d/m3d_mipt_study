@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-int32_t sum(int32_t a);
-int32_t mul(int32_t a);
-
 int main(void)
 {
     int32_t n,cur=1,prev=0,tmp;

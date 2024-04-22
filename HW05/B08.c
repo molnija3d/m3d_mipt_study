@@ -12,7 +12,7 @@ int main(void)
           ++cnt;
     }
     while(a/=10);
-    (cnt == 1)? printf("YES\n"):printf("NO\n");
+    printf("%s",(cnt == 1)? "YES\n":"NO\n");
 
     return 0;
 }

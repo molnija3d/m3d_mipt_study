@@ -33,7 +33,7 @@ int32_t cnt_bracket(char c)
 {
   static _Bool is_first = 1;
   static int32_t cnt=0;
-  if((c == ')')&& (is_first == 1)) 
+  if((c == ')')&&(is_first == 1)) 
      return -1;
     
   if(c == '(') 

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <inttypes.h>
-
+/*Составить функцию, которая определяет сумму всех чисел от 1 до N и привести пример ее использования.*/
 int32_t sum(int32_t x);
 
 int main(void)

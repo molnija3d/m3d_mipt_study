@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <inttypes.h>
-
+/*Ввести два целых числа a и b (a ≤ b) и вывести квадраты всех чисел от a до b.*/
 
 int main(void)
 {

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <inttypes.h>
-
+/*Ввести целое число и определить, верно ли, что все его цифры четные.*/
 
 int main(void)
 {

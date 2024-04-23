@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <inttypes.h>
+/*Проверить число на простоту.*/
 
 int main(void)
 {

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <inttypes.h>
-
+/*Ввести целое число и найти сумму его цифр.*/
 
 int main(void)
 {

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <inttypes.h>
-
+/*Составить функцию, модуль числа и привести пример ее использования.*/
 int32_t module(int32_t a);
 
 int main(void)

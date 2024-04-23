@@ -1,5 +1,10 @@
 #include <stdio.h>
 #include <inttypes.h>
+/*
+Составить функцию, которая вычисляет синус как сумму ряда (с точностью 0.001)
+sin(x) = x - x3/3! + x5/5! - x7/7! + ...(x в радианах)
+float sinus(float x)
+*/
 
 float sinus(float x);
 

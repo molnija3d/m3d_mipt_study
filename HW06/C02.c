@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <inttypes.h>
-
+/*Составить функцию, возведение числа N в степень P. int power(n, p) и привести пример ее использования.*/
 int32_t power(int32_t n,int32_t p);
 
 int main(void)

@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <inttypes.h>
+/*Написать функцию, которая возвращает среднее арифметическое двух переданных ей аргументов (параметров).
+int middle(int a, int b)*/
 
 int32_t middle(int32_t a,int32_t b);
 

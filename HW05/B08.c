@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <inttypes.h>
-
+/*Ввести целое число и определить, верно ли, что в нём ровно одна цифра «9».*/
 
 int main(void)
 {

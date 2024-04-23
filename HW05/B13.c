@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <inttypes.h>
-
+/*Посчитать количество четных и нечетных цифр числа.*/
 
 int main(void)
 {

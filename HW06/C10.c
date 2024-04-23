@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <inttypes.h>
+/*Составить функцию, печать всех простых множителей числа. Использовать ее для печати всех простых множителей числа.
+void print_simple(int n)*/
 
 void print_simple(int32_t n);
 _Bool issimple(int32_t n);

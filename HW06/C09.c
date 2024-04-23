@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <inttypes.h>
-
+/*Составить функцию вычисления N!. Использовать ее при вычислении факториала
+int factorial(int n)*/
 int32_t factorial(int32_t n);
 
 int main(void)

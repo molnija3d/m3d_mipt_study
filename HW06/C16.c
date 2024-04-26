@@ -20,16 +20,16 @@ int32_t is_prime(int32_t a)
 {
     int32_t num=a,i=1;
     if(num>3)
-      while(i*i < a)
+        while(i*i < a)
         {
-           i++;
-           if(a%i == 0)
-             {
-               return 0;
-             }
-         }
-    if(a<2) 
-       return 0;
+            i++;
+            if(a%i == 0)
+            {
+                return 0;
+            }
+        }
+    if(a<2)
+        return 0;
     return 1;
 }
-    
+

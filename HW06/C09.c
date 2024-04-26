@@ -17,6 +17,7 @@ int main(void)
 int32_t factorial(int32_t n)
 {
     int32_t res = n;
-    if (n>1) res *= factorial(n-1);
+    if (n>1)
+        res *= factorial(n-1);
     return res;
 }

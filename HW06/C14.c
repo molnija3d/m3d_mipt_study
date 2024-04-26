@@ -20,10 +20,11 @@ char* iseven(int32_t a)
     int32_t sum=0, num=a;
     do
     {
-     sum += num%10;
+        sum += num%10;
     }
     while(num/=10);
-    if(sum%2 == 0) return "YES";
+    if(sum%2 == 0)
+        return "YES";
     return "NO";
 }
-    
+

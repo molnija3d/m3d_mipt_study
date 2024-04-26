@@ -18,7 +18,7 @@ int main(void)
 int32_t nod(int32_t a, int32_t b)
 {
     if (b==0)
-       return a;
+        return a;
     return nod(b, a%b);
 }
-    
+

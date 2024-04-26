@@ -22,10 +22,11 @@ int32_t grow_up(int32_t a)
     prev = num%10;
     while(num/=10)
     {
-       tmp = num%10;
-       if(prev <= tmp) return 0;
-       prev = tmp;
+        tmp = num%10;
+        if(prev <= tmp)
+            return 0;
+        prev = tmp;
     }
     return 1;
 }
-    
+

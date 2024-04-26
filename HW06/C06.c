@@ -8,7 +8,7 @@ uint64_t seeds(int32_t n);
 int main(void)
 {
     int32_t n;
-     
+
     scanf("%"SCNd32,&n);
     printf("%"PRIu64"\n",seeds(n)) ;
     return 0;

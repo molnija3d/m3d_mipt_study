@@ -14,16 +14,17 @@ int main(void)
     int32_t i=0;
     while((c=getchar())!='.')
     {
-     if(is_digit(c)) 
-       ++i;
+        if(is_digit(c))
+            ++i;
     }
     printf("%"PRId32"\n",i);
     return 0;
 }
 
-    
+
 int32_t is_digit(char c)
 {
-  if(c >= 0x30 && c <= 0x39) return 1;
-  return 0;  
+    if(c >= 0x30 && c <= 0x39)
+        return 1;
+    return 0;
 }

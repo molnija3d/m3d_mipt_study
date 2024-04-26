@@ -23,14 +23,14 @@ float sinus(float x)
     float sin=0.f, fact = 1.0f, x_x = x*x;
     float p_x = x;
     int sign=1;
-    for(int32_t i=1;i<8;i+=2)
+    for(int32_t i=1; i<8; i+=2)
     {
-     fact /= i;
-     sin += sign*p_x*fact;
-     fact /= (i+1);
-     sign = -sign; 
-     p_x *= x_x;
+        fact /= i;
+        sin += sign*p_x*fact;
+        fact /= (i+1);
+        sign = -sign;
+        p_x *= x_x;
     }
     return sin;
 }
-    
+

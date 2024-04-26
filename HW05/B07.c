@@ -6,23 +6,25 @@
 
 int main(void)
 {
-    int32_t a,d1,d2;
+    int32_t a,tmp,d1,d2;
     scanf("%"SCNd32,&a);
-    d1 = a;
+    tmp = a;
+    d1 = a%10;
    do
     {
-        a = d1;
+        a = tmp;
         while(a/=10)
         {
             d2 = a%10;
-            if ((d1%10) == d2)
+            if (d1 == d2)
             {
                 printf("YES\n");
                 return 0;
             }
         }
+        d1 = tmp%10; 
     }
-    while(d1/=10);
+    while(tmp/=10);
     printf("NO\n");
     return 0;
 }

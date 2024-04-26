@@ -10,7 +10,7 @@ int main(void)
     scanf("%"SCNd32,&a);
     tmp = a;
     d1 = a%10;
-    while(tmp/=10)
+   do
     {
         a = tmp;
         while(a/=10)
@@ -24,7 +24,7 @@ int main(void)
         }
         d1 = tmp%10; 
     }
-    
+    1while(tmp/=10);
     printf("NO\n");
     return 0;
 }

@@ -12,6 +12,7 @@ int main(void)
     d1 = a%10;
     while(tmp/=10)
     {
+        a = tmp;
         while(a/=10)
         {
             d2 = a%10;
@@ -21,8 +22,9 @@ int main(void)
                 return 0;
             }
         }
-        d1 = tmp%10;
+        d1 = tmp%10; 
     }
+    
     printf("NO\n");
     return 0;
 }

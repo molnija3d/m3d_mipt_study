@@ -24,7 +24,7 @@ int main(void)
         }
         d1 = tmp%10; 
     }
-    1while(tmp/=10);
+    while(tmp/=10);
     printf("NO\n");
     return 0;
 }

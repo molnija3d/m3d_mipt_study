@@ -25,6 +25,6 @@ void r_printab(int32_t a,int32_t b)
         printf("%"PRId32" ",a);
         r_printab(--a,b);  
       }
-    else if (a == b)
+    else 
         printf("%"PRId32" ",a);
 }

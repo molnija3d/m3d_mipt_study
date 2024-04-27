@@ -15,8 +15,7 @@ int main(void)
 
 int sum_digits(int n)
 {
-  int sum = n%10;  
   if(n>0)
-   return sum + sum_digits(n/10);
+   return n%10 + sum_digits(n/10);
   return 0;
 }

@@ -15,12 +15,8 @@ int main(void)
 
 int32_t r_sum1(int32_t n)
 {
-    static int32_t sum=0;
     if(n)
-    {
-        sum = r_sum1(n/2);
-        if(n%2)
-            return ++sum;
-    }
-    return sum;
+        return n%2 + r_sum1(n/2);
+
+    return 0;
 }

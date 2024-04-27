@@ -5,10 +5,10 @@
 */
 int32_t r_sum1(int32_t n);
 
-int32_t main(void)
+int main(void)
 {
-    int n;
-    scanf("%d",&n);
+    int32_t n;
+    scanf("%"SCNd32,&n);
     printf("%"PRId32"\n",r_sum1(n));
     return 0;
 }

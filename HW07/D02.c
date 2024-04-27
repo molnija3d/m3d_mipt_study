@@ -1,20 +1,21 @@
 #include <stdio.h>
 #include <inttypes.h>
 /*
-Составить рекурсивную функцию, печать всех чисел от 1 до N
+Составить рекурсивную функцию, которая определяет сумму всех чисел от 1 до N
 */
-void r_print(int32_t n);
+int32_t r_sum(int32_t n);
 int main(void)
 {
     int32_t n;
     scanf("%"SCNd32,&n);
-    r_print(n);
+    printf("%"PRId32"\n",r_sum(n));
     return 0;
 }
 
-void r_print(int32_t n)
+int32_t r_sum(int32_t n)
 {
-    if(n>1)
-       r_print(n-1);
-    printf("%"PRId32" ",n);
+    int32_t sum = 0;
+    if(n)
+        sum += r_sum(n-1);
+    return sum + n;
 }

@@ -10,15 +10,19 @@ int main(void)
 {
     int32_t n;
     scanf("%"SCNd32,&n);
-    (n > 0)? print_num(n) : printf("0 ");
+    print_num(n);
     return 0; 
 }
 
 void print_num(int num)
 {
+    static int32_t prev = 0;
     if(num)
       {
+        prev = num;
         print_num(num/10);  
         printf("%"PRId32" ",num%10);  
       }
+    else if (prev == 0 && num == 0)
+        printf("0 ");
 }

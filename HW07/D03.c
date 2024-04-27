@@ -9,15 +9,19 @@ int main(void)
 {
     int32_t n;
     scanf("%"SCNd32,&n);
-    (n > 0) ? r_reverse(n): printf("0 ");
+    r_reverse(n);
     return 0; 
 }
 
 void r_reverse(int32_t n)
 {
-    if(n)
+    static int32_t prev = 0;
+    if(n > 0)
       {
+        prev = n;
         printf("%"PRId32" ",n%10);  
         r_reverse(n/10);
       }
+    else if (prev == 0 && n == 0)
+        printf("0 ");
 }

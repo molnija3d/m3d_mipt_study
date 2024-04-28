@@ -10,7 +10,7 @@ int main(void)
 {
     int n;
     scanf("%d",&n);
-    printf("%s",is2pow(n) ? "YES\n" : "NO\n");
+    printf(is2pow(n) ? "YES\n" : "NO\n");
     return 0;
 }
 

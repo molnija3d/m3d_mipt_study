@@ -11,7 +11,7 @@ int main(void)
 {
     int32_t a;
     scanf("%"SCNd32,&a);
-    printf("%s\n",(is_prime(a))? "YES" : "NO");
+    printf(is_prime(a)? "YES\n" : "NO\n");
     return 0;
 }
 

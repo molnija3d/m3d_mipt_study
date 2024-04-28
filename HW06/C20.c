@@ -24,7 +24,7 @@ int main(void)
             return 0;
         }
 
-    printf("%s",(cnt == 0)? "YES\n": "NO\n");
+    printf((cnt == 0)? "YES\n": "NO\n");
     return 0;
 }
 

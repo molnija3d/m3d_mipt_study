@@ -13,7 +13,7 @@ int main(void)
 {
     int32_t a;
     scanf("%"SCNd32,&a);
-    printf("%s\n",(is_happy_number(a))? "YES" : "NO");
+    printf(is_happy_number(a)? "YES\n" : "NO\n");
     return 0;
 }
 

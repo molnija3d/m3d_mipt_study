@@ -11,7 +11,7 @@ int main(void)
 {
     int32_t a;
     scanf("%"SCNd32,&a);
-    printf("%s\n",(grow_up(a))? "YES" : "NO");
+    printf(grow_up(a)? "YES\n" : "NO\n");
     return 0;
 }
 

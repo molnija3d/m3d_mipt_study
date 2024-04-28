@@ -14,7 +14,7 @@ int main(void)
           ++cnt;
     }
     while(a/=10);
-    printf("%s",(cnt == 1)? "YES\n":"NO\n");
+    printf((cnt == 1)? "YES\n":"NO\n");
 
     return 0;
 }

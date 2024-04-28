@@ -19,6 +19,5 @@ int main(void)
 int akkerman(int m, int n)
 {
     return (!m)? n+1 : (!n)? akkerman(m-1,1) : akkerman(m-1,akkerman(m,n-1));
-
 }
 

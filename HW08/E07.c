@@ -37,13 +37,13 @@ void inverse(int *arr)
 {
     int tmp[SIZE]= {0},
         hSizeBtm = SIZE/2,
-        hSizeTop = SIZE + SIZE/2;
+        hSizeTop = SIZE;
 
     for(int i=0; i<hSizeBtm; i++)
         tmp[i] = arr[hSizeBtm - 1 - i];
 
-    for(int i=SIZE/2; i<SIZE; i++)
-        tmp[i] = arr[hSizeTop - 1 - i];
+    for(int i=hSizeBtm; i<hSizeTop; i++)
+        tmp[i] = arr[hSizeTop + hSizeBtm - 1 - i];
 
     for(int i=0; i<SIZE; i++)
         arr[i] = tmp[i];

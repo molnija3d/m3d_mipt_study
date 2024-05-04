@@ -26,7 +26,7 @@ int fPopular(int* arr)
 
     int frqncy[150] = {0}, mxIdx = arr[0];  
     
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < SIZE; i++)
     {
         frqncy[arr[i]]++;    // возможен выход за границы массива (отрицательное число или число большее, чем 149)
         

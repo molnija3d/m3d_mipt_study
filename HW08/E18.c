@@ -22,12 +22,21 @@ void printMulti(int num);
 int main(void)
 {
     int num;
-    scanf("%d",num);
+    scanf("%d",&num);
     printMulti(num);
     return 0;
 }
 
 void printMulti(int num)
 {
-    
+  int cnt;  
+       for(int j = 2; j<10;j++)
+       {
+        cnt = 0;
+         for(int i = 2; i <= num; i++)
+           if(i%j == 0)
+             cnt++;
+             
+         printf("%d %d\n",j,cnt);
+       }
 }

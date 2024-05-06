@@ -17,9 +17,11 @@ int main(void)
 {
     int arr[SIZE] = {0};
     input(arr);
-    inverse(arr,0,SIZE/3);
-    inverse(arr,SIZE/3,2*SIZE/3);
-    inverse(arr,2*SIZE/3,SIZE);
+    for(int i=0; i<3; i++)
+    {
+        inverse(arr,i*SIZE/3,SIZE/3+i*SIZE/3);
+
+    }
     print(arr);
     return 0;
 }

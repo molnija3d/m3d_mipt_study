@@ -1,3 +1,11 @@
+/*
+Сумма трех чисел
+Ввести три числа, найти их сумму.
+Input format
+Три целых числа
+Output format
+Строка вида %d+%d+%d=%d
+*/
 #include <stdio.h>
 
  int main(void)

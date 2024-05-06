@@ -1,3 +1,11 @@
+/*
+Наименьшее из пяти чисел
+Ввести пять чисел и найти  наименьшее из них.
+Input format
+Пять целых чисел
+Output format
+Одно целое число
+*/
 #include <stdio.h>
 #include <inttypes.h>
 

@@ -1,3 +1,11 @@
+/*
+Какое время года
+Ввести номер месяца и вывести название времени года.
+Input format
+Целое число от 1 до 12 - номер месяца.
+Output format
+Время года на английском: winter, spring, summer, autumn
+*/
 #include <stdio.h>
 #include <inttypes.h>
 

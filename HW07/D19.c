@@ -21,11 +21,9 @@ int acounter(void)
     char c;
     if ((c=getchar())!='.')
     {
-
         if (c == 'a')
         {
             ++i;
-
         }
         acounter();
     }

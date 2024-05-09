@@ -8,10 +8,9 @@ Output format
 10 целых элементов массива через пробел.
 */
 #include <stdio.h>
-#define SIZE 10
+#define SIZE 16
 
 void input(int *arr);
-void print(int *arr);
 void invprint(int *arr);
 
 int main(void)

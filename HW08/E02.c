@@ -30,7 +30,7 @@ int min(int *arr)
 {
     int min = arr[0];
     for(int i=1; i<SIZE; i++)
-        if(min > arr[i])
-            min=arr[i];
+        if(min > *(arr+i))
+            min=*(arr+i);
     return min;
 }

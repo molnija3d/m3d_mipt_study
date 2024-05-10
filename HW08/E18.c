@@ -17,26 +17,35 @@ Output format
 
 #include <stdio.h>
 
-void printMulti(int num);
+void findMulti(int num, int* arr);
+void printArr(int* arr,int num);
 
 int main(void)
 {
-    int num;
-    scanf("%d",&num);
-    printMulti(num);
+    int num, arr[8];
+    scanf("%d",&num);    
+    findMulti(num,arr);
+    printArr(arr,8);
     return 0;
 }
 
-void printMulti(int num)
+void findMulti(int num,int *arr)
 {
-  int cnt;  
+  int cnt; 
+ 
        for(int j = 2; j<10;j++)
        {
         cnt = 0;
          for(int i = 2; i <= num; i++)
            if(i%j == 0)
-             cnt++;
+             arr[j-2]=++cnt;
              
-         printf("%d %d\n",j,cnt);
        }
+}
+void printArr(int* arr,int num)
+{
+    for (int i = 0; i < num; i++)
+    {
+        printf("%d %d\n",i+2,arr[i]);
+    }
 }

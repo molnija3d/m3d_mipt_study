@@ -13,7 +13,6 @@ void input(int *arr);
 void print(int *arr, int n);
 int findEven2(int *arr, int *res);
 
-
 int main(void)
 {
     int arr[SIZE] = {0}, res[SIZE] = {0}, n = 0;

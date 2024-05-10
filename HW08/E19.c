@@ -21,7 +21,7 @@ int main(void)
 
 void printSep(int num)
 {
-   int arr[11] = {0}, cnt = 0; 
+   int arr[10] = {0}, cnt = 0; 
    do
    {
      arr[cnt++] = num%10;

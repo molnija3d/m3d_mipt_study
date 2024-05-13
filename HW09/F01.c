@@ -9,9 +9,8 @@ Output format
 Функция ничего не возвращает. Производит сортировку переданного ей массива по возрастанию.
 */
 
-//void sort_array(int size, int a[]);
 
-void sort_array(int size, int a[])
+void sort_array(int size, int a[])    //shell-sort
 {
     for (int stp = size / 2; stp > 0; stp /= 2)
     {

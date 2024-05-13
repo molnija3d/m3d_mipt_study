@@ -22,7 +22,7 @@ int main(void)
     int32_t arr[SIZE][SIZE]= {0};
 
     inparr(arr,SIZE);
-    printf("%d",countMatrix(arr,SIZE));
+    printf("%"PRId32,countMatrix(arr,SIZE));
     return 0;
 }
 
@@ -40,7 +40,7 @@ void inparr(int32_t arr[][SIZE],int32_t n)
     for(int i=0; i<n; i++)
         for(int j=0; j<n; j++)
         {
-            scanf("%d",&arr[i][j]);
+            scanf("%"SCNd32,&arr[i][j]);
         }
 }
 

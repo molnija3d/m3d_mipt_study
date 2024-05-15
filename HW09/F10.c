@@ -20,7 +20,7 @@ int main(void)
 void archStr(void)
 {
     char c,prev;
-    int cnt=0;
+    int cnt=1;
     prev=getchar();
     do
      {
@@ -29,9 +29,9 @@ void archStr(void)
        ++cnt;
       else
       {
-       printf("%c%d",prev,cnt+1);
+       printf("%c%d",prev,cnt);
        prev=c;
-       cnt=0;
+       cnt=1;
       }
      }
     while(c!='.'); 

@@ -14,17 +14,10 @@ Output format
 
 int compression(int a[], int b[], int N)
 {
-    int cnt=0,j=0,i=0;
+    int cnt=1,j=0,i=0;
 
     if(a[0])
-    {
-        while (i<N && a[i]==a[i+1])
-            i++;
-
         b[j++] = 0;
-        b[j++] = i+1;
-        i++;
-    }
 
     if(i+1 < N)
     {
@@ -34,11 +27,12 @@ int compression(int a[], int b[], int N)
                 cnt++;
             else
             {
-                b[j++]=cnt+1;
-                cnt = 0;
+                b[j++]=cnt;
+                cnt = 1;
             }
         }
-        b[j++]=cnt+1;
+        b[j++]=cnt;
     }
+
     return j;
 }

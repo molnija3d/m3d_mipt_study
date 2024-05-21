@@ -47,7 +47,7 @@ int strinp(FILE *inp,char* str)
     char c = 0;
     while((c=fgetc(inp))!=EOF)
     {
-        if((c >= 'A' && c <='Z') ||(c >= 'a' && c <='z')) //in auto test there are only letters
+        if((c >= 'A' && c <='Z') || (c >= 'a' && c <='z')) //in auto test there are only letters
         {
             str[i++] = c;
         }

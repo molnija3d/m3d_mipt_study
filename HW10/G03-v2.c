@@ -8,7 +8,7 @@ Output format
 Целые числа через пробел - номера символа, который совпадает с последним символом строки.
  */
 #include <stdio.h>
-#include <string.h>
+
 int strinp(FILE *inp,char* str);
 
 int main(void)

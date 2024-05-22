@@ -24,14 +24,14 @@ Output format
 */
 #include <stdio.h>
 
-int strinp(FILE *inp,char* str);
+int strinp(FILE *inp, char* str);
 _Bool triangle(FILE *outp, int in_len);
 
 int main(void)
 {
     enum {str_len = 1001};
-    FILE *inp = fopen("input.txt","r");
-    FILE *outp = fopen("output.txt","w");
+    FILE *inp = fopen("input.txt", "r");
+    FILE *outp = fopen("output.txt", "w");
     char in_str[str_len] = {'\0'};
     int in_len = 0;
 
@@ -90,7 +90,7 @@ _Bool triangle(FILE *outp, int in_len)
             {
                 fprintf(outp,((cnt % 2) ? (i % 2) : !(i % 2)) ? ((j % 2) ? "*":" ") : ((j % 2) ? " ":"*"));
             }
-            fprintf(outp,"\n");
+            fprintf(outp, "\n");
         }
     }
     else

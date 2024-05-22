@@ -33,9 +33,9 @@ int main(void)
 
 void ext_html(char *addr, int len)
 {
-    char html[]=".html";
-    int dot_idx=-1;
-    for(int i = len-1; i>=0 && addr[i] != '/'; i--)
+    char html[] = ".html";
+    int dot_idx = -1;
+    for(int i = len-1; i >= 0 && addr[i] != '/'; i--)
     {
         if(addr[i] == '.')
         {
@@ -46,12 +46,12 @@ void ext_html(char *addr, int len)
 
     if(dot_idx == -1)
     {
-        dot_idx=len;
+        dot_idx = len;
     }
 
     for(int i=0; i < 6; i++)
     {
-        addr[dot_idx+i]=html[i];
+        addr[dot_idx+i] = html[i];
     }
 }
 
@@ -61,7 +61,7 @@ int strinp(FILE *inp, char* str)
     char c = 0;
     while((c = fgetc(inp)) != EOF)
     {
-        if((c >= 'A' && c <='Z') || (c >= 'a' && c <='z') || (c == '/') || (c == '.')) //in auto test there are only letters, '.' and '/'
+        if((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c == '/') || (c == '.')) //in auto test there are only letters, '.' and '/'
         {
             str[i++] = c;
         }

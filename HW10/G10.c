@@ -22,7 +22,7 @@ int main(void)
 
     for(int i=0; i < str_len;)
     {
-        while(i < str_len&&str[i++] != ' ')
+        while(i < str_len && str[i++] != ' ')
         {
             tmp++;
         }
@@ -30,9 +30,9 @@ int main(void)
         {
             max1 = tmp;
             pos1 = i - tmp-1;
-            if(pos1<0)
+            if(pos1 < 0)
             {
-                pos1=0;
+                pos1 = 0;
             }
         }
         else if(tmp > max2)
@@ -60,7 +60,7 @@ int strinp(FILE *inp, char* str)
     char c = 0;
     while((c = fgetc(inp)) != EOF)
     {
-        if((c >= 'A' && c <='Z') || (c >= 'a' && c <='z') || (c == ' ')) //in auto test there are only letters and spacebar
+        if((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c == ' ')) //in auto test there are only letters and spacebar
         {
             str[i++] = c;
         }

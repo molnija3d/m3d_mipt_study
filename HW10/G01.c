@@ -14,10 +14,10 @@ int main(void)
     FILE *inp = fopen("input.txt","r");
     FILE *out = fopen("output.txt","w");
     
-    char str[101]={'\0'};
-    fscanf(inp,"%[^EOF^\n]s",str);
+    char str[101] = {'\0'};
+    fscanf(inp, "%[^EOF^\n]s", str);
     fclose(inp);
-    fprintf(out,"%s, %s, %s %d",str,str,str,(int)strlen(str));
+    fprintf(out, "%s, %s, %s %d", str, str, str, (int)strlen(str));
     fclose(out);
     return 0;
 }

@@ -22,7 +22,7 @@ int main(void)
         if(c == ' ' && prev_spb == 0)
         {
             prev_spb = 1;
-            fputc('\n',out);
+            fputc('\n', out);
         }
         else if((c >= 'a' && c <= 'z') || (c >= 'A' &&  c <= 'Z') || (c >= '0' && c <= '9'))
         {

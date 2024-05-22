@@ -29,7 +29,7 @@ Output format
 #include <string.h>
 #include <stdlib.h>
 
-int strinp(FILE *inp,char* str);
+int strinp(FILE *inp, char* str);
 
 int soundex(char* in_str, int len, char *sndx);
 
@@ -41,10 +41,10 @@ int main(void)
     char in_str[str_len] = {'\0'};
     int in_len = 0;
 
-    in_len = strinp(inp,in_str);
+    in_len = strinp(inp, in_str);
     fclose(inp);
     
-    char *sndx = (char *)malloc(in_len * sizeof(char));
+    char *sndx = (char *) malloc (in_len * sizeof(char));
     memset(sndx, 0, in_len * sizeof(char));
 
     soundex(in_str, in_len, sndx);
@@ -125,7 +125,7 @@ int soundex(char* in_str, int len, char *sndx)
     {
         for(int i = p_idx; i < 4; i++)
         {
-            sndx[i]='0';
+            sndx[i] = '0';
         }
     }
     else if(p_idx > 4)

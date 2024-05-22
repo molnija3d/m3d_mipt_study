@@ -9,7 +9,7 @@ Output format
  */
 #include <stdio.h>
 
-int strinp(FILE *inp,char* str);
+int strinp(FILE *inp, char* str);
 void sort_str(int size, char* a);
 void make_palindrom(int in_len, char *in_str, char *plndr);
 
@@ -50,7 +50,7 @@ void make_palindrom(int in_len, char *in_str, char *plndr)
         }
     }
 
-    int lft_idx = e_idx + 1*(s_idx > 0);
+    int lft_idx = e_idx + 1 * (s_idx > 0);
     char left[lft_idx];
     _Bool flag = 1;
     int pldr_lidx = 0;
@@ -66,16 +66,16 @@ void make_palindrom(int in_len, char *in_str, char *plndr)
         {
             left[i] = spare[0];
             flag = 0;
-            pldr_lidx = i+1;
+            pldr_lidx = i + 1;
         }
     }
 
     if(pldr_lidx % 2 != 0)
     {
-        for(int i = 0; i< pldr_lidx - 1; i++)
+        for(int i = 0; i < pldr_lidx - 1; i++)
         {
             plndr[i] = left[i];
-            plndr[2*pldr_lidx - 2 - i] = plndr[i];
+            plndr[2 * pldr_lidx - 2 - i] = plndr[i];
         }
         plndr[pldr_lidx - 1] = left[pldr_lidx - 1];
     }
@@ -84,10 +84,10 @@ void make_palindrom(int in_len, char *in_str, char *plndr)
         for(int i = 0; i < pldr_lidx; i++)
         {
             plndr[i] = left[i];
-            plndr[2*pldr_lidx - 2 - i] = plndr[i];
+            plndr[2 * pldr_lidx - 2 - i] = plndr[i];
         }
     }
-    plndr[2*pldr_lidx - 1] = '\0';
+    plndr[2 * pldr_lidx - 1] = '\0';
 }
 
 
@@ -97,7 +97,7 @@ int strinp(FILE *inp, char* str)
     char c = 0;
     while((c = fgetc(inp)) != EOF)
     {
-        if((c >= 'a' && c <='z')) //in auto test there are only small letters
+        if((c >= 'a' && c <= 'z')) //in auto test there are only small letters
         {
             str[i++] = c;
         }

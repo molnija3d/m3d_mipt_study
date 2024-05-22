@@ -58,9 +58,9 @@ int find_digits(FILE *fl, int *arr)
 }
 void print_digits(FILE *outp,int n,int *arr)
 {
-    for(int i=0; i<n; i++)
+    for(int i=0; i < n; i++)
     {
-        fprintf(outp,"%d ",arr[i]);
+        fprintf(outp, "%d ", arr[i]);
     }
 }
 
@@ -70,7 +70,7 @@ void sort_array(int size, int* a)    //shell-sort
     {
         for (int i = stp; i < size; i++)
         {
-            int j=i;
+            int j = i;
             int temp = a[j]; //remember number at postition stp
 
             while( j-stp >= 0 && a[j-stp] > temp)   //if val at position j-stp > temp, change val at j with val at j-stp
@@ -85,7 +85,8 @@ void sort_array(int size, int* a)    //shell-sort
 
 int strinp(FILE *inp,char* str)
 {
-    int res=0;
-    res=fscanf(inp,"%[a-zA-Z0-9 ,.;:!?-\'\")(]s",str);
+    int res = 0;
+    res = fscanf(inp, "%[a-zA-Z0-9 ,.;:!?-\'\")(]s", str);
+    
     return res;
 }

@@ -18,10 +18,10 @@ int main(void)
     char str[STRLEN];
     int str_len = 0, cnt = 0;
 
-    str_len = strinp(inp,str);
+    str_len = strinp(inp, str);
     fclose(inp);
 
-    printf("%s\n",str);
+    printf("%s\n", str);
     for(int i = 0; i < str_len;)
     {
 
@@ -46,7 +46,7 @@ int strinp(FILE *inp, char* str)
     char c = 0;
     while((c = fgetc(inp)) != EOF)
     {
-        if((c >= 'A' && c <='Z') || (c >= 'a' && c <='z') || (c == ' ')) //in auto test there are only letters and spacebar
+        if((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c == ' ')) //in auto test there are only letters and spacebar
         {
             str[i++] = c;
         }

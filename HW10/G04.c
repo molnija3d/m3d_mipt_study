@@ -14,10 +14,10 @@ int main(void)
 {
     FILE *inp = fopen("input.txt","r");
     FILE *out = fopen("output.txt","w");
-    enum {STRLEN=101};
-    char word_1[STRLEN]= {'\0'};
-    char word_2[STRLEN]= {'\0'};
-    int idx_1_max=0,idx_2_max=0,cnt=0;
+    enum {STRLEN = 101};
+    char word_1[STRLEN] = {'\0'};
+    char word_2[STRLEN] = {'\0'};
+    int idx_1_max = 0,idx_2_max = 0,cnt = 0;
 
     fscanf(inp,"%s%s",word_1, word_2);
     fclose(inp);

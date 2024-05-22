@@ -16,23 +16,23 @@ int main(void)
     FILE *out = fopen("output.txt","w");
 
     char str[27]= {'\0'};
-    int num=0, cnt_num=2,cnt_lett=1;
+    int num=0, cnt_num = 2,cnt_lett = 1;
     fscanf(inp,"%d",&num);
     fclose(inp);
-    for(int i=0; i<num; i++)
+    for(int i = 0; i < num; i++)
     {
-        if(i%2)
+        if(i % 2)
         {
-            str[i]=0x30+cnt_num;
+            str[i] = 0x30 + cnt_num;
             cnt_num += 2;
-            if(cnt_num >9)
+            if(cnt_num > 9)
             {
                 cnt_num = 2;
             }
         }
         else
         {
-            str[i]=0x40 + cnt_lett++;
+            str[i] = 0x40 + cnt_lett++;
             if(cnt_lett > 26)
              cnt_lett = 1;
         }

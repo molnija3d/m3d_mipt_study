@@ -11,20 +11,20 @@ YES или NO
 #include <stdio.h>
 
 
-int strinp(FILE *inp,char* str);
+int strinp(FILE *inp, char* str);
 _Bool is_palindrom(char *in_str, int str_len);
 
 
 int main(void)
 {
     enum {str_len = 1001};
-    FILE *inp = fopen("input.txt","r");
+    FILE *inp = fopen("input.txt", "r");
     char in_str[str_len] = {'\0'};
     int in_len;
-    in_len = strinp(inp,in_str);
+    in_len = strinp(inp, in_str);
     fclose(inp);
 
-    printf("%s", is_palindrom(in_str,in_len) ? "YES":"NO");
+    printf("%s", is_palindrom(in_str, in_len) ? "YES":"NO");
     return 0;
 }
 _Bool is_palindrom(char *inp_str, int str_len)

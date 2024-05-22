@@ -13,21 +13,21 @@ int main(void)
 {
     FILE *inp = fopen("input.txt","r");
     FILE *out = fopen("output.txt","w");
-    enum {STRLEN=1001};
-    char str[STRLEN]= {'\0'};
-    char last=0;
-    int last_idx=0;
+    enum {STRLEN = 1001};
+    char str[STRLEN] = {'\0'};
+    char last = 0;
+    int last_idx = 0;
    
     
-    fscanf(inp,"%[a-zA-Z0-9 ]s",str);
+    fscanf(inp, "%[a-zA-Z0-9 ]s", str);
     fclose(inp);
-    for(int i = 0; i< STRLEN && str[i]!= '\0'; i++)
+    for(int i = 0; i < STRLEN && str[i] != '\0'; i++)
      {
       last = str[i];
-      last_idx=i;
+      last_idx = i;
      }
 
-    for(int i=0; i<last_idx; i++)
+    for(int i = 0; i < last_idx; i++)
     {
      if(str[i] == last)
       {

@@ -42,9 +42,9 @@ int strinp(FILE *inp,char* str)
 {
     int i = 0;
     char c = 0;
-    while((c=fgetc(inp))!=EOF)
+    while((c = fgetc(inp)) != EOF)
     {
-        if((c >= 'a' && c <='z') || (c >= 'A' && c <='Z'))
+        if((c >= 'a' && c <= 'z') || (c >= 'A' && c <='Z'))
         {
             str[i++] = c;
         }

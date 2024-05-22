@@ -15,16 +15,16 @@ int main(void)
 {
     FILE *inp = fopen("input.txt","r");
     FILE *out = fopen("output.txt","w");
-    enum {STRLEN=1001};
+    enum {STRLEN = 1001};
     char str[STRLEN]= {'\0'};
-    char last=0;
-    int last_idx=0;
+    char last = 0;
+    int last_idx = 0;
    
     last_idx = strinp(inp,str) - 1;
     last = str[last_idx];
     fclose(inp);
     
-    for(int i=0; i<last_idx; i++)
+    for(int i = 0; i < last_idx; i++)
     {
      if(str[i] == last)
       {
@@ -35,11 +35,11 @@ int main(void)
     return 0;
 }
 
-int strinp(FILE *inp,char* str)
+int strinp(FILE *inp, char* str)
 {
     int i = 0;
     char c = 0;
-    while((c=fgetc(inp))!=EOF)
+    while((c = fgetc(inp)) != EOF)
     {
         if((c >= 'a' && c <='z') || (c >= '0' && c <='9'))
         {

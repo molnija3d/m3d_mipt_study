@@ -39,7 +39,7 @@ void swap(char *in, char *out, int str_len)
     strcpy(out, in);
     for(int i = 1; i < str_len && in[i] != '\0'; i++)
     {
-        if(in[i]!=' ' && in[i-1]!=' ')
+        if(in[i] != ' ' && in[i-1] != ' ')
         {
             lst = i++;
             swap_ab(out, fst, lst);

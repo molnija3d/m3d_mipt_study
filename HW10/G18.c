@@ -33,7 +33,7 @@ int main(void)
 void delspb(char *in, char *out,int str_len)
 {
     int j = 0;
-    for(int i = 0; i< str_len; i++)
+    for(int i = 0; i < str_len; i++)
     {
         if(i==0 && in[i] == ' ')
         {
@@ -57,6 +57,6 @@ void delspb(char *in, char *out,int str_len)
 int strinp(FILE *inp, char* str)
 {
     int res = 0;
-    res = fscanf(inp,"%[a-zA-Z0-9 ,.;:!?-\'\")(]s", str);
+    res = fscanf(inp, "%[a-zA-Z0-9 ,.;:!?-\'\")(]s", str);
     return res;
 }

@@ -20,7 +20,7 @@ int main(void)
     fscanf(inp,"%[a-zA-Z ]s", str);
     fclose(inp);
 
-    for(int i = 0; i< STRLEN && str[i]!= '\0'; i++)
+    for(int i = 0; i < STRLEN && str[i] != '\0'; i++)
     {
         switch(str[i])
         {

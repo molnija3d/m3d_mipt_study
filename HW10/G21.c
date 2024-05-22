@@ -88,7 +88,7 @@ _Bool triangle(FILE *outp, int in_len)
             
             for(int j = 0; j < i + 1; j++)
             {
-               fprintf(outp,"* ");
+               fprintf(outp, "* ");
             }
             fprintf(outp, "\n");
         }

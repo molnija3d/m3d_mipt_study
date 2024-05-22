@@ -83,12 +83,12 @@ _Bool triangle(FILE *outp, int in_len)
         {
             for(int j = 0; j < cnt - i - 1; j++)
             {
-                fprintf(outp," ");
+                fprintf(outp, " ");
             }
             
-            for(int j = cnt - i - 1; j < cnt + i; j++)
+            for(int j = 0; j < i + 1; j++)
             {
-                fprintf(outp,((cnt % 2) ? (i % 2) : !(i % 2)) ? ((j % 2) ? "*":" ") : ((j % 2) ? " ":"*"));
+               fprintf(outp,"* ");
             }
             fprintf(outp, "\n");
         }

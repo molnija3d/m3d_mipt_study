@@ -41,6 +41,5 @@ void printNumCount(int32_t* arr)
 
     for(int i=0; i < 10; i++)
         if(buff[i])
-            printf("\n%"PRId32" %"PRId32"\n",i,buff[i]);
+            printf( "\n%" PRId32 " %" PRId32 "\n",i,buff[i]);
 }
-

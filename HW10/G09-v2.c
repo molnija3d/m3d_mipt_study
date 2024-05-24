@@ -31,7 +31,7 @@ int main(void)
         
         if(cnt == 1  && str[i] != ' ')
         {
-         fprintf(out,"%c",str[i]);
+         fwrite(str + i, sizeof(char), 1, out);
         }
          cnt = 0;        
     }

@@ -26,8 +26,7 @@ int8_t get_row(FILE *inp, sensor_data *data)
             }
             else
             {
-                printf("Wrong '-' symbol in ARG N%d\n", argcnt);
-                err = 1;
+                err = argcnt + 1;
             }
         }
         else if (c == ';' || c == '\n' || c == EOF)
@@ -41,16 +40,7 @@ int8_t get_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
-                    if( c == EOF)
-                    {
-                      err = -1;  
-                    }
-                    else
-                    {
-                        data->year = 0;
-                    printf("Wrong YEAR %d\n", num);
-                    err = 1;
-                    }
+                    err = 1;         
                 }
                 break;
             case 1:
@@ -60,8 +50,6 @@ int8_t get_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
-                    data->month = 0;
-                    printf("Wrong MONTH %d\n", num);
                     err = 2;
                 }
                 break;
@@ -72,8 +60,6 @@ int8_t get_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
-                    data->day = 0;
-                    printf("Wrong DAY %d\n", num);
                     err = 3;
                 }
                 break;
@@ -84,8 +70,6 @@ int8_t get_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
-                    data->hr = 0;
-                    printf("Wrong HOURS %d\n", num);
                     err = 4;
                 }
                 break;
@@ -96,8 +80,6 @@ int8_t get_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
-                    data->min = 0;
-                    printf("Wrong MINUTES %d\n", num);
                     err = 5;
                 }
                 break;
@@ -108,8 +90,6 @@ int8_t get_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
-                    data->temp = -127;
-                    printf("Wrong TEMP %d\n", num);
                     err = 7;
                 }
                 break;
@@ -170,7 +150,7 @@ int8_t get_stats(char *fname, int8_t mode, int8_t month)
             }
             else
             {
-                printf("ERROR at line  N%d\n\n", line_cnt);
+                printf("ERROR %d at line  N%d \n\n", arg_cnt, line_cnt);
             }
         } while (arg_cnt >= 0);
 

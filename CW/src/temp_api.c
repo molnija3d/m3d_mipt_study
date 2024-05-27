@@ -1,7 +1,7 @@
-#include "temp_functions.h"
+#include "temp_api.h"
 #include <stdlib.h>
 
-int8_t get_data_row(FILE *inp, sensor_data *data)
+int8_t get_row(FILE *inp, sensor_data *data)
 {
     char c;
     int16_t num = 0;
@@ -41,8 +41,16 @@ int8_t get_data_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
+                    if( c == EOF)
+                    {
+                      err = -1;  
+                    }
+                    else
+                    {
+                        data->year = 0;
                     printf("Wrong YEAR %d\n", num);
                     err = 1;
+                    }
                 }
                 break;
             case 1:
@@ -52,6 +60,7 @@ int8_t get_data_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
+                    data->month = 0;
                     printf("Wrong MONTH %d\n", num);
                     err = 2;
                 }
@@ -63,6 +72,7 @@ int8_t get_data_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
+                    data->day = 0;
                     printf("Wrong DAY %d\n", num);
                     err = 3;
                 }
@@ -74,6 +84,7 @@ int8_t get_data_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
+                    data->hr = 0;
                     printf("Wrong HOURS %d\n", num);
                     err = 4;
                 }
@@ -85,6 +96,7 @@ int8_t get_data_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
+                    data->min = 0;
                     printf("Wrong MINUTES %d\n", num);
                     err = 5;
                 }
@@ -96,13 +108,15 @@ int8_t get_data_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
+                    data->temp = -127;
                     printf("Wrong TEMP %d\n", num);
-                    err = 6;
+                    err = 7;
                 }
                 break;
             default:
-                err = 7;
+                err = 8;
             }
+
             if (c == EOF)
             {
                 if (argcnt == 6 || argcnt == 1)
@@ -114,9 +128,6 @@ int8_t get_data_row(FILE *inp, sensor_data *data)
                     err = -2;
                 }
             }
-            else
-            {
-            }
             num = 0;
         }
         else if (c == ' ')
@@ -124,7 +135,7 @@ int8_t get_data_row(FILE *inp, sensor_data *data)
         }
         else
         {
-            err = 8;
+            err = 9;
         }
 
     } while (c != '\n' && err >= 0);
@@ -143,98 +154,85 @@ int8_t get_stats(char *fname, int8_t mode, int8_t month)
     else
     {
         int8_t arg_cnt = 0;
-        int32_t line_cnt = 0;
-        int pos = 0;
-        sensor_data *rows;
-        stat stats;
-        stats.average = 0.f;
-        stats.min = 100;
-        stats.max = -100;
+        uint32_t line_cnt = 0;
+        uint32_t f_size = 0;
+        f_size = rows_count(inpf); 
+        rewind(inpf);
+        sensor_data *rows = NULL;
+        rows = (sensor_data *)malloc((f_size + 1) * sizeof(sensor_data));
 
-        rows = (sensor_data *) malloc(sizeof(sensor_data));
         do
         {
-            arg_cnt = get_data_row(inpf, rows);
+            arg_cnt = get_row(inpf, &rows[line_cnt]);
             ++line_cnt;
             if (arg_cnt == 6 || arg_cnt == -1)
             {
-                stat_calc(&stats, *rows, month);
             }
             else
             {
                 printf("ERROR at line  N%d\n\n", line_cnt);
             }
-
         } while (arg_cnt >= 0);
-        if (month == 0)
-        {
-            printf("Stats for %d year:\nAVERAGE temp = %2.2f\nMIN temp = %d\nMAX temp = %d", rows->year, stats.average, stats.min, stats.max);
-        }
-        else
-        {
-            printf("Stats for %d month:\nAVERAGE temp = %2.2f\nMIN temp = %d\nMAX temp = %d", month, stats.average, stats.min, stats.max);
-        }
 
-        free(rows);
+        stat_print(rows, line_cnt, month);
+        free(rows); 
     }
     fclose(inpf);
     return 0;
 }
 
-int8_t stat_calc(stat *s_month, sensor_data row, int8_t month)
+int32_t rows_count(FILE *fl)
 {
-    static int32_t summ = 0;
-    static int32_t cnt = 0;
-    static int8_t p_month = 0;
+    char c = 0;
+    int32_t count = 0;
+
+    while ((c = fgetc(fl)) != EOF)
+    {
+       if(c == '\n')
+       {
+        ++count;
+       }
+    }
+   return count;
+}
+
+int8_t stat_print(sensor_data *rows, uint16_t r_cnt, uint8_t month)
+{
+    int8_t t_max, t_min, tmp;
+    int32_t summ = 0;
+    t_max = t_min = rows[0].temp;
+    stat *t_stat;
 
     if (month == 0)
     {
-        summ += row.temp;
-        s_month->average = (float)summ / ++cnt;
-        if (s_month->min > row.temp)
+        t_stat = (stat *)malloc(12 * sizeof(stat));
+        uint16_t cnt = 0;
+        for (int i = 0; i < r_cnt; ++i)
         {
-            s_month->min = row.temp;
-        }
-        else
-        {
+            tmp = rows[i].temp;
+            if (tmp > -100 && tmp < 100)
+            {
+                summ += tmp;
+                if (t_max < tmp)
+                {
+                    t_max = tmp;
+                }
+                if (t_min > tmp)
+                {
+                    t_min = tmp;
+                }
+                ++cnt;
+
+                if (cnt > 0)
+                {
+                    t_stat[rows[i].month].average = (float)summ / cnt;
+                    t_stat[rows[i].month].min = t_min;
+                    t_stat[rows[i].month].max = t_max;
+                }
+            }
         }
 
-        if (s_month->max < row.temp)
-        {
-            s_month->max = row.temp;
-        }
-        else
-        {
-        }
-    }
-    else if (month == row.month)
-    {
-        if (p_month != month)
-        {
-            p_month = month;
-            summ = 0;
-        }
-        else
-        {
-        }
-
-        summ += row.temp;
-        s_month->average = (float)summ / ++cnt;
-        if (s_month->min > row.temp)
-        {
-            s_month->min = row.temp;
-        }
-        else
-        {
-        }
-
-        if (s_month->max < row.temp)
-        {
-            s_month->max = row.temp;
-        }
-        else
-        {
-        }
+        free(t_stat);
     }
     else
     {

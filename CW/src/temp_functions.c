@@ -180,7 +180,7 @@ int8_t get_stats(char *fname, int8_t mode, int8_t month)
 
 int8_t stat_calc(stat *s_month, sensor_data row, int8_t month)
 {
-    static int64_t summ = 0;
+    static int32_t summ = 0;
     static int32_t cnt = 0;
     if (month == 0)
     {

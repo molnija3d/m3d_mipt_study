@@ -26,8 +26,6 @@ enum
     WRONG
 };
 
-sensor_data get_sensor_data(FILE *inp);
 int8_t get_data_row(FILE *inp, sensor_data *data);
-
 int8_t get_stats(char *fname, int8_t mode, int8_t month);
-int8_t stat_month(stat *s_month, sensor_data row, int8_t month);
+int8_t stat_calc(stat *s_month, sensor_data row, int8_t month);

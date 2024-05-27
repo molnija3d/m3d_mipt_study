@@ -1,10 +1,5 @@
 #include "temp_functions.h"
 
-sensor_data get_sensor_data(FILE *inp)
-{
-    sensor_data data_str;
-    return data_str;
-}
 int8_t get_data_row(FILE *inp, sensor_data *data)
 {
     char c;
@@ -30,7 +25,7 @@ int8_t get_data_row(FILE *inp, sensor_data *data)
             }
             else
             {
-                printf("Wrong '-' symbol at ARG №%d\n", argcnt);
+                printf("Wrong '-' symbol in ARG N%d\n", argcnt);
                 err = 1;
             }
         }
@@ -45,6 +40,7 @@ int8_t get_data_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
+                    printf("Wrong YEAR %d\n", num);
                     err = 1;
                 }
                 break;
@@ -55,6 +51,7 @@ int8_t get_data_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
+                    printf("Wrong MONTH %d\n", num);
                     err = 2;
                 }
                 break;
@@ -65,6 +62,7 @@ int8_t get_data_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
+                    printf("Wrong DAY %d\n", num);
                     err = 3;
                 }
                 break;
@@ -75,6 +73,7 @@ int8_t get_data_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
+                    printf("Wrong HOURS %d\n", num);
                     err = 4;
                 }
                 break;
@@ -85,6 +84,7 @@ int8_t get_data_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
+                    printf("Wrong MINUTES %d\n", num);
                     err = 5;
                 }
                 break;
@@ -95,6 +95,7 @@ int8_t get_data_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
+                    printf("Wrong TEMP %d\n", num);
                     err = 6;
                 }
                 break;
@@ -127,35 +128,6 @@ int8_t get_data_row(FILE *inp, sensor_data *data)
 
     } while (c != '\n' && err >= 0);
 
-    switch (err)
-    {
-    case 1:
-        printf("Wrong YEAR\n");
-        break;
-    case 2:
-        printf("Wrong MONTH\n");
-        break;
-    case 3:
-        printf("Wrong DAY\n");
-        break;
-    case 4:
-        printf("Wrong HOURS\n");
-        break;
-    case 5:
-        printf("Wrong MINUTES\n");
-        break;
-    case 6:
-        printf("Wrong TEMP\n");
-        break;
-    case 7:
-        break;
-    case 8:
-        break;
-    case -1:
-    case 0:
-    default:
-    }
-
     return err ? err : argcnt;
 }
 
@@ -173,47 +145,67 @@ int8_t get_stats(char *fname, int8_t mode, int8_t month)
     }
     else
     {
-        switch (mode)
+
+        stat stats;
+        stats.average = 0.f;
+        stats.min = 100;
+        stats.max = -100;
+        do
         {
-        case FULL:
-            stat s_year;
-
-        case MONTH:
-            stat s_month;
-            s_month.average = 0.f;
-            s_month.min = 100;
-            s_month.max = -100;
-            do
+            arg_cnt = get_data_row(inpf, &row);
+            ++line_cnt;
+            if (arg_cnt == 6 || arg_cnt == -1)
             {
-                arg_cnt = get_data_row(inpf, &row);
-                ++line_cnt;
-                if (arg_cnt == 6 || arg_cnt == -1)
-                {
-                    stat_month(&s_month, row, month);
-                }
-                else
-                {
-                    printf("ERROR at line  №%d\n", line_cnt);
-                }
+                stat_calc(&stats, row, month);
+            }
+            else
+            {
+                printf("ERROR at line  N%d\n\n", line_cnt);
+            }
 
-            } while (arg_cnt >= 0);
-            printf("Stats for %d month:\nAVERAGE temp = %2.2f\nMIN temp = %d\nMAX temp = %d", month, s_month.average, s_month.min, s_month.max);
-
-            break;
+        } while (arg_cnt >= 0);
+        if (month == 0)
+        {
+            printf("Stats for %d year:\nAVERAGE temp = %2.2f\nMIN temp = %d\nMAX temp = %d", row.year, stats.average, stats.min, stats.max);
         }
+        else
+        {
+            printf("Stats for %d month:\nAVERAGE temp = %2.2f\nMIN temp = %d\nMAX temp = %d", month, stats.average, stats.min, stats.max);
+        }
+
         fclose(inpf);
     }
     return 0;
 }
 
-int8_t stat_month(stat *s_month, sensor_data row, int8_t month)
+int8_t stat_calc(stat *s_month, sensor_data row, int8_t month)
 {
-    static float summ = 0.f;
+    static int64_t summ = 0;
     static int32_t cnt = 0;
-    if (month == row.month)
+    if (month == 0)
     {
         summ += row.temp;
-        s_month->average = summ / ++cnt;
+        s_month->average = (float)summ / ++cnt;
+        if (s_month->min > row.temp)
+        {
+            s_month->min = row.temp;
+        }
+        else
+        {
+        }
+
+        if (s_month->max < row.temp)
+        {
+            s_month->max = row.temp;
+        }
+        else
+        {
+        }
+    }
+    else if (month == row.month)
+    {
+        summ += row.temp;
+        s_month->average = (float)summ / ++cnt;
         if (s_month->min > row.temp)
         {
             s_month->min = row.temp;

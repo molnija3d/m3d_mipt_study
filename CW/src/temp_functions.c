@@ -1,4 +1,5 @@
 #include "temp_functions.h"
+#include <stdlib.h>
 
 int8_t get_data_row(FILE *inp, sensor_data *data)
 {
@@ -134,10 +135,6 @@ int8_t get_data_row(FILE *inp, sensor_data *data)
 int8_t get_stats(char *fname, int8_t mode, int8_t month)
 {
     FILE *inpf = fopen(fname, "r");
-    int8_t arg_cnt = 0;
-    int32_t line_cnt = 0;
-    int pos = 0;
-    sensor_data row;
 
     if (inpf == NULL)
     {
@@ -145,18 +142,23 @@ int8_t get_stats(char *fname, int8_t mode, int8_t month)
     }
     else
     {
-
+        int8_t arg_cnt = 0;
+        int32_t line_cnt = 0;
+        int pos = 0;
+        sensor_data *rows;
         stat stats;
         stats.average = 0.f;
         stats.min = 100;
         stats.max = -100;
+
+        rows = (sensor_data *) malloc(sizeof(sensor_data));
         do
         {
-            arg_cnt = get_data_row(inpf, &row);
+            arg_cnt = get_data_row(inpf, rows);
             ++line_cnt;
             if (arg_cnt == 6 || arg_cnt == -1)
             {
-                stat_calc(&stats, row, month);
+                stat_calc(&stats, *rows, month);
             }
             else
             {
@@ -166,15 +168,16 @@ int8_t get_stats(char *fname, int8_t mode, int8_t month)
         } while (arg_cnt >= 0);
         if (month == 0)
         {
-            printf("Stats for %d year:\nAVERAGE temp = %2.2f\nMIN temp = %d\nMAX temp = %d", row.year, stats.average, stats.min, stats.max);
+            printf("Stats for %d year:\nAVERAGE temp = %2.2f\nMIN temp = %d\nMAX temp = %d", rows->year, stats.average, stats.min, stats.max);
         }
         else
         {
             printf("Stats for %d month:\nAVERAGE temp = %2.2f\nMIN temp = %d\nMAX temp = %d", month, stats.average, stats.min, stats.max);
         }
 
-        fclose(inpf);
+        free(rows);
     }
+    fclose(inpf);
     return 0;
 }
 
@@ -182,6 +185,8 @@ int8_t stat_calc(stat *s_month, sensor_data row, int8_t month)
 {
     static int32_t summ = 0;
     static int32_t cnt = 0;
+    static int8_t p_month = 0;
+
     if (month == 0)
     {
         summ += row.temp;
@@ -204,6 +209,15 @@ int8_t stat_calc(stat *s_month, sensor_data row, int8_t month)
     }
     else if (month == row.month)
     {
+        if (p_month != month)
+        {
+            p_month = month;
+            summ = 0;
+        }
+        else
+        {
+        }
+
         summ += row.temp;
         s_month->average = (float)summ / ++cnt;
         if (s_month->min > row.temp)

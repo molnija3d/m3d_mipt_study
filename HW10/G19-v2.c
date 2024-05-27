@@ -36,7 +36,7 @@ int main(void)
 void make_palindrom(int in_len, char *in_str, char *plndr)
 {
     char frq_lttr[26] = {0}, pivot = 0;
-    int idx = 0, l_lngth;
+    int idx = 0, l_lngth = 0;
 
     for (int i = 0; i < in_len; ++i)
     {

@@ -1,5 +1,5 @@
-#include "temp_api.h"
 #include <stdlib.h>
+#include "temp_api.h"
 
 int8_t get_row(FILE *inp, sensor_data *data)
 {
@@ -40,7 +40,8 @@ int8_t get_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
-                    err = 1;         
+                    data->year = 0;
+                    err = 1;
                 }
                 break;
             case 1:
@@ -50,6 +51,7 @@ int8_t get_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
+                    data->year = 0;
                     err = 2;
                 }
                 break;
@@ -60,6 +62,7 @@ int8_t get_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
+                    data->year = 0;
                     err = 3;
                 }
                 break;
@@ -70,6 +73,7 @@ int8_t get_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
+                    data->year = 0;
                     err = 4;
                 }
                 break;
@@ -80,6 +84,7 @@ int8_t get_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
+                    data->year = 0;
                     err = 5;
                 }
                 break;
@@ -90,6 +95,7 @@ int8_t get_row(FILE *inp, sensor_data *data)
                 }
                 else
                 {
+                    data->year = 0;
                     err = 7;
                 }
                 break;
@@ -136,7 +142,7 @@ int8_t get_stats(char *fname, int8_t mode, int8_t month)
         int8_t arg_cnt = 0;
         uint32_t line_cnt = 0;
         uint32_t f_size = 0;
-        f_size = rows_count(inpf); 
+        f_size = rows_count(inpf);
         rewind(inpf);
         sensor_data *rows = NULL;
         rows = (sensor_data *)malloc((f_size + 1) * sizeof(sensor_data));
@@ -150,12 +156,12 @@ int8_t get_stats(char *fname, int8_t mode, int8_t month)
             }
             else
             {
-                printf("ERROR %d at line  N%d \n\n", arg_cnt, line_cnt);
+                printf("ERROR %d at line N%d\n", arg_cnt, line_cnt);
             }
         } while (arg_cnt >= 0);
 
-        stat_print(rows, line_cnt, month);
-        free(rows); 
+        stat_print(rows, line_cnt - 1, month);
+        free(rows);
     }
     fclose(inpf);
     return 0;
@@ -168,54 +174,84 @@ int32_t rows_count(FILE *fl)
 
     while ((c = fgetc(fl)) != EOF)
     {
-       if(c == '\n')
-       {
-        ++count;
-       }
+        if (c == '\n')
+        {
+            ++count;
+        }
     }
-   return count;
+    return count;
 }
 
-int8_t stat_print(sensor_data *rows, uint16_t r_cnt, uint8_t month)
+int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
 {
-    int8_t t_max, t_min, tmp;
-    int32_t summ = 0;
-    t_max = t_min = rows[0].temp;
-    stat *t_stat;
+    int8_t yr_t_max, yr_t_min, tmp;
+    uint8_t cur_month = 13;
+    int32_t m_summ = 0, y_summ = 0;
+    yr_t_max = yr_t_min = rows[0].temp;
+    stat *m_stat;
 
     if (month == 0)
     {
-        t_stat = (stat *)malloc(12 * sizeof(stat));
-        uint16_t cnt = 0;
+        m_stat = (stat *)malloc(12 * sizeof(stat));
+        uint16_t m_cnt = 0;
+        uint32_t y_cnt = 0;
         for (int i = 0; i < r_cnt; ++i)
         {
-            tmp = rows[i].temp;
-            if (tmp > -100 && tmp < 100)
+            if (rows[i].year)
             {
-                summ += tmp;
-                if (t_max < tmp)
+                tmp = rows[i].temp;
+                if (cur_month != (rows[i].month - 1))
                 {
-                    t_max = tmp;
+                    if (i > 0)
+                    {
+                        if (m_cnt > 0)
+                        {
+                            m_stat[cur_month].average = (float)m_summ / m_cnt;
+                        }
+                        printf("\r\nSTAT IN %2d MONTH:\n", cur_month + 1);
+                        printf("  MIN temp = %d", m_stat[cur_month].min);
+                        printf("  MAX temp = %d", m_stat[cur_month].max);
+                        printf("  AVG temp = %3.2f\n", m_stat[cur_month].average);
+                    }
+                    cur_month = rows[i].month - 1;
+                    m_stat[cur_month].min = rows[i].temp;
+                    m_stat[cur_month].max = rows[i].temp;
+                    m_cnt = 0;
+                    m_summ = 0;
                 }
-                if (t_min > tmp)
-                {
-                    t_min = tmp;
-                }
-                ++cnt;
 
-                if (cnt > 0)
+                if (tmp > -100 && tmp < 100)
                 {
-                    t_stat[rows[i].month].average = (float)summ / cnt;
-                    t_stat[rows[i].month].min = t_min;
-                    t_stat[rows[i].month].max = t_max;
+                    m_summ += tmp;
+                    y_summ += tmp;
+                    ++m_cnt;
+                    ++y_cnt;
+
+                    if (yr_t_max < tmp)
+                    {
+                        yr_t_max = tmp;
+                    }
+                    if (yr_t_min > tmp)
+                    {
+                        yr_t_min = tmp;
+                    }
+
+                    if (m_stat[cur_month].max < tmp)
+                    {
+                        m_stat[cur_month].max = tmp;
+                    }
+                    if (m_stat[cur_month].min > tmp)
+                    {
+                        m_stat[cur_month].min = tmp;
+                    }
                 }
             }
         }
-
-        free(t_stat);
-    }
-    else
-    {
+        printf("\nStats for %d year:\n", rows[0].year);
+        printf("   MAX temp = %d", yr_t_max);
+        printf("   MIN temp = %d", yr_t_min);
+        printf("   AVG temp = %2.2f\n", (float)y_summ / y_cnt);
+        free(m_stat);
     }
     return 0;
 }

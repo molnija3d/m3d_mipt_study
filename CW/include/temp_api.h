@@ -18,15 +18,7 @@ typedef struct
     int8_t max;
 } stat;
 
-enum
-{
-    HELP,
-    FULL,
-    MONTH,
-    WRONG
-};
-
 int8_t get_row(FILE *inp, sensor_data *data);
 int8_t get_stats(char *fname, int8_t mode, int8_t month);
-int8_t stat_print(sensor_data *rows, uint16_t r_cnt, uint8_t month);
+int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month);
 int32_t rows_count(FILE *fl);

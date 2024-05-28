@@ -15,3 +15,5 @@ enum
 
 params parse_args(int argc, char *argv[]);
 uint8_t menu(params);
+char my_strcmp(const char *a, const char *b);
+int8_t my_atoi(const char *str);

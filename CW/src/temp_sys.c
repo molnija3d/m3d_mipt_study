@@ -1,6 +1,7 @@
 #include <inttypes.h>
 #include <stdio.h>
 #include "temp_sys.h"
+#include "temp_api.h"
 
 uint8_t menu(params my_args)
 {
@@ -35,7 +36,7 @@ params parse_args(int argc, char *argv[])
     switch (argc)
     {
     case 2:
-        if (!strcmp(argv[1], "-h"))
+        if (!my_strcmp(argv[1], "-h"))
         {
             p_args.item = HELP;
         }
@@ -46,7 +47,7 @@ params parse_args(int argc, char *argv[])
         break;
 
     case 3:
-        if (!strcmp(argv[1], "-f"))
+        if (!my_strcmp(argv[1], "-f"))
         {
             p_args.item = FULL;
             p_args.file = argv[2];
@@ -58,11 +59,11 @@ params parse_args(int argc, char *argv[])
         break;
 
     case 5:
-        if (!strcmp(argv[1], "-f") && !strcmp(argv[3], "-m"))
+        if (!my_strcmp(argv[1], "-f") && !my_strcmp(argv[3], "-m"))
         {
             p_args.item = FULL;
             p_args.file = argv[2];
-            p_args.month = atoi(argv[4]);
+            p_args.month = my_atoi(argv[4]);
 
             if (p_args.month > 0 && p_args.month < 13)
             {
@@ -84,4 +85,25 @@ params parse_args(int argc, char *argv[])
         break;
     }
     return p_args;
+}
+
+char my_strcmp(const char *a, const char *b)
+{
+    while (*a && *b && *a == *b)
+    {
+        a++;
+        b++;
+    }
+    return *a - *b;
+}
+
+int8_t my_atoi(const char *str)
+{
+    int8_t res = 0;
+    int i = 0;
+    while (str[i++] != '\0')
+    {
+        res *= 10;
+        res += str[i++] - '0';
+    }
 }

@@ -1,6 +1,10 @@
 #include <stdlib.h>
 #include "temp_api.h"
 
+
+/*
+PARSE DATA PER ROWS
+*/
 int8_t get_row(FILE *inp, sensor_data *data)
 {
     char c;

@@ -1,4 +1,4 @@
-ALL: prg
+all: prg
 
 prg: tmp_stat.o temp_sys.o temp_api.o
 	gcc -o .\bin\tmp_stat.exe tmp_stat.o temp_sys.o temp_api.o

@@ -9,13 +9,13 @@ uint8_t menu(params my_args)
     {
     case FULL:
         printf("FILE: %s\n", my_args.file);
-        get_stats(my_args.file, FULL, 0);
+        get_stats(my_args.file, 0);
         break;
 
     case MONTH:
         printf("MONTH SPECIFIED %d\n", my_args.month);
         printf("FILE: %s\n", my_args.file);
-        get_stats(my_args.file, MONTH, my_args.month);
+        get_stats(my_args.file, my_args.month);
         break;
 
     case WRONG:

@@ -133,7 +133,7 @@ int8_t get_row(FILE *inp, sensor_data *data)
     return err ? err : argcnt;
 }
 
-int8_t get_stats(char *fname, int8_t mode, int8_t month)
+int8_t get_stats(char *fname, int8_t month)
 {
     FILE *inpf = fopen(fname, "r");
 

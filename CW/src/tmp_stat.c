@@ -1,5 +1,4 @@
 #include "temp_api.h"
-#include "temp_sys.h"
 
 int main(int argc, char *argv[])
 {

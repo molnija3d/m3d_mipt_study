@@ -1,6 +1,4 @@
-#include <stdlib.h>
 #include "temp_api.h"
-
 
 /*
 PARSE DATA PER ROWS
@@ -133,13 +131,13 @@ int8_t get_row(FILE *inp, sensor_data *data)
     return err ? err : argcnt;
 }
 
-int8_t get_stats(char *fname, int8_t month)
+int8_t get_stats(params my_param)
 {
-    FILE *inpf = fopen(fname, "r");
+    FILE *inpf = fopen(my_param.file, "r");
 
     if (inpf == NULL)
     {
-        printf("ERROR opening file <%s>\n", fname);
+        printf("ERROR opening file <%s>\n", my_param.file);
     }
     else
     {
@@ -164,7 +162,7 @@ int8_t get_stats(char *fname, int8_t month)
             }
         } while (arg_cnt >= 0);
 
-        stat_print(rows, line_cnt - 1, month);
+        stat_print(rows, line_cnt - 1, my_param.month);
         free(rows);
     }
     fclose(inpf);
@@ -212,10 +210,10 @@ int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
                         {
                             m_stat[cur_month].average = (float)m_summ / m_cnt;
                         }
-                        printf("\r\nSTAT IN %2d MONTH:\n", cur_month + 1);
-                        printf("  MIN temp = %d", m_stat[cur_month].min);
-                        printf("  MAX temp = %d", m_stat[cur_month].max);
-                        printf("  AVG temp = %3.2f\n", m_stat[cur_month].average);
+                        printf("\r\nSTATS FOR %02d MONTH:\n", cur_month + 1);
+                        printf("  MIN temp = %+3d", m_stat[cur_month].min);
+                        printf("  MAX temp = %+3d", m_stat[cur_month].max);
+                        printf("  AVG temp = %+3.2f\n", m_stat[cur_month].average);
                     }
                     cur_month = rows[i].month - 1;
                     m_stat[cur_month].min = rows[i].temp;
@@ -251,10 +249,10 @@ int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
                 }
             }
         }
-        printf("\nStats for %d year:\n", rows[0].year);
-        printf("   MAX temp = %d", yr_t_max);
-        printf("   MIN temp = %d", yr_t_min);
-        printf("   AVG temp = %2.2f\n", (float)y_summ / y_cnt);
+        printf("\r\nStats for %d year:\n", rows[0].year);
+        printf("  MIN temp = %+3d", yr_t_min);
+        printf("  MAX temp = %+3d", yr_t_max);
+        printf("  AVG temp = %+3.2f\n", (float)y_summ / y_cnt);
         free(m_stat);
     }
     return 0;

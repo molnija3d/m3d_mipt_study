@@ -1,6 +1,3 @@
-#include <inttypes.h>
-#include <stdio.h>
-#include "temp_sys.h"
 #include "temp_api.h"
 
 uint8_t menu(params my_args)
@@ -9,13 +6,13 @@ uint8_t menu(params my_args)
     {
     case FULL:
         printf("FILE: %s\n", my_args.file);
-        get_stats(my_args.file, 0);
+        get_stats(my_args);
         break;
 
     case MONTH:
         printf("MONTH SPECIFIED %d\n", my_args.month);
         printf("FILE: %s\n", my_args.file);
-        get_stats(my_args.file, my_args.month);
+        get_stats(my_args);
         break;
 
     case WRONG:
@@ -51,6 +48,7 @@ params parse_args(int argc, char *argv[])
         {
             p_args.item = FULL;
             p_args.file = argv[2];
+            p_args.month = 0;
         }
         else
         {

@@ -1,5 +1,7 @@
 #include <inttypes.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include "temp_sys.h"
 
 typedef struct
 {
@@ -19,6 +21,6 @@ typedef struct
 } stat;
 
 int8_t get_row(FILE *inp, sensor_data *data);
-int8_t get_stats(char *fname, int8_t month);
+int8_t get_stats(params my_param);
 int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month);
 int32_t rows_count(FILE *fl);

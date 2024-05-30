@@ -1,17 +1,19 @@
 all: prg
+	.\bin\tmp_stat.exe -f .\bin\temperature_big.csv
+	del *.o
 
 prg: tmp_stat.o temp_sys.o temp_api.o
-	gcc -o ./bin/tmp_stat tmp_stat.o temp_sys.o temp_api.o -ggdb3
+	gcc -o .\bin\tmp_stat tmp_stat.o temp_sys.o temp_api.o --debug
 
-tmp_stat.o: ./src/tmp_stat.c
-	gcc -c -o tmp_stat.o ./src/tmp_stat.c -I ./include/ -ggdb3
+tmp_stat.o: .\src\tmp_stat.c
+	gcc -c -o tmp_stat.o .\src\tmp_stat.c -I .\include\ --debug
 
-temp_sys.o: ./src/temp_sys.c
-	gcc -c -o temp_sys.o ./src/temp_sys.c -I ./include/ -ggdb3
+temp_sys.o: .\src\temp_sys.c
+	gcc -c -o temp_sys.o .\src\temp_sys.c -I .\include\ --debug
 
-temp_api.o: ./src/temp_api.c
-	gcc -c -o temp_api.o ./src/temp_api.c -I ./include/ -ggdb3
+temp_api.o: .\src\temp_api.c
+	gcc -c -o temp_api.o .\src\temp_api.c -I .\include\ --debug
 
 clean: 
-	rm ./bin/tmp_stat* 
-	rm *.o   
+	del .\bin\*.exe 
+	del *.o   

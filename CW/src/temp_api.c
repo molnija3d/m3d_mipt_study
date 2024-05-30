@@ -164,7 +164,7 @@ int8_t get_stats(params my_param)
                 --cur_pos;
             }
         } while (arg_cnt >= 0);
-
+        qsort(rows, (size_t)(cur_pos - 1), sizeof(sensor_data), compare_rows);
         stat_print(rows, cur_pos - 1, my_param.month);
         free(rows);
     }
@@ -173,7 +173,7 @@ int8_t get_stats(params my_param)
 }
 int8_t del_row(sensor_data *data, int32_t row_id)
 {
-
+    return 0;
 }
 
 int32_t rows_count(FILE *fl)
@@ -206,58 +206,99 @@ int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
         uint32_t y_cnt = 0;
         for (int i = 0; i < r_cnt; ++i)
         {
-                tmp = rows[i].temp;
-                if (cur_month != (rows[i].month - 1))
+            tmp = rows[i].temp;
+            if (cur_month != (rows[i].month - 1))
+            {
+                if (m_cnt > 0 && i > 0)
                 {
-                    if (i > 0)
-                    {
-                        if (m_cnt > 0)
-                        {
-                            m_stat[cur_month].average = (float)m_summ / m_cnt;
-                        }
-                        printf("\r\nSTATS FOR %02d MONTH:\n", cur_month + 1);
-                        printf("  MIN temp = %+3d", m_stat[cur_month].min);
-                        printf("  MAX temp = %+3d", m_stat[cur_month].max);
-                        printf("  AVG temp = %+3.2f\n", m_stat[cur_month].average);
-                    }
-                    cur_month = rows[i].month - 1;
-                    m_stat[cur_month].min = rows[i].temp;
-                    m_stat[cur_month].max = rows[i].temp;
-                    m_cnt = 0;
-                    m_summ = 0;
+                    print_month(m_stat, m_summ, m_cnt, cur_month);
                 }
+                cur_month = rows[i].month - 1;
+                m_stat[cur_month].min = rows[i].temp;
+                m_stat[cur_month].max = rows[i].temp;
+                m_cnt = 0;
+                m_summ = 0;
+            }
+            m_summ += tmp;
+            y_summ += tmp;
+            ++m_cnt;
+            ++y_cnt;
 
-                if (tmp > -100 && tmp < 100)
-                {
-                    m_summ += tmp;
-                    y_summ += tmp;
-                    ++m_cnt;
-                    ++y_cnt;
-
-                    if (yr_t_max < tmp)
-                    {
-                        yr_t_max = tmp;
-                    }
-                    if (yr_t_min > tmp)
-                    {
-                        yr_t_min = tmp;
-                    }
-
-                    if (m_stat[cur_month].max < tmp)
-                    {
-                        m_stat[cur_month].max = tmp;
-                    }
-                    if (m_stat[cur_month].min > tmp)
-                    {
-                        m_stat[cur_month].min = tmp;
-                    }
-                }         
+            if (yr_t_max < tmp)
+            {
+                yr_t_max = tmp;
+            }
+            if (yr_t_min > tmp)
+            {
+                yr_t_min = tmp;
+            }
+            if (m_stat[cur_month].max < tmp)
+            {
+                m_stat[cur_month].max = tmp;
+            }
+            if (m_stat[cur_month].min > tmp)
+            {
+                m_stat[cur_month].min = tmp;
+            }
         }
-        printf("\r\nStats for %d year:\n", rows[0].year);
+
+        if (m_cnt > 0)
+        {
+            print_month(m_stat, m_summ, m_cnt, cur_month);
+        }
+
+        printf("\r\nSTATS for %d YEAR:\n", rows[0].year);
         printf("  MIN temp = %+3d", yr_t_min);
         printf("  MAX temp = %+3d", yr_t_max);
         printf("  AVG temp = %+3.2f\n", (float)y_summ / y_cnt);
         free(m_stat);
     }
     return 0;
+}
+
+int8_t print_month(stat *m_stat, int32_t m_summ, int32_t m_cnt, int32_t cur_month)
+{
+    m_stat[cur_month].average = (float)m_summ / m_cnt;
+    printf("\r\nSTATS FOR %10s MONTH:\n", num_to_str(cur_month));
+    printf("  MIN temp = %+3d", m_stat[cur_month].min);
+    printf("  MAX temp = %+3d", m_stat[cur_month].max);
+    printf("  AVG temp = %+3.2f\n", m_stat[cur_month].average);
+    return 0;
+}
+const char *num_to_str(uint8_t month)
+{
+    static const char months[12][10] = {"JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"};
+    return months[month];
+}
+
+int32_t compare_rows(const void *av, const void *bv)
+{
+    sensor_data *a = (sensor_data *)av;
+    sensor_data *b = (sensor_data *)bv;
+    int32_t res = 0;
+    if (a->year != b->year)
+    {
+        res = a->year - b->year;
+    }
+    else if (a->month != b->month)
+    {
+        res = a->month - b->month;
+    }
+    else if (a->day != b->day)
+    {
+        res = a->day - b->day;
+    }
+    else if (a->hr != b->hr)
+    {
+        res = a->hr - b->hr;
+    }
+    else if (a->min != b->min)
+    {
+        res = a->min - b->min;
+    }
+    else
+    {
+        res = 0;
+    }
+    return res;
 }

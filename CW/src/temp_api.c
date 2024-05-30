@@ -193,17 +193,20 @@ int32_t rows_count(FILE *fl)
 
 int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
 {
-    int8_t yr_t_max, yr_t_min, tmp;
-    uint8_t cur_month = 13;
+    int8_t tmp;   
     int32_t m_summ = 0, y_summ = 0;
-    yr_t_max = yr_t_min = rows[0].temp;
     stat *m_stat;
+    m_stat = (stat *)malloc(12 * sizeof(stat));
+    uint16_t m_cnt = 0;
 
     if (month == 0)
     {
-        m_stat = (stat *)malloc(12 * sizeof(stat));
-        uint16_t m_cnt = 0;
+        int32_t y_summ = 0;
+        uint8_t cur_month = 13;
+        int8_t yr_t_max, yr_t_min;
         uint32_t y_cnt = 0;
+        yr_t_max = yr_t_min = rows[0].temp;
+
         for (int i = 0; i < r_cnt; ++i)
         {
             tmp = rows[i].temp;
@@ -211,7 +214,7 @@ int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
             {
                 if (m_cnt > 0 && i > 0)
                 {
-                    print_month(m_stat, m_summ, m_cnt, cur_month);
+                    print_month(m_stat, cur_month);
                 }
                 cur_month = rows[i].month - 1;
                 m_stat[cur_month].min = rows[i].temp;
@@ -219,6 +222,7 @@ int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
                 m_cnt = 0;
                 m_summ = 0;
             }
+
             m_summ += tmp;
             y_summ += tmp;
             ++m_cnt;
@@ -244,7 +248,8 @@ int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
 
         if (m_cnt > 0)
         {
-            print_month(m_stat, m_summ, m_cnt, cur_month);
+            m_stat[cur_month].average = (float)m_summ / m_cnt;
+            print_month(m_stat, cur_month);
         }
 
         printf("\r-------------------------------------------------------\n");
@@ -255,15 +260,46 @@ int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
         printf(" MAX temp = %+3d |", yr_t_max);
         printf(" AVG temp = %+3.2f |\n", (float)y_summ / y_cnt);
         printf("-------------------------------------------------------\n");
-
-        free(m_stat);
     }
+    else
+    {
+        m_cnt = 0;
+        m_summ = 0;
+         m_stat[month - 1].max = -99;
+         m_stat[month - 1].min = 99;
+
+        for (int i = 0; i < r_cnt; ++i)
+        {
+            tmp = rows[i].temp;
+            if (month == (rows[i].month))
+            {
+                m_summ += tmp;
+                ++m_cnt;
+
+                if (m_stat[month - 1].max < tmp)
+                {
+                    m_stat[month - 1].max = tmp;
+                }
+                if (m_stat[month - 1].min > tmp)
+                {
+                    m_stat[month - 1].min = tmp;
+                }
+            }
+        }
+
+        if (m_cnt > 0)
+        {
+            m_stat[month - 1].average = (float)m_summ / m_cnt;
+            print_month(m_stat, month - 1);
+        }
+    }
+    free(m_stat);
     return 0;
 }
 
-int8_t print_month(stat *m_stat, int32_t m_summ, int32_t m_cnt, int32_t cur_month)
+int8_t print_month(stat *m_stat, int32_t cur_month)
 {
-    m_stat[cur_month].average = (float)m_summ / m_cnt;
+    
     printf("-------------------------------------------------------\n");
     printf("\r\nSTATS FOR --> %s <-- MONTH:\n", num_to_str(cur_month));
     printf("-------------------------------------------------------\n");

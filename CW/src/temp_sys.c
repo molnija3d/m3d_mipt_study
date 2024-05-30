@@ -10,7 +10,7 @@ uint8_t menu(params my_args)
         break;
 
     case MONTH:
-        printf("MONTH SPECIFIED %d\n", my_args.month);
+        printf("MONTH SPECIFIED %s\n", num_to_str(my_args.month - 1));
         printf("FILE: %s\n", my_args.file);
         get_stats(my_args);
         break;
@@ -99,9 +99,13 @@ int8_t my_atoi(const char *str)
 {
     int8_t res = 0;
     int i = 0;
-    while (str[i++] != '\0')
+    if (*str)
     {
-        res *= 10;
-        res += str[i++] - '0';
+        do
+        {
+            res *= 10;
+            res += str[i++] - '0';
+        } while (str[i] != '\0');
     }
+    return res;
 }

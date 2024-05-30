@@ -3,7 +3,7 @@
 /*
 PARSE DATA PER ROWS
 */
-int8_t get_row(FILE *inp, sensor_data *data)
+int8_t add_row(FILE *inp, sensor_data *data)
 {
     char c;
     int16_t num = 0;
@@ -142,7 +142,8 @@ int8_t get_stats(params my_param)
     else
     {
         int8_t arg_cnt = 0;
-        uint32_t line_cnt = 0;
+        uint32_t row_cnt = 0;
+        uint32_t cur_pos = 0;
         uint32_t f_size = 0;
         f_size = rows_count(inpf);
         rewind(inpf);
@@ -151,22 +152,28 @@ int8_t get_stats(params my_param)
 
         do
         {
-            arg_cnt = get_row(inpf, &rows[line_cnt]);
-            ++line_cnt;
+            arg_cnt = add_row(inpf, &rows[cur_pos]);
+            ++row_cnt;
+            ++cur_pos;
             if (arg_cnt == 6 || arg_cnt == -1)
             {
             }
             else
             {
-                printf("ERROR %d at line N%d\n", arg_cnt, line_cnt);
+                printf("ERROR %d at line N%d\n", arg_cnt, row_cnt);
+                --cur_pos;
             }
         } while (arg_cnt >= 0);
 
-        stat_print(rows, line_cnt - 1, my_param.month);
+        stat_print(rows, cur_pos - 1, my_param.month);
         free(rows);
     }
     fclose(inpf);
     return 0;
+}
+int8_t del_row(sensor_data *data, int32_t row_id)
+{
+
 }
 
 int32_t rows_count(FILE *fl)
@@ -199,8 +206,6 @@ int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
         uint32_t y_cnt = 0;
         for (int i = 0; i < r_cnt; ++i)
         {
-            if (rows[i].year)
-            {
                 tmp = rows[i].temp;
                 if (cur_month != (rows[i].month - 1))
                 {
@@ -246,8 +251,7 @@ int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
                     {
                         m_stat[cur_month].min = tmp;
                     }
-                }
-            }
+                }         
         }
         printf("\r\nStats for %d year:\n", rows[0].year);
         printf("  MIN temp = %+3d", yr_t_min);

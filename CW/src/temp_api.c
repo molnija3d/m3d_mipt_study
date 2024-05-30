@@ -247,10 +247,15 @@ int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
             print_month(m_stat, m_summ, m_cnt, cur_month);
         }
 
-        printf("\r\nSTATS for %d YEAR:\n", rows[0].year);
-        printf("  MIN temp = %+3d", yr_t_min);
-        printf("  MAX temp = %+3d", yr_t_max);
-        printf("  AVG temp = %+3.2f\n", (float)y_summ / y_cnt);
+        printf("\r-------------------------------------------------------\n");
+        printf("\r\n=======================================================\n");
+        printf("STATS for --> %d <-- YEAR:\n", rows[0].year);
+        printf("=======================================================\n");
+        printf("| MIN temp = %+3d |", yr_t_min);
+        printf(" MAX temp = %+3d |", yr_t_max);
+        printf(" AVG temp = %+3.2f |\n", (float)y_summ / y_cnt);
+        printf("-------------------------------------------------------\n");
+
         free(m_stat);
     }
     return 0;
@@ -259,10 +264,12 @@ int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
 int8_t print_month(stat *m_stat, int32_t m_summ, int32_t m_cnt, int32_t cur_month)
 {
     m_stat[cur_month].average = (float)m_summ / m_cnt;
-    printf("\r\nSTATS FOR %10s MONTH:\n", num_to_str(cur_month));
-    printf("  MIN temp = %+3d", m_stat[cur_month].min);
-    printf("  MAX temp = %+3d", m_stat[cur_month].max);
-    printf("  AVG temp = %+3.2f\n", m_stat[cur_month].average);
+    printf("-------------------------------------------------------\n");
+    printf("\r\nSTATS FOR --> %s <-- MONTH:\n", num_to_str(cur_month));
+    printf("-------------------------------------------------------\n");
+    printf("| MIN temp = %+3d |", m_stat[cur_month].min);
+    printf(" MAX temp = %+3d |", m_stat[cur_month].max);
+    printf(" AVG temp = %+3.2f |\n", m_stat[cur_month].average);
     return 0;
 }
 const char *num_to_str(uint8_t month)

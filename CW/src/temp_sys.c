@@ -10,7 +10,7 @@ uint8_t menu(params my_args)
         break;
 
     case MONTH:
-        printf("MONTH SPECIFIED %s\n", num_to_str(my_args.month - 1));
+        printf("MONTH SPECIFIED >>> %s <<<\n", num_to_str(my_args.month - 1));
         printf("FILE: %s\n", my_args.file);
         get_stats(my_args);
         break;

@@ -21,6 +21,7 @@ typedef struct
     float average;
     int8_t min;
     int8_t max;
+    _Bool stored;
 } stat;
 
 int8_t add_row(FILE *inp, sensor_data *data);
@@ -30,6 +31,6 @@ int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month);
 int32_t rows_count(FILE *fl);
 const char *num_to_str(uint8_t month);
 int32_t compare_rows(const void *av, const void *bv);
-int8_t print_month(stat *m_stat, int32_t cur_month);
+int8_t print_month(stat *m_stat, int8_t cur_month);
 
 #endif

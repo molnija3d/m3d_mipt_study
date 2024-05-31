@@ -1,8 +1,6 @@
-all: prg
+all: prg	
 	del *.o
-	.\bin\tmp_stat.exe -f .\bin\temperature_big.csv
-
-
+	.\bin\tmp_stat.exe -f .\bin\temperature_small.csv -m 2
 prg: tmp_stat.o temp_sys.o temp_api.o
 	gcc -o .\bin\tmp_stat tmp_stat.o temp_sys.o temp_api.o --debug
 

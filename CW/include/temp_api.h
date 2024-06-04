@@ -5,6 +5,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "temp_sys.h"
+enum
+{
+    H_MONTH,
+    H_YEAR
+};
 
 typedef struct
 {
@@ -32,5 +37,6 @@ int32_t rows_count(FILE *fl);
 const char *num_to_str(uint8_t month);
 int32_t compare_rows(const void *av, const void *bv);
 int8_t print_month(stat *m_stat, int8_t cur_month);
+void print_header(uint8_t hdr);
 
 #endif

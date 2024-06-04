@@ -197,7 +197,7 @@ int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
     int32_t m_summ = 0, y_summ = 0;
     stat *m_stat;
     m_stat = (stat *)malloc(12 * sizeof(stat));
-    for(int i = 0; i < 12; ++i)
+    for (int i = 0; i < 12; ++i)
     {
         m_stat[i].stored = 0;
     }
@@ -255,28 +255,26 @@ int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
                 yr_t_min = tmp;
             }
         }
+        print_header(H_MONTH);
         for (int i = 0; i < 12; ++i)
         {
             print_month(m_stat, i);
         }
         if (rows[0].year != 0)
         {
-            printf("\r-------------------------------------------------------\n");
-            printf("\r\n=======================================================\n");
-            printf("STATS for --> %d <-- YEAR:\n", rows[0].year);
-            printf("=======================================================\n");
-            printf("| MIN temp = %+3d |", yr_t_min);
-            printf(" MAX temp = %+3d |", yr_t_max);
-            printf(" AVG temp = %+3.2f |\n", (float)y_summ / y_cnt);
-            printf("-------------------------------------------------------\n");
+            print_header(H_YEAR);
+            printf("| %d | %+3d |", rows[0].year, yr_t_min);
+            printf(" %+3d |", yr_t_max);
+            printf(" %+3.1f |\n", (float)y_summ / y_cnt);
+            printf("---------------------------\n");
         }
         else
         {
-                        printf("\r-------------------------------------------------------\n");
-            printf("\r\n=======================================================\n");
+            printf("\r-----------------------------------------\n");
+            printf("\r\n=========================================\n");
             printf("STATS for --> %d <-- YEAR:\n", rows[0].year);
-            printf("=======================================================\n");
-            printf("|    !!!!--->>>  NO DATA FOR THIS YEAR  <<<---!!!!!    |");
+            printf("=========================================\n");
+            printf("|!!--->>>  NO DATA FOR THIS YEAR  <<<---!!|");
         }
     }
     else
@@ -310,10 +308,27 @@ int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
             m_stat[month - 1].average = (float)m_summ / m_cnt;
             m_stat[month - 1].stored = 1;
         }
+        print_header(H_MONTH);
         print_month(m_stat, month - 1);
     }
     free(m_stat);
     return 0;
+}
+void print_header(uint8_t hdr)
+{
+    switch(hdr)
+    {
+    case H_MONTH:
+        printf("\r-------------------------------------\n");
+        printf("|    MONTH    |  MAX |  MIN |  AVG  |\n");
+        printf("-------------------------------------\n");
+        break;
+    case H_YEAR:
+        printf("\r\n===========================\n");
+        printf("| YEAR | MAX | MIN |  AVG |\n");
+        printf("---------------------------\n");
+        break;
+    }
 }
 
 int8_t print_month(stat *m_stat, int8_t cur_month)
@@ -321,20 +336,20 @@ int8_t print_month(stat *m_stat, int8_t cur_month)
     uint8_t err = 0;
     if (m_stat[cur_month].stored != 0)
     {
-        printf("-------------------------------------------------------\n");
-        printf("\r\nSTATS FOR --> %s <-- MONTH:\n", num_to_str(cur_month));
-        printf("-------------------------------------------------------\n");
-        printf("| MIN temp = %+3d |", m_stat[cur_month].min);
-        printf(" MAX temp = %+3d |", m_stat[cur_month].max);
-        printf(" AVG temp = %+3.2f |\n", m_stat[cur_month].average);
+
+        printf("|  %9s  |", num_to_str(cur_month));
+        printf("  %+3d |", m_stat[cur_month].max);
+        printf("  %+3d |", m_stat[cur_month].min);
+        printf(" %+5.1f |\n", m_stat[cur_month].average);
+        printf("\r-------------------------------------\n");
     }
     else
     {
         err = cur_month;
-        printf("-------------------------------------------------------\n");
+        printf("-------------------------------------------\n");
         printf("\r\nSTATS FOR --> %s <-- MONTH:\n", num_to_str(cur_month));
-        printf("-------------------------------------------------------\n");
-        printf("|      !!!--->>> NO DATA FOR THIS MONTH <<<---!!!      |\n");
+        printf("-------------------------------------------\n");
+        printf("|!!!--->>> NO DATA FOR THIS MONTH <<<---!!!|\n");
     }
     return err;
 }

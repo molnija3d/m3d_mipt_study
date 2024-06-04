@@ -265,8 +265,8 @@ int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
             print_header(H_YEAR);
             printf("| %d | %+3d |", rows[0].year, yr_t_min);
             printf(" %+3d |", yr_t_max);
-            printf(" %+3.1f |\n", (float)y_summ / y_cnt);
-            printf("---------------------------\n");
+            printf(" %+5.1f |\n", (float)y_summ / y_cnt);
+            printf("----------------------------\n");
         }
         else
         {
@@ -324,9 +324,9 @@ void print_header(uint8_t hdr)
         printf("-------------------------------------\n");
         break;
     case H_YEAR:
-        printf("\r\n===========================\n");
-        printf("| YEAR | MAX | MIN |  AVG |\n");
-        printf("---------------------------\n");
+        printf("\r\n============================\n");
+        printf("| YEAR | MAX | MIN |  AVG  |\n");
+        printf("----------------------------\n");
         break;
     }
 }

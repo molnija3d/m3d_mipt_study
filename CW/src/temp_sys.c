@@ -19,9 +19,9 @@ uint8_t menu(params my_args)
         printf("WRONG ARGUMENTS!\n");
     case HELP:
     default:
-        printf("\'-h\' - to show help\n");
-        printf("\'-f filename.csv\' - input file name\n");
-        printf("\'-m MM\' - to show stat only for specific month\n");
+        printf("[ -h ] show help\n");
+        printf("[ -f filename.csv ] input file name\n");
+        printf("[ -m MM ] show stat for specific month only\n");
     }
     return 0;
 }

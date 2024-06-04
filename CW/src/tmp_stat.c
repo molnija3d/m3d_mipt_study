@@ -4,6 +4,6 @@
 int main(int argc, char *argv[])
 {
     uint8_t err = 0;
-    err = menu(parse_args(argc, argv));   
+    err = menu(parse_args(argc, argv));
     return err;
-} 
+}

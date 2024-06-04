@@ -316,7 +316,7 @@ int8_t stat_print(sensor_data *rows, uint32_t r_cnt, uint8_t month)
 }
 void print_header(uint8_t hdr)
 {
-    switch(hdr)
+    switch (hdr)
     {
     case H_MONTH:
         printf("\r-------------------------------------\n");

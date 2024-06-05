@@ -3,11 +3,13 @@
 
 #include <inttypes.h>
 
-typedef struct
+typedef struct list
 {
     uint8_t item;
     char *file;
     uint8_t month;
+    struct list *nxt;
+    struct list *prv;
 } params;
 
 enum

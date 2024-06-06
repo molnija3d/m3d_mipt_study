@@ -136,6 +136,7 @@ int8_t parse_row(FILE *inp, sensor_data **data)
     } while (c != '\n' && err >= 0);
     return err ? err : argcnt;
 }
+
 int8_t add_data(FILE *inp, sensor_data **curr)
 {
     int8_t err = 0;
@@ -160,7 +161,7 @@ int8_t add_data(FILE *inp, sensor_data **curr)
     }
 
     err = parse_row(inp, curr);
-    
+
     if (err == 6 || err == -1)
     {
         data_ok = 1;
@@ -169,7 +170,7 @@ int8_t add_data(FILE *inp, sensor_data **curr)
     {
         data_ok = 0;
     }
-    
+
     return err;
 }
 
@@ -185,21 +186,17 @@ int8_t get_stats(params my_param)
     {
         int8_t arg_cnt = 0;
         uint32_t row_cnt = 0;
-        uint32_t cur_pos = 0;
         uint32_t f_size = 0;
         sensor_data *rows = NULL;
         do
         {
             arg_cnt = add_data(inpf, &rows);
             ++row_cnt;
-            ++cur_pos;
             if (arg_cnt != 6 && arg_cnt != -1)
             {
                 printf("ERROR %d at line N%d\n", arg_cnt, row_cnt);
-                --cur_pos;
             }
         } while (arg_cnt >= 0);
-        //   qsort(rows, (size_t)(cur_pos - 1), sizeof(sensor_data), compare_rows);
         rows = rows->prev;
         stat_print_list(&rows, my_param.month);
         free_rows(&rows);
@@ -208,24 +205,33 @@ int8_t get_stats(params my_param)
     fclose(inpf);
     return 0;
 }
-int8_t del_row(sensor_data *data, int32_t row_id)
+int8_t del_row(sensor_data **data)
 {
-    return 0;
-}
-
-int32_t rows_count(FILE *fl)
-{
-    char c = 0;
-    int32_t count = 0;
-
-    while ((c = fgetc(fl)) != EOF)
+    int8_t err = 0;
+    sensor_data *tmp = *data;
+    if ((*data)->next && (*data)->prev)
     {
-        if (c == '\n')
-        {
-            ++count;
-        }
+        (*data)->prev->next = (*data)->next;
+        (*data)->next->prev = (*data)->prev;
+        (*data) = (*data)->prev;
     }
-    return count;
+    else if ((*data)->prev)
+    {
+        (*data)->prev->next = NULL;
+        (*data) = (*data)->prev;
+    }
+    else if ((*data)->next)
+    {
+        (*data)->next->prev = NULL;
+        (*data) = (*data)->next;
+    }
+    else
+    {
+        err = 1;
+    }
+    free(tmp);
+
+    return err;
 }
 
 int8_t stat_print_list(sensor_data **rows, uint8_t month)
@@ -394,37 +400,3 @@ const char *num_to_str(uint8_t month)
     static const char months[12][10] = {"JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"};
     return months[month];
 }
-
-int32_t compare_rows(const void *av, const void *bv)
-{
-    sensor_data *a = (sensor_data *)av;
-    sensor_data *b = (sensor_data *)bv;
-    int32_t res = 0;
-    if (a->year != b->year)
-    {
-        res = a->year - b->year;
-    }
-    else if (a->month != b->month)
-    {
-        res = a->month - b->month;
-    }
-    else if (a->day != b->day)
-    {
-        res = a->day - b->day;
-    }
-    else if (a->hr != b->hr)
-    {
-        res = a->hr - b->hr;
-    }
-    else if (a->min != b->min)
-    {
-        res = a->min - b->min;
-    }
-    else
-    {
-        res = 0;
-    }
-    return res;
-}
-
-

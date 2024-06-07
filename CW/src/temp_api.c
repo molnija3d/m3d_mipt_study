@@ -13,6 +13,7 @@ int8_t free_rows(sensor_data **list)
     }
     return 0;
 }
+
 int8_t parse_row(FILE *inp, sensor_data **data)
 {
     int8_t err = 0;
@@ -22,7 +23,7 @@ int8_t parse_row(FILE *inp, sensor_data **data)
     char c = 0;
     do
     {
-        c = fgetc(inp);
+        c = (char) fgetc(inp);
         if (c >= '0' && c <= '9')
         {
             num *= 10;
@@ -205,6 +206,7 @@ int8_t get_stats(params my_param)
     fclose(inpf);
     return 0;
 }
+
 int8_t del_row(sensor_data **data)
 {
     int8_t err = 0;

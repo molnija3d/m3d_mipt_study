@@ -22,5 +22,9 @@ params parse_args(int argc, char *argv[]);
 uint8_t menu(params);
 char my_strcmp(const char *a, const char *b);
 int8_t my_atoi(const char *str);
+void menu_full(params my_args);
+void menu_month(params my_args);
+void menu_wrong(params my_args);
+void menu_help(void);
 
 #endif

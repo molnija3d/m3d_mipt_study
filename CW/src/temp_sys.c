@@ -5,25 +5,22 @@ uint8_t menu(params my_args)
     switch (my_args.item)
     {
     case FULL:
-        printf("FILE: %s\n", my_args.file);
-        get_stats(my_args);
+        menu_full(my_args);
         break;
 
     case MONTH:
-        printf("FILE: %s\n", my_args.file);
-        get_stats(my_args);
+        menu_month(my_args);
         break;
 
     case WRONG:
-        printf("WRONG ARGUMENTS!\n");
+        menu_wrong(my_args);
     case HELP:
     default:
-        printf("[ -h ] show help\n");
-        printf("[ -f filename.csv ] input file name\n");
-        printf("[ -m MM ] show stat for specific month only\n");
+        menu_help();
     }
     return 0;
 }
+///parce arguments functions
 params parse_args(int argc, char *argv[])
 {
     params p_args;
@@ -83,7 +80,7 @@ params parse_args(int argc, char *argv[])
     }
     return p_args;
 }
-
+/// string functions
 char my_strcmp(const char *a, const char *b)
 {
     while (*a && *b && *a == *b)
@@ -108,3 +105,25 @@ int8_t my_atoi(const char *str)
     }
     return res;
 }
+/// Menu functions 
+void menu_full(params my_args)
+{
+    printf("FILE: %s\n", my_args.file);
+    get_stats(my_args);
+}
+void menu_month(params my_args)
+{
+    printf("FILE: %s\n", my_args.file);
+    get_stats(my_args);
+}
+void menu_wrong(params my_args)
+{
+    printf("WRONG ARGUMENTS!\n");
+}
+void menu_help(void)
+{
+    printf("[ -h ] show help\n");
+    printf("[ -f filename.csv ] input file name\n");
+    printf("[ -m MM ] show stat for specific month only\n");
+}
+

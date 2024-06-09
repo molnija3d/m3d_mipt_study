@@ -3,16 +3,6 @@
 /*
 PARSE DATA PER ROWS
 */
-int8_t free_rows(sensor_data **list)
-{
-    while (*list)
-    {
-        sensor_data *tmp = *list;
-        *list = (*list)->prev;
-        free(tmp);
-    }
-    return 0;
-}
 
 int8_t parse_row(FILE *inp, sensor_data **data)
 {
@@ -23,7 +13,7 @@ int8_t parse_row(FILE *inp, sensor_data **data)
     char c = 0;
     do
     {
-        c = (char) fgetc(inp);
+        c = (char)fgetc(inp);
         if (c >= '0' && c <= '9')
         {
             num *= 10;
@@ -42,78 +32,8 @@ int8_t parse_row(FILE *inp, sensor_data **data)
         }
         else if (c == ';' || c == '\n' || c == EOF)
         {
-            switch (argcnt++)
-            {
-            case 0:
-                if (num >= 1900 && num <= 3000)
-                {
-                    (*data)->year = num;
-                }
-                else
-                {
-                    (*data)->year = 0;
-                    err = 1;
-                }
-                break;
-            case 1:
-                if (num > 0 && num < 13)
-                {
-                    (*data)->month = num;
-                }
-                else
-                {
-                    (*data)->year = 0;
-                    err = 2;
-                }
-                break;
-            case 2:
-                if (num > 0 && num < 32)
-                {
-                    (*data)->day = num;
-                }
-                else
-                {
-                    (*data)->year = 0;
-                    err = 3;
-                }
-                break;
-            case 3:
-                if (num >= 0 && num < 25)
-                {
-                    (*data)->hr = num;
-                }
-                else
-                {
-                    (*data)->year = 0;
-                    err = 4;
-                }
-                break;
-            case 4:
-                if (num >= 00 && num < 61)
-                {
-                    (*data)->min = num;
-                }
-                else
-                {
-                    (*data)->year = 0;
-                    err = 5;
-                }
-                break;
-            case 5:
-                if (num > -100 && num < 100)
-                {
-                    (*data)->temp = sign * num;
-                }
-                else
-                {
-                    (*data)->year = 0;
-                    err = 7;
-                }
-                break;
-            default:
-                err = 8;
-            }
-
+            num *= sign;
+            parse_row_args(&err, argcnt++, num, data);
             if (c == EOF)
             {
                 if (argcnt == 6 || argcnt == 1)
@@ -129,6 +49,7 @@ int8_t parse_row(FILE *inp, sensor_data **data)
         }
         else if (c == ' ')
         {
+            ;
         }
         else
         {
@@ -138,41 +59,79 @@ int8_t parse_row(FILE *inp, sensor_data **data)
     return err ? err : argcnt;
 }
 
-int8_t add_data(FILE *inp, sensor_data **curr)
+void parse_row_args(int8_t *err, int8_t argcnt, int16_t num, sensor_data **data)
 {
-    int8_t err = 0;
-    static _Bool data_ok = 1;
-    if (data_ok)
+    switch (argcnt)
     {
-        sensor_data *data;
-        data = malloc(sizeof(sensor_data));
-        data->prev = NULL;
-        data->next = NULL;
-        if (*curr)
+    case 0:
+        if (num >= 1900 && num <= 3000)
         {
-            (*curr)->next = data;
-            data->prev = *curr;
-            *curr = data;
+            (*data)->year = num;
         }
         else
         {
-            data->prev = *curr;
-            *curr = data;
+            (*data)->year = 0;
+            *err = 1;
         }
+        break;
+    case 1:
+        if (num > 0 && num < 13)
+        {
+            (*data)->month = num;
+        }
+        else
+        {
+            (*data)->year = 0;
+            *err = 2;
+        }
+        break;
+    case 2:
+        if (num > 0 && num < 32)
+        {
+            (*data)->day = num;
+        }
+        else
+        {
+            (*data)->year = 0;
+            *err = 3;
+        }
+        break;
+    case 3:
+        if (num >= 0 && num < 25)
+        {
+            (*data)->hr = num;
+        }
+        else
+        {
+            (*data)->year = 0;
+            *err = 4;
+        }
+        break;
+    case 4:
+        if (num >= 00 && num < 61)
+        {
+            (*data)->min = num;
+        }
+        else
+        {
+            (*data)->year = 0;
+            *err = 5;
+        }
+        break;
+    case 5:
+        if (num > -100 && num < 100)
+        {
+            (*data)->temp = num;
+        }
+        else
+        {
+            (*data)->year = 0;
+            *err = 7;
+        }
+        break;
+    default:
+        *err = 8;
     }
-
-    err = parse_row(inp, curr);
-
-    if (err == 6 || err == -1)
-    {
-        data_ok = 1;
-    }
-    else
-    {
-        data_ok = 0;
-    }
-
-    return err;
 }
 
 int8_t get_stats(params my_param)
@@ -205,35 +164,6 @@ int8_t get_stats(params my_param)
 
     fclose(inpf);
     return 0;
-}
-
-int8_t del_row(sensor_data **data)
-{
-    int8_t err = 0;
-    sensor_data *tmp = *data;
-    if ((*data)->next && (*data)->prev)
-    {
-        (*data)->prev->next = (*data)->next;
-        (*data)->next->prev = (*data)->prev;
-        (*data) = (*data)->prev;
-    }
-    else if ((*data)->prev)
-    {
-        (*data)->prev->next = NULL;
-        (*data) = (*data)->prev;
-    }
-    else if ((*data)->next)
-    {
-        (*data)->next->prev = NULL;
-        (*data) = (*data)->next;
-    }
-    else
-    {
-        err = 1;
-    }
-    free(tmp);
-
-    return err;
 }
 
 int8_t stat_print_list(sensor_data **rows, uint8_t month)
@@ -306,18 +236,11 @@ int8_t stat_print_list(sensor_data **rows, uint8_t month)
         if ((*rows)->year != 0)
         {
             print_header(H_YEAR);
-            printf("| %d | %+3d |", (*rows)->year, yr_t_min);
-            printf(" %+3d |", yr_t_max);
-            printf(" %+5.1f |\n", (float)y_summ / y_cnt);
-            printf("----------------------------\n");
+            print_year_data(rows, yr_t_min, yr_t_max, (float)y_summ / y_cnt);
         }
         else
         {
-            printf("\r-----------------------------------------\n");
-            printf("\r\n=========================================\n");
-            printf("STATS for --> %d <-- YEAR:\n", (*rows)->year);
-            printf("=========================================\n");
-            printf("|!!--->>>  NO DATA FOR THIS YEAR  <<<---!!|");
+            print_year_err(rows);
         }
     }
     else
@@ -358,6 +281,24 @@ int8_t stat_print_list(sensor_data **rows, uint8_t month)
     free(m_stat);
     return 0;
 }
+
+/// printing functions
+void print_year_data(sensor_data **rows, int8_t yr_t_max, int8_t yr_t_min, float avg)
+{
+    printf("| %d | %+3d |", (*rows)->year, yr_t_min);
+    printf(" %+3d |", yr_t_max);
+    printf(" %+5.1f |\n", avg);
+    printf("----------------------------\n");
+}
+void print_year_err(sensor_data **rows)
+{
+    printf("\r-----------------------------------------\n");
+    printf("\r\n=========================================\n");
+    printf("STATS for --> %d <-- YEAR:\n", (*rows)->year);
+    printf("=========================================\n");
+    printf("|!!--->>>  NO DATA FOR THIS YEAR  <<<---!!|");
+}
+
 void print_header(uint8_t hdr)
 {
     switch (hdr)
@@ -397,8 +338,87 @@ int8_t print_month(stat *m_stat, int8_t cur_month)
     }
     return err;
 }
+
 const char *num_to_str(uint8_t month)
 {
     static const char months[12][10] = {"JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"};
     return months[month];
+}
+
+/// add to list, delete item and free all memory functions
+int8_t add_data(FILE *inp, sensor_data **curr)
+{
+    int8_t err = 0;
+    static _Bool data_ok = 1;
+    if (data_ok)
+    {
+        sensor_data *data;
+        data = malloc(sizeof(sensor_data));
+        data->prev = NULL;
+        data->next = NULL;
+        if (*curr)
+        {
+            (*curr)->next = data;
+            data->prev = *curr;
+            *curr = data;
+        }
+        else
+        {
+            data->prev = *curr;
+            *curr = data;
+        }
+    }
+
+    err = parse_row(inp, curr);
+
+    if (err == 6 || err == -1)
+    {
+        data_ok = 1;
+    }
+    else
+    {
+        data_ok = 0;
+    }
+
+    return err;
+}
+
+int8_t del_row(sensor_data **data)
+{
+    int8_t err = 0;
+    sensor_data *tmp = *data;
+    if ((*data)->next && (*data)->prev)
+    {
+        (*data)->prev->next = (*data)->next;
+        (*data)->next->prev = (*data)->prev;
+        (*data) = (*data)->prev;
+    }
+    else if ((*data)->prev)
+    {
+        (*data)->prev->next = NULL;
+        (*data) = (*data)->prev;
+    }
+    else if ((*data)->next)
+    {
+        (*data)->next->prev = NULL;
+        (*data) = (*data)->next;
+    }
+    else
+    {
+        err = 1;
+    }
+    free(tmp);
+
+    return err;
+}
+
+int8_t free_rows(sensor_data **list)
+{
+    while (*list)
+    {
+        sensor_data *tmp = *list;
+        *list = (*list)->prev;
+        free(tmp);
+    }
+    return 0;
 }

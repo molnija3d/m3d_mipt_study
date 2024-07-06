@@ -22,7 +22,7 @@ void printArr(int* arr,int num);
 
 int main(void)
 {
-    int num, arr[8];
+    int num, arr[8] = {0};
     scanf("%d",&num);    
     findMulti(num,arr);
     printArr(arr,8);

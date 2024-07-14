@@ -12,6 +12,7 @@ int main(void)
  int32_t a, b;
   scanf("%d",&a);
   b = invert5(a);
+  printf("%x %x\n", 0x1F, ((1 << 5) - 1));
   printf("%x\n%x\n", a, b);
  return 0;
 }

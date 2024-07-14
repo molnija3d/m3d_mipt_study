@@ -20,7 +20,7 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-               "${fileDirnameBasename}\\${fileBasenameNoExtension}.c", 
+               "${workspaceFolder}\\${fileBasenameNoExtension}.c", 
                "-I",
                "${workspaceFolder}",
                "-o",

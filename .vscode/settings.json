@@ -1,5 +1,16 @@
 {
     "files.associations": {
-        "random": "c"
-    }
+        "limits": "c",
+        "compare": "c",
+        "temp_api.h": "c",
+        "temp_sys.h": "c"
+    },
+    "makefile.makePath": "mingw32-make.exe",
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "${workspaceFolder}",
+            "binaryPath": "${workspaceFolder}\\tmp_stat.exe",
+            "binaryArgs": []
+        }
+    ]
 }

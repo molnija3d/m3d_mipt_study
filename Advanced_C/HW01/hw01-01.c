@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-
-
 int main(void)
 {
         uint32_t n = 0, cnt = 0;

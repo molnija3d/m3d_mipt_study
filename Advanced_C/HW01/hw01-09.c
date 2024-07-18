@@ -23,7 +23,7 @@ int8_t fnd_cnt(int32_t p, int32_t W[CNT])
     for(int8_t m = -1; m < 2 && res == 0; m++)
      for(int8_t j = -1; j < 2 && res == 0; j++)
       for(int8_t k = -1; k < 2 && res == 0; k++)
-       for(int8_t l = -1; l < 2 && res == 0; l++)
+       for(int8_t l = 0; l < 2 && res == 0; l++)
        {
           w = 0;
           s[0] = m;
@@ -40,6 +40,7 @@ int8_t fnd_cnt(int32_t p, int32_t W[CNT])
              res = w;
           }
         }
+
           if ( !res ) 
           {
             res = -1;       
@@ -55,7 +56,5 @@ int8_t fnd_cnt(int32_t p, int32_t W[CNT])
                  }
              }
           }
-        
-        
         return res;
 }

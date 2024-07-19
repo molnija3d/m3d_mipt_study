@@ -12,6 +12,7 @@ Plug 'easymotion/vim-easymotion'
 
 call plug#end()
 
+let g:termdebug_wide=1
 let g:slime_target = "tmux"
 colorscheme gruvbox
 set background=dark
@@ -26,6 +27,7 @@ packadd termdebug
 nnoremap <C-n> :NERDTreeToggle<CR>
 map <Leader> <Plug>(easymotion-prefix)
 
+map <F3> :%!astyle<CR>
 map <silent> <C-h> :call WinMove('h')<CR>
 map <silent> <C-j> :call WinMove('j')<CR>
 map <silent> <C-k> :call WinMove('k')<CR>

@@ -6,15 +6,12 @@
             "command": "C:\\msys64\\ucrt64\\bin\\gcc.exe",
             "args": [
                 "-fdiagnostics-color=always",
+                "-Wall",
                 "-g",
                 "${file}",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",
-                "-L",
-                "c:\\pdcurses\\wincon",
-                "-l:pdcurses.a",
-                "-I",
-                "c:\\pdcurses"
+               "-l:libncursesw.dll.a",
             ],
             "options": {
                 "cwd": "${fileDirname}"

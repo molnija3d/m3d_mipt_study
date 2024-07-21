@@ -3,8 +3,7 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**",
-                "c:\\pdcurses\\"
+                "${workspaceFolder}/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -17,7 +16,7 @@
             "intelliSenseMode": "windows-gcc-x64"
         },
         {
-            "name": "pdcurses_vscode",
+            "name": "ncurses_vscode",
             "includePath": [
                 "${workspaceFolder}/**"
             ],

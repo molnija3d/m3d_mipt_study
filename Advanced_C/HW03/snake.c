@@ -23,7 +23,7 @@ enum {
     MAX_FOOD_SIZE = 20,
     FOOD_EXPIRE_SECONDS = 10,
     SEED_NUMBER = 3,
-    VIC_COUNT = 20 
+    VIC_COUNT = 20
 };
 
 

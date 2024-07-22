@@ -12,7 +12,9 @@ enum {
     UP,
     RIGHT,
     DOWN,
-    STOP_GAME = KEY_F( 10 )
+    STOP_GAME = KEY_F( 10 ),
+    GAME_OVER = 99,
+    VICTORY = 100
 };
 
 enum {
@@ -20,7 +22,8 @@ enum {
     START_TAIL_SIZE = 3,
     MAX_FOOD_SIZE = 20,
     FOOD_EXPIRE_SECONDS = 10,
-    SEED_NUMBER = 3
+    SEED_NUMBER = 3,
+    VIC_COUNT = 20 
 };
 
 
@@ -115,13 +118,13 @@ void refreshFood(struct food f[], int nfood) {
         }
     }
 }
-void initTail(struct tail_t t[], size_t size) {
+void initTail(tail_t t[], size_t size) {
     struct tail_t init_t = {0, 0};
-    for(size_t i   = 0; i < size; i++) {
+    for(size_t i = 0; i < size; i++) {
         t[i] = init_t;
     }
 }
-void initHead(struct snake_t *head, int x, int y) {
+void initHead(snake_t *head, int x, int y) {
     head -> x = x;
     head -> y = y;
     head -> direction = RIGHT;
@@ -139,7 +142,7 @@ void initSnake(snake_t *head, size_t size, int x, int y) {
 /*
  Движение головы с учетом текущего направления движения
  */
-void go(struct snake_t *head) {
+void go(snake_t *head) {
     char ch = '@';
     int max_x = 0, max_y = 0;
     getmaxyx(stdscr, max_y, max_x); // macro - размер терминала
@@ -152,12 +155,21 @@ void go(struct snake_t *head) {
         mvprintw(head -> y, --(head -> x), "%c", ch);
         break;
     case RIGHT:
+        if(head -> x >= max_x) {
+            head -> x = 0;
+        }
         mvprintw(head -> y, ++(head -> x), "%c", ch);
         break;
     case UP:
+        if(head -> y <= 1) {
+            head -> y = max_y;
+        }
         mvprintw(--(head -> y), head -> x, "%c", ch);
         break;
     case DOWN:
+        if(head -> y >= max_y) {
+            head -> y = 0;
+        }
         mvprintw(++(head -> y), head -> x, "%c", ch);
         break;
     default:
@@ -166,23 +178,33 @@ void go(struct snake_t *head) {
     refresh();
 }
 
-void changeDirection(struct snake_t* snake, const int32_t key) {
+void changeDirection(snake_t *snake, const int32_t key) {
     for(uint8_t i = 0; i < 3; i++) {
-        if (key ==  default_controls[i].down)
-            snake -> direction = DOWN;
-        else if (key ==  default_controls[i].up)
-            snake -> direction = UP;
-        else if (key ==  default_controls[i].right)
-            snake -> direction = RIGHT;
-        else if (key ==  default_controls[i].left)
-            snake -> direction = LEFT;
+        if (key ==  default_controls[i].down) {
+            if(snake -> direction != UP)
+                snake -> direction = DOWN;
+        }
+        else if (key ==  default_controls[i].up) {
+            if(snake -> direction != DOWN)
+                snake -> direction = UP;
+        }
+        else if (key ==  default_controls[i].right) {
+            if(snake -> direction != LEFT)
+                snake -> direction = RIGHT;
+        }
+
+        else if (key ==  default_controls[i].left) {
+            if(snake -> direction != RIGHT)
+                snake -> direction = LEFT;
+        }
+
     }
 }
 
 /*
  Движение хвоста с учетом движения головы
  */
-void goTail(struct snake_t *head) {
+void goTail(snake_t *head) {
     char ch = '*';
     mvprintw(head -> tail[head -> tsize-1].y, head -> tail[head -> tsize-1].x, " ");
     for(size_t i = head -> tsize-1; i>0; i--) {
@@ -194,6 +216,48 @@ void goTail(struct snake_t *head) {
     head -> tail[0].y = head -> y;
 }
 
+void addTail(snake_t *head) {
+    head -> tsize++;
+}
+
+void haveEat(snake_t *head, struct food f[]) {
+    for(size_t i = 0; i < MAX_FOOD_SIZE; i++) {
+        if(f[i].x == head -> x && f[i].y == head -> y) {
+            addTail(head);
+        }
+    }
+}
+
+int checkCoords(snake_t *head)
+{
+    int res = 0;
+    for(size_t i = 1; i < head -> tsize; i++) {
+        if(head -> x == head -> tail[i].x && head -> y == head -> tail[i].y) {
+            res = GAME_OVER;
+        }
+    }
+    if(head -> tsize >= VIC_COUNT && res != GAME_OVER) {
+        res = VICTORY;
+    }
+    return res;
+}
+
+void end_game(int res) {
+    int max_x = 0, max_y = 0;
+    getmaxyx(stdscr, max_y, max_x);
+    switch(res) {
+    case GAME_OVER:
+        mvprintw(max_y / 2, max_x / 2, "GAME OVER");
+        while(getch() != STOP_GAME);
+        break;
+    case VICTORY:
+        mvprintw(max_y / 2, max_x / 2, "VICTORY");
+        while(getch() != STOP_GAME);
+        break;
+    }
+
+}
+
 int main()
 {
     snake_t *snake = ( snake_t* ) malloc( sizeof( snake_t ) );
@@ -203,19 +267,24 @@ int main()
     raw();                // Откдючаем line buffering
     noecho();            // Отключаем echo() режим при вызове getch
     curs_set(FALSE);    //Отключаем курсор
-    mvprintw(10, 0, "Use arrows or WSAD for control. Press 'F10' for EXIT");
+    mvprintw(0, 5, "Use arrows or WSAD for control. Eat %d '$' for VICTORY! Press 'F10' for EXIT", VIC_COUNT);
     timeout(0);    //Отключаем таймаут после нажатия клавиши в цикле
     initFood(food, MAX_FOOD_SIZE);
     putFood(food, SEED_NUMBER);// Кладем зерна
     int key_pressed = 0;
-    while( key_pressed !=  STOP_GAME ) {
+    int res = 0;
+    while( key_pressed !=  STOP_GAME && res != GAME_OVER && res != VICTORY) {
         key_pressed = getch(); // Считываем клавишу
         go(snake);
         goTail(snake);
-        timeout(100); // Задержка при отрисовке
+        haveEat(snake, food);
+        res = checkCoords(snake);
+        timeout(100);
         refreshFood(food, SEED_NUMBER);// Обновляем еду
         changeDirection(snake, key_pressed);
     }
+
+    end_game(res);
     free(snake -> tail);
     free(snake);
     endwin(); // Завершаем режим curses mod

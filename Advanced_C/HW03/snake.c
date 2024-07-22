@@ -75,8 +75,8 @@ struct food {
 } food[ MAX_FOOD_SIZE ];
 
 void initFood(struct food f[], size_t size) {
-    struct food init = {0,0,0,0,0};
-    for(size_t i = 0; i<size; i++) {
+    struct food init = {0, 0, 0, 0, 0};
+    for(size_t i = 0; i < size; i++) {
         f[i] = init;
     }
 }

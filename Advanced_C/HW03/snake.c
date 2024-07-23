@@ -23,7 +23,8 @@ enum {
     MAX_FOOD_SIZE = 20,
     FOOD_EXPIRE_SECONDS = 10,
     SEED_NUMBER = 3,
-    VIC_COUNT = 20
+    VIC_COUNT = 20,
+    CONTROLS = 3
 };
 
 
@@ -35,7 +36,7 @@ typedef struct control_buttons {
     int right;
 } control_buttons;
 
-control_buttons default_controls[3] = {
+control_buttons default_controls[CONTROLS] = {
     {KEY_DOWN, KEY_UP, KEY_LEFT, KEY_RIGHT},
     {'s', 'w', 'a', 'd'},
     {'S', 'W', 'A', 'D'}
@@ -179,7 +180,7 @@ void go(snake_t *head) {
 }
 
 void changeDirection(snake_t *snake, const int32_t key) {
-    for(uint8_t i = 0; i < 3; i++) {
+    for(uint8_t i = 0; i < CONTROLS; i++) {
         if (key ==  default_controls[i].down) {
             if(snake -> direction != UP)
                 snake -> direction = DOWN;

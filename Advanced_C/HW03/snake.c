@@ -6,7 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#define MIN_Y  2
+#define MIN_Y 2
 enum {
     LEFT = 1,
     UP,
@@ -15,6 +15,12 @@ enum {
     STOP_GAME = KEY_F( 10 ),
     GAME_OVER = 99,
     VICTORY = 100
+};
+
+enum {
+    HEAD = '@',
+    TAIL = '*',
+    FOOD = '$'
 };
 
 enum {
@@ -95,7 +101,7 @@ void putFoodSeed(struct food *fp) {
     fp -> x = rand() % (max_x - 1);
     fp -> y = rand() % (max_y - 2) + 1; //Не занимаем верхнюю строку
     fp -> put_time = time(NULL);
-    fp -> point = '$';
+    fp -> point = FOOD;
     fp -> enable = 1;
     spoint[0] = fp -> point;
     mvprintw(fp -> y, fp -> x, "%s", spoint);
@@ -144,7 +150,6 @@ void initSnake(snake_t *head, size_t size, int x, int y) {
  Движение головы с учетом текущего направления движения
  */
 void go(snake_t *head) {
-    char ch = '@';
     int max_x = 0, max_y = 0;
     getmaxyx(stdscr, max_y, max_x); // macro - размер терминала
     mvprintw(head -> y, head -> x, " "); // очищаем один символ
@@ -153,25 +158,25 @@ void go(snake_t *head) {
         if(head -> x <=  0) // Циклическое движение, чтобы не
 // уходить за пределы экрана
             head -> x = max_x;
-        mvprintw(head -> y, --(head -> x), "%c", ch);
+        mvprintw(head -> y, --(head -> x), "%c", HEAD);
         break;
     case RIGHT:
         if(head -> x >= max_x) {
             head -> x = 0;
         }
-        mvprintw(head -> y, ++(head -> x), "%c", ch);
+        mvprintw(head -> y, ++(head -> x), "%c", HEAD);
         break;
     case UP:
         if(head -> y <= 1) {
             head -> y = max_y;
         }
-        mvprintw(--(head -> y), head -> x, "%c", ch);
+        mvprintw(--(head -> y), head -> x, "%c", HEAD);
         break;
     case DOWN:
         if(head -> y >= max_y) {
             head -> y = 0;
         }
-        mvprintw(++(head -> y), head -> x, "%c", ch);
+        mvprintw(++(head -> y), head -> x, "%c", HEAD);
         break;
     default:
         break;
@@ -179,26 +184,48 @@ void go(snake_t *head) {
     refresh();
 }
 
-void changeDirection(snake_t *snake, const int32_t key) {
+int checkDirection(snake_t* snake, int32_t key) {
+    int res = 0;
     for(uint8_t i = 0; i < CONTROLS; i++) {
         if (key ==  default_controls[i].down) {
             if(snake -> direction != UP)
-                snake -> direction = DOWN;
+                res = 1;
         }
         else if (key ==  default_controls[i].up) {
             if(snake -> direction != DOWN)
-                snake -> direction = UP;
+                res = 1;
         }
         else if (key ==  default_controls[i].right) {
             if(snake -> direction != LEFT)
-                snake -> direction = RIGHT;
+                res = 1;
         }
 
         else if (key ==  default_controls[i].left) {
             if(snake -> direction != RIGHT)
-                snake -> direction = LEFT;
+                res = 1;
         }
 
+    }
+    return res;
+}
+void changeDirection(snake_t *snake, const int32_t key) {
+    if(checkDirection(snake, key)) {
+        for(uint8_t i = 0; i < CONTROLS; i++) {
+            if (key ==  default_controls[i].down) {
+                snake -> direction = DOWN;
+            }
+            else if (key ==  default_controls[i].up) {
+                snake -> direction = UP;
+            }
+            else if (key ==  default_controls[i].right) {
+                snake -> direction = RIGHT;
+            }
+
+            else if (key ==  default_controls[i].left) {
+                snake -> direction = LEFT;
+            }
+
+        }
     }
 }
 
@@ -206,19 +233,18 @@ void changeDirection(snake_t *snake, const int32_t key) {
  Движение хвоста с учетом движения головы
  */
 void goTail(snake_t *head) {
-    char ch = '*';
-    mvprintw(head -> tail[head -> tsize-1].y, head -> tail[head -> tsize-1].x, " ");
-    for(size_t i = head -> tsize-1; i>0; i--) {
-        head -> tail[i] = head -> tail[i-1];
+    mvprintw(head -> tail[head -> tsize - 1].y, head -> tail[head -> tsize - 1].x, " ");
+    for(size_t i = head -> tsize - 1; i > 0; i--) {
+        head -> tail[i] = head -> tail[ i - 1 ];
         if( head -> tail[i].y || head -> tail[i].x)
-            mvprintw(head -> tail[i].y, head -> tail[i].x, "%c", ch);
+            mvprintw(head -> tail[i].y, head -> tail[i].x, "%c", TAIL);
     }
     head -> tail[0].x = head -> x;
     head -> tail[0].y = head -> y;
 }
 
 void addTail(snake_t *head) {
-    head -> tsize++;
+    ++(head -> tsize);
 }
 
 void haveEat(snake_t *head, struct food f[]) {
@@ -229,7 +255,7 @@ void haveEat(snake_t *head, struct food f[]) {
     }
 }
 
-int checkCoords(snake_t *head)
+int checkSelfCross(snake_t *head)
 {
     int res = 0;
     for(size_t i = 1; i < head -> tsize; i++) {
@@ -279,7 +305,7 @@ int main()
         go(snake);
         goTail(snake);
         haveEat(snake, food);
-        res = checkCoords(snake);
+        res = checkSelfCross(snake);
         timeout(100);
         refreshFood(food, SEED_NUMBER);// Обновляем еду
         changeDirection(snake, key_pressed);

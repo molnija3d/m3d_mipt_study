@@ -1,0 +1,11 @@
+all: snake	
+	./snake.exe
+snake: snake.o 
+	gcc -o snake.exe snake.o -L c:\pdcurses\wincon -l:pdcurses.a
+
+snake.o: snake_seminar_2.c
+	gcc -c -o snake.o snake_seminar_2.c -I c:\pdcurses
+
+clean: 
+	del *.exe 
+	del *.o   

@@ -4,14 +4,14 @@
 
 int32_t isEqual(int32_t a, int32_t b)
 {
-        return !(a^b);
+    return !(a^b);
 }
 
 int main(void)
 {
-   int32_t a, b;
-   scanf("%d %d", &a, &b);
-   printf("%d\n", isEqual(a,b));
-   
- return 0;
+    int32_t a, b;
+    scanf("%d %d", &a, &b);
+    printf("%d\n", isEqual(a,b));
+
+    return 0;
 }

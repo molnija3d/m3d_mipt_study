@@ -24,23 +24,53 @@
 int32_t getnumbers(int32_t *anum);
 void printarr(int32_t *anum, int32_t n);
 int32_t count_nums(int32_t *anum, int32_t n);
+int32_t count_res(int32_t *res, int32_t n);
 
 
 int32_t main() {
     int32_t n = 0, anum[100] = {0};
     n = getnumbers(anum);
-    printarr(anum, n);
+    n = count_nums(anum, n);
+    printf("%d\n", n);
 
     return 0;
 }
 
 
 int32_t count_nums(int32_t *anum, int32_t n) {
-    int32_t c = 0;
+    int32_t c = 0, j = 0, res[10000] = {0};
+    int8_t d1 = 0, d2 = 0, d3 = 0;
+    for(int32_t i1 = 0; i1 < n - 2; i1++) {
+        d1 = anum[i1];
+        for(int32_t i2 = i1 + 1; i2 < n - 1; i2++) {
+            d2 = anum[i2];
+            for(int32_t i3 = i2 + 1; i3 < n; i3++) {
+                d3 = anum[i3];
+                res[j++] = d1 * 100 + d2 * 10 + d3;
+            }
+        }
+    }
 
-    return n;
+    return count_res(res, j);
 }
 
+int32_t count_res(int32_t *res, int32_t n) {
+    for(int32_t i = 0; i < n; i++) {
+        int32_t val = res[i];
+        for(int32_t j = i + 1; j < n; j++) {
+            if (val == res[j]) {
+                res[j] = -1;
+            }
+        }
+    }
+    int32_t cnt = 0;
+    for(int32_t i = 0; i < n; i++) {
+        if(res[i] >= 0) {
+            cnt++;
+        }
+    }
+    return cnt;
+}
 
 int32_t getnumbers(int32_t *anum) {
     int32_t n = 0, num;

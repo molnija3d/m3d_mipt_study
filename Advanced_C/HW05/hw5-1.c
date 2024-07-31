@@ -58,7 +58,7 @@ int32_t count_res(int32_t *res, int32_t n) {
     for(int32_t i = 0; i < n; i++) {
         int32_t val = res[i];
         for(int32_t j = i + 1; j < n; j++) {
-            if (val == res[j]) {
+            if (res[j] != -1 && val == res[j]) {
                 res[j] = -1;
             }
         }

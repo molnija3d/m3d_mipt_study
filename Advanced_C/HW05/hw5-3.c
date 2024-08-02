@@ -10,20 +10,17 @@
 
 void zFunction(char *str, int32_t z[]);
 void zPrint(int32_t z[], int32_t n);
-void zZero(int32_t z[], int32_t n);
 int32_t min(int32_t a, int32_t b);
 
 int32_t main() {
     char inp[LEN], pref[LEN], str[2*LEN+1];
-    int32_t z[2*LEN] = {0}, n = 0;
+    int32_t z[2*LEN] = {0};
     scanf("%s", inp);
     scanf("%s", pref);
 
     sprintf(str,"%s#%s",inp, pref);
     zFunction(str, z);
-    n = strlen(str);
-    zPrint(z, n);
-    zZero(z,n);
+    zPrint(z, strlen(str));
 
     sprintf(str,"%s#%s",pref, inp);
     zFunction(str, z);
@@ -33,11 +30,7 @@ int32_t main() {
     return 0;
 }
 
-void zZero(int32_t z[], int32_t n){
-	for(int32_t i = 0; i < n; i++){
-		z[i] = 0;
-	}
-}
+
 void zPrint(int32_t z[], int32_t n) {
 
     int8_t res = 0;
@@ -78,3 +71,4 @@ int32_t min(int32_t a, int32_t b)
 
 }
 
+//	printf("%s\n", str);

@@ -5,70 +5,111 @@
 */
 #include <stdio.h>
 #include <inttypes.h>
-#include <string.h>
-#define LEN 104
+#define MAX_STACK 255
 
-void zFunction(char *str, int32_t z[]);
-void zPrint(int32_t z[], int32_t n);
-int32_t min(int32_t a, int32_t b);
+typedef int32_t datatype;
+int32_t pst = 0;
+
+datatype stack[MAX_STACK];
+datatype pop();
+void push(datatype val);
+void operate(char c);
+_Bool is_digit(char c);
+_Bool is_operator(char c);
+_Bool is_empty();
+_Bool check_pst();
+int32_t inp_str(char str[]);
+int32_t calc_polska(char str[], int32_t len);
 
 int32_t main() {
-    char inp[LEN], pref[LEN], str[2*LEN+1];
-    int32_t z[2*LEN] = {0};
-    scanf("%s", inp);
-    scanf("%s", pref);
-
-    sprintf(str,"%s#%s",inp, pref);
-    zFunction(str, z);
-    zPrint(z, strlen(str));
-
-    sprintf(str,"%s#%s",pref, inp);
-    zFunction(str, z);
-    zPrint(z, strlen(str));
-
-    printf("\n");
+    char str[1001] = {0};
+    int32_t len = 0;
+    len = inp_str(str);
+    printf("%"PRId32"\n", calc_polska(str, len));
     return 0;
 }
 
+int32_t inp_str(char str[]) {
+    int32_t len= 0;
+    char c = 0;
+    while((c = getchar()) != '.') {
+        str[len++] = c;
+    }
+    return len;
+}
 
-void zPrint(int32_t z[], int32_t n) {
-
-    int8_t res = 0;
-    for(int32_t i = 1; i < n; i++) {
-        if(z[i] == n - i) {
-            printf("%"PRId32" ", z[i]);
-            res = 1;
+int32_t calc_polska(char str[], int32_t len) {
+    for(int32_t i = 0; i < len; i++) {
+        if(is_digit(str[i])) {
+            datatype num = 0;
+            for(num = 0; is_digit(str[i]); i++)
+            {
+                num *= 10;
+                num += str[i] - '0';
+            }
+            push(num);
+        }
+        else {
+            if(is_operator(str[i])) {
+                operate(str[i]);
+            }
         }
     }
-    if(!res) {
-        printf("0 ");
+    return pop();
+}
+
+void operate(char c) {
+    datatype arg1 = pop(), arg2 = pop();
+    switch(c) {
+    case '+':
+        push(arg1 + arg2);
+        break;
+    case '-':
+        push(arg2 - arg1);
+        break;
+    case '*':
+        push(arg1 * arg2);
+        break;
+    case '/':
+        push(arg2/arg1);
+        break;
     }
 }
 
-void zFunction(char *str, int32_t z[]) {
-    int32_t i = 0, l = 0, r = 0;
-    int32_t len = (int32_t) strlen(str);
-    for(int32_t i = 1; i < len; i++) {
-        if(i <= r)
-        {
-            z[i] = min(z[i-l], r - i + 1);
-        }
-        while(i + z[i] < len && str[z[i]] == str[z[i] + i]) {
-            z[i]++;
-        }
-        if(i + z[i] - 1 > r)
-        {
-            l = i;
-            r = i + z[i] - 1;
-        }
+void push(datatype val) {
+    stack[pst++] = val;
+}
 
+datatype pop() {
+    datatype val = 0;
+    if (check_pst()) {
+        val = stack[--pst];
     }
+
+    return val;
 }
 
-int32_t min(int32_t a, int32_t b)
-{
-    return a<b? a:b;
-
+_Bool check_pst() {
+    _Bool check = 1;
+    if(pst < 0) {
+        printf("Stack underflow ERROR");
+        check = 0;
+    }
+    else if (pst > MAX_STACK) {
+        printf("Stack overflow ERROR");
+        check = 0;
+    }
+    return check;
 }
 
-//	printf("%s\n", str);
+_Bool is_digit(char c) {
+    return ((c >= '0') && (c <= '9'));
+}
+
+_Bool is_operator(char c) {
+    return (c == '+' || c == '-' || c == '*' || c == '/');
+}
+
+_Bool is_empty() {
+    return (pst <= 0);
+}

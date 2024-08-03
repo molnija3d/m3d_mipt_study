@@ -7,11 +7,14 @@
 #include <inttypes.h>
 #include <string.h>
 #define LEN 104
+#define min(a,b) (a < b ? a : b)
 
 void zFunction(char *str, int32_t z[]);
+void zFunction2(char *str, int32_t z[]);
 void zPrint(int32_t z[], int32_t n);
+void zPrintFull(int32_t z[], int32_t n);
 void zZero(int32_t z[], int32_t n);
-int32_t min(int32_t a, int32_t b);
+//int32_t min(int32_t a, int32_t b);
 
 int32_t main() {
     char inp[LEN], pref[LEN], str[2*LEN+1];
@@ -33,11 +36,20 @@ int32_t main() {
     return 0;
 }
 
-void zZero(int32_t z[], int32_t n){
-	for(int32_t i = 0; i < n; i++){
-		z[i] = 0;
-	}
+void zZero(int32_t z[], int32_t n) {
+    for(int32_t i = 0; i < n; i++) {
+        z[i] = 0;
+    }
 }
+void zPrintFull(int32_t z[], int32_t n) {
+
+    int8_t res = 0;
+    for(int32_t i = 1; i < n; i++) {
+            printf("%"PRId32" ", z[i]);
+    }
+        printf("\n");
+}
+
 void zPrint(int32_t z[], int32_t n) {
 
     int8_t res = 0;
@@ -52,29 +64,50 @@ void zPrint(int32_t z[], int32_t n) {
     }
 }
 
+void zFunction2(char *str, int32_t z[]) {
+    int32_t i = 0, l = 0;
+    int32_t len = (int32_t) strlen(str);
+    for(int32_t i = 1; i < len; i++) {
+        z[i] = min(z[i-l], l + z[l] - i);
+        if(z[i] < 0) {
+            z[i] = 0;
+        }
+        while(i + z[i] < len && str[z[i]] == str[z[i] + i]) {
+            z[i]++;
+        }
+        if(i + z[i] > l + z[l])
+        {
+            l = i;
+        }
+
+    }
+}
+
 void zFunction(char *str, int32_t z[]) {
     int32_t i = 0, l = 0, r = 0;
     int32_t len = (int32_t) strlen(str);
     for(int32_t i = 1; i < len; i++) {
         if(i <= r)
         {
-            z[i] = min(z[i-l], r - i + 1);
+            z[i] = min(z[i - l], r - i);
         }
         while(i + z[i] < len && str[z[i]] == str[z[i] + i]) {
             z[i]++;
         }
-        if(i + z[i] - 1 > r)
+        if(i + z[i] > r)
         {
             l = i;
-            r = i + z[i] - 1;
+            r = i + z[i];
         }
 
     }
 }
 
+/*
 int32_t min(int32_t a, int32_t b)
 {
-    return a<b? a:b;
+    return a < b ? a:b;
 
 }
+*/
 

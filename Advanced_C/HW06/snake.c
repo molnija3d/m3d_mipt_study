@@ -108,16 +108,20 @@ void setColor(int objectType) {
     attroff(COLOR_PAIR(4));
 
     switch (objectType) {
-    case 1: { //SNAKE1
+    case 1: {
         attron(COLOR_PAIR(1));
         break;
     }
-    case 2: { // SNAKE2
+    case 2: {
         attron(COLOR_PAIR(2));
         break;
     }
-    case 3: { // FOOD
+    case 3: {
         attron(COLOR_PAIR(3));
+        break;
+    }
+    case 4: { 
+        attron(COLOR_PAIR(4));
         break;
     }
     default:
@@ -307,28 +311,24 @@ int checkSelfCross(snake_t *head)
 void end_game(int res) {
     int max_x = 0, max_y = 0;
     getmaxyx(stdscr, max_y, max_x);
-    attroff(COLOR_PAIR(1));
-    attroff(COLOR_PAIR(2));
-    attroff(COLOR_PAIR(3));
-    attroff(COLOR_PAIR(4));
     switch(res) {
     case GAME_OVER:
-        attron(COLOR_PAIR(4));
+        setColor(4);
         mvprintw(max_y / 2, max_x / 2, "GAME OVER");
         while(getch() != STOP_GAME);
         break;
     case VICTORY:
-        attron(COLOR_PAIR(4));
+        setColor(4);
         mvprintw(max_y / 2, max_x / 2, "VICTORY");
         while(getch() != STOP_GAME);
         break;
     case PLR_1_WIN:
-        attron(COLOR_PAIR(1));
+        setColor(1);
         mvprintw(max_y / 2, max_x / 2, "PLAYER 1 WIN");
         while(getch() != STOP_GAME);
         break;
     case PLR_2_WIN:
-        attron(COLOR_PAIR(2));
+        setColor(2);
         mvprintw(max_y / 2, max_x / 2, "PLAYER 2 WIN");
         while(getch() != STOP_GAME);
         break;
@@ -466,7 +466,7 @@ void startMenu() {
     getmaxyx(stdscr, max_y, max_x);
     WINDOW *menu = newwin(height, width, max_y/2 - height/2, max_x/2 - width/2);
     box(menu,0,0);
-
+    setColor(4);
     refresh();
     wrefresh(menu);
     mvprintw(max_y/2 - 1, max_x/2 - width/2 + 5, "Press '1' for SINGLE PLAYER");

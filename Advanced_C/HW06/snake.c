@@ -9,6 +9,7 @@
 
 #define MIN_Y 2
 #define MAX_PLAYERS 2;
+int8_t AI = 0;
 int8_t PLAYERS = 2;
 
 enum {
@@ -21,7 +22,7 @@ enum {
     VICTORY = 100,
     PLR_1_WIN = 101,
     PLR_2_WIN = 102,
-    PLR_AI_WN = 111
+    PLR_AI_WIN = 111
 };
 
 enum {
@@ -120,7 +121,7 @@ void setColor(int objectType) {
         attron(COLOR_PAIR(3));
         break;
     }
-    default: 
+    default:
         attron(COLOR_PAIR(1));
     }
 
@@ -371,6 +372,24 @@ void repairSeed(food_t f[], size_t nfood, snake_t *head)
             }
         }
 
+}
+int distance(snake_t *snake, food_t *food) {   // вычисляет количество ходов до еды
+    return (abs(snake -> x - food -> x) + abs(snake -> y - food -> y));
+}
+//Для автоизменения направления напишем функцию
+//Она определяет ближайшую к себе еду и движется по направлению к ней
+void autoChangeDirection(snake_t *snake, food_t food[], int foodSize)
+{
+    int pointer = 0;
+    for (int i = 1; i < foodSize; i++) {   // ищем ближайшую еду
+        pointer = (distance(snake, &food[i]) < distance(snake, &food[pointer])) ? i : pointer;
+    }
+
+    if ((snake -> direction == RIGHT || snake -> direction == LEFT) && (snake -> y != food[pointer].y)) {  // горизонтальное движение
+        snake -> direction = (food[pointer].y > snake -> y) ? DOWN : UP;
+    } else if ((snake -> direction == DOWN || snake -> direction == UP) && (snake -> x != food[pointer].x)) {  // вертикальное движение
+        snake -> direction = (food[pointer].x > snake -> x) ? RIGHT : LEFT;
+    }
 }
 
 int32_t update(snake_t *head, food_t *food) {

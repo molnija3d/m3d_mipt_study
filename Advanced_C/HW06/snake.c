@@ -9,7 +9,7 @@
 
 #define MIN_Y 2
 #define MAX_PLAYERS 2;
-int8_t AI = 0;
+bool AI = 0;
 int8_t PLAYERS = 2;
 
 enum {
@@ -193,8 +193,7 @@ void go(snake_t *head) {
     mvprintw(head -> y, head -> x, " "); // очищаем один символ
     switch (head -> direction) {
     case LEFT:
-        if(head -> x <=  0) // Циклическое движение, чтобы не
-// уходить за пределы экрана
+        if(head -> x <=  0) // Циклическое движение, чтобы не уходить за пределы экрана
             head -> x = max_x;
         mvprintw(head -> y, --(head -> x), "%c", HEAD);
         break;
@@ -373,6 +372,9 @@ void repairSeed(food_t f[], size_t nfood, snake_t *head)
         }
 
 }
+/*
+ * AI PLAYER
+ */
 int distance(snake_t *snake, food_t *food) {   // вычисляет количество ходов до еды
     return (abs(snake -> x - food -> x) + abs(snake -> y - food -> y));
 }
@@ -430,6 +432,11 @@ int32_t update(snake_t *head, food_t *food) {
 
             timeout(100);
             changeDirection(&head[ i ], key_pressed, i);
+
+	    if( i > 0 && AI == TRUE ){
+		    autoChangeDirection(head, food, SEED_NUMBER);
+	    }
+
         }
         refreshFood(food, SEED_NUMBER);// Обновляем еду
         repairSeed(food, SEED_NUMBER, head);
@@ -440,7 +447,7 @@ int32_t update(snake_t *head, food_t *food) {
 void startMenu() {
 
     int max_x = 0, max_y = 0;
-    int width = 50, height = 6;
+    int width = 50, height = 5;
     char c = 0;
     getmaxyx(stdscr, max_y, max_x);
     WINDOW *menu = newwin(height, width, max_y/2 - height/2, max_x/2 - width/2);
@@ -448,15 +455,15 @@ void startMenu() {
 
     refresh();
     wrefresh(menu);
-
     mvprintw(max_y/2 - 1, max_x/2 - width/2 + 5, "Press '1' for SINGLE PLAYER");
     mvprintw(max_y/2, max_x/2 - width/2 + 5, "Press '2' for TWO PLAYERS");
+    mvprintw(max_y/2 + 1, max_x/2 - width/2 + 5, "Press '3' for AI mode");
 
     wrefresh(menu);
     do {
         c = getch();
     }
-    while( c!= '1' && c!='2' );
+    while( c!= '1' && c!='2' && c!= '3');
 
     switch(c) {
     case '1':
@@ -465,6 +472,10 @@ void startMenu() {
     case '2':
         PLAYERS = 2;
         break;
+    case '3':
+        PLAYERS = 2;
+	AI = TRUE;
+        break;
     default:
         PLAYERS = 1;
     }
@@ -472,6 +483,7 @@ void startMenu() {
     wborder(menu, ' ', ' ', ' ',' ',' ',' ',' ',' ');
     mvprintw(max_y/2 - 1, max_x/2 - width/2 + 5, "                            ");
     mvprintw(max_y/2, max_x/2 - width/2 + 5, "                         ");
+    mvprintw(max_y/2 + 1, max_x/2 - width/2 + 5, "                        ");
     wrefresh(menu);
     delwin(menu);
     refresh();

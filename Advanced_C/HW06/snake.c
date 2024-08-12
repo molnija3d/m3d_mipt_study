@@ -5,9 +5,11 @@
 #include <inttypes.h>
 #include <string.h>
 #include <unistd.h>
+#include <panel.h>
 
 #define MIN_Y 2
-#define PLAYERS 2
+#define MAX_PLAYERS 2;
+int8_t PLAYERS = 2;
 
 enum {
     LEFT = 1,
@@ -16,7 +18,10 @@ enum {
     DOWN,
     STOP_GAME = KEY_F( 10 ),
     GAME_OVER = 99,
-    VICTORY = 100
+    VICTORY = 100,
+    PLR_1_WIN = 101,
+    PLR_2_WIN = 102,
+    PLR_AI_WN = 111
 };
 
 enum {
@@ -100,6 +105,7 @@ void setColor(int objectType) {
     attroff(COLOR_PAIR(1));
     attroff(COLOR_PAIR(2));
     attroff(COLOR_PAIR(3));
+    attroff(COLOR_PAIR(4));
 
     switch (objectType) {
     case 1: { //SNAKE1
@@ -300,13 +306,29 @@ int checkSelfCross(snake_t *head)
 void end_game(int res) {
     int max_x = 0, max_y = 0;
     getmaxyx(stdscr, max_y, max_x);
+    attroff(COLOR_PAIR(1));
+    attroff(COLOR_PAIR(2));
+    attroff(COLOR_PAIR(3));
+    attroff(COLOR_PAIR(4));
     switch(res) {
     case GAME_OVER:
+        attron(COLOR_PAIR(4));
         mvprintw(max_y / 2, max_x / 2, "GAME OVER");
         while(getch() != STOP_GAME);
         break;
     case VICTORY:
+        attron(COLOR_PAIR(4));
         mvprintw(max_y / 2, max_x / 2, "VICTORY");
+        while(getch() != STOP_GAME);
+        break;
+    case PLR_1_WIN:
+        attron(COLOR_PAIR(1));
+        mvprintw(max_y / 2, max_x / 2, "PLAYER 1 WIN");
+        while(getch() != STOP_GAME);
+        break;
+    case PLR_2_WIN:
+        attron(COLOR_PAIR(2));
+        mvprintw(max_y / 2, max_x / 2, "PLAYER 2 WIN");
         while(getch() != STOP_GAME);
         break;
     }
@@ -344,6 +366,29 @@ int32_t update(snake_t *head, food_t *food) {
             goTail(&head[ i ]);
             haveEat(&head[ i ], food);
             res = checkSelfCross(&head[ i ]);
+
+            if(res == VICTORY && PLAYERS == 2) {
+                switch(i) {
+                case 0:
+                    res = PLR_1_WIN;
+                    break;
+                case 1:
+                    res = PLR_2_WIN;
+                    break;
+                }
+            }
+            else   if(res == GAME_OVER && PLAYERS == 2) {
+                switch(i) {
+                case 0:
+                    res = PLR_2_WIN;
+                    break;
+                case 1:
+                    res = PLR_1_WIN;
+                    break;
+                }
+            }
+
+
             timeout(100);
             changeDirection(&head[ i ], key_pressed, i);
         }
@@ -352,11 +397,56 @@ int32_t update(snake_t *head, food_t *food) {
     return res;
 }
 
+void startMenu() {
+
+    int max_x = 0, max_y = 0;
+    int width = 50, height = 6;
+    char c = 0;
+    getmaxyx(stdscr, max_y, max_x);
+    WINDOW *menu = newwin(height, width, max_y/2 - height/2, max_x/2 - width/2);
+    box(menu,0,0);
+
+    refresh();
+    wrefresh(menu);
+
+    mvprintw(max_y/2 - 1, max_x/2 - width/2 + 5, "Press '1' for SINGLE PLAYER");
+    mvprintw(max_y/2, max_x/2 - width/2 + 5, "Press '2' for TWO PLAYERS");
+
+    wrefresh(menu);
+    do {
+        c = getch();
+    }
+    while( c!= '1' && c!='2' );
+
+    switch(c) {
+    case '1':
+        PLAYERS = 1;
+        break;
+    case '2':
+        PLAYERS = 2;
+        break;
+    default:
+        PLAYERS = 1;
+    }
+
+    wborder(menu, ' ', ' ', ' ',' ',' ',' ',' ',' ');
+    mvprintw(max_y/2 - 1, max_x/2 - width/2 + 5, "                            ");
+    mvprintw(max_y/2, max_x/2 - width/2 + 5, "                         ");
+    wrefresh(menu);
+    delwin(menu);
+    refresh();
+}
+
 void init_game(snake_t *head, food_t *food) {
 
     for(uint8_t i = 0; i < PLAYERS; i++) {
         initSnake( &head[ i ], START_TAIL_SIZE, 10 * (i + 1), 10 * (i + 1) );
     }
+    initFood(food, MAX_FOOD_SIZE);
+    putFood(food, SEED_NUMBER);// Кладем зерна
+}
+
+void init_screen() {
 
     initscr();
     keypad(stdscr, TRUE); // Включаем F1, F2, стрелки и т.д.
@@ -367,16 +457,19 @@ void init_game(snake_t *head, food_t *food) {
     init_pair(1, COLOR_RED, COLOR_BLACK);
     init_pair(2, COLOR_BLUE, COLOR_BLACK);
     init_pair(3, COLOR_GREEN, COLOR_BLACK);
+    init_pair(4, COLOR_CYAN, COLOR_BLACK);
 
     curs_set(FALSE);    //Отключаем курсор
-    mvprintw(0, 5, "Use arrows or WSAD for control. Eat %d '$' for VICTORY! Press 'F10' for EXIT", VIC_COUNT);
     timeout(0);    //Отключаем таймаут после нажатия клавиши в цикле
-    initFood(food, MAX_FOOD_SIZE);
-    putFood(food, SEED_NUMBER);// Кладем зерна
+    mvprintw(0, 5, "Movement: ARROWS for PLAYER 1; WSAD for PLAYER 2. Eat %d '$' for VICTORY! Press 'F10' for EXIT", VIC_COUNT);
+
 }
 
 int main()
 {
+    init_screen();
+    startMenu();
+
     snake_t *snake = ( snake_t* ) malloc( PLAYERS * sizeof( snake_t ) );
     food_t *food = ( food_t* ) malloc( MAX_FOOD_SIZE * sizeof( food_t ) );
     int32_t game_result = 0;

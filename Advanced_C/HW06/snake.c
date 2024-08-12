@@ -81,7 +81,7 @@ typedef struct {
 
 /*
  Еда — это массив точек, состоящий из координат x,y, времени,
- когда данная точка была установлена, и поля, сигнализирующего,
+ когда данная точка была установлена, и поля, сигнализирующего,VICTORY
  была ли данная точка съедена.
  */
 typedef struct {
@@ -120,7 +120,7 @@ void setColor(int objectType) {
         attron(COLOR_PAIR(3));
         break;
     }
-    default:
+    default: 
         attron(COLOR_PAIR(1));
     }
 
@@ -353,6 +353,26 @@ int lwr_case(int key_pressed) {
     return res > 0 ? res: key_pressed;
 }
 
+void repairSeed(food_t f[], size_t nfood, snake_t *head)
+{
+    for( size_t i = 0; i < head -> tsize; i++  )
+        for( size_t j = 0; j < nfood; j++  )
+        {
+            if (f[j].x == head -> tail[i].x && f[j].y == head -> tail[i].y) {
+                putFoodSeed(&f[i]);
+            }
+        }
+
+    for( size_t i = 0; i < nfood; i++  )
+        for( size_t j = 0; j < nfood; j++  )
+        {
+            if(i != j && f[i].x == f[j].x && f[i].y == f[j].y) {
+                putFoodSeed(&f[i]);
+            }
+        }
+
+}
+
 int32_t update(snake_t *head, food_t *food) {
     int key_pressed = 0;
     int res = 0;
@@ -393,6 +413,7 @@ int32_t update(snake_t *head, food_t *food) {
             changeDirection(&head[ i ], key_pressed, i);
         }
         refreshFood(food, SEED_NUMBER);// Обновляем еду
+        repairSeed(food, SEED_NUMBER, head);
     }
     return res;
 }

@@ -5,7 +5,6 @@
 #include <inttypes.h>
 #include <string.h>
 #include <unistd.h>
-#include <panel.h>
 
 #define MIN_Y 2
 #define MAX_PLAYERS 2;
@@ -136,6 +135,7 @@ void putFoodSeed(food_t *fp) {
     setColor(3);
     getmaxyx(stdscr, max_y, max_x);
     mvprintw(fp -> y, fp -> x, " ");
+// горизонтальное движение
     fp -> x = rand() % (max_x - 1);
     fp -> y = rand() % (max_y - 2) + 1; //Не занимаем верхнюю строку
     fp -> put_time = time(NULL);
@@ -238,6 +238,7 @@ int checkDirection(snake_t* snake, int32_t key, uint8_t player) {
 
     else if (key ==  default_controls[player].left) {
         if(snake -> direction != RIGHT)
+// горизонтальное движение
             res = 1;
     }
 
@@ -297,7 +298,7 @@ int checkSelfCross(snake_t *head)
             break;
         }
     }
-    if(head -> tsize > VIC_COUNT + START_TAIL_SIZE && res != GAME_OVER) {
+    if(head -> tsize > VIC_COUNT + START_TAIL_SIZE - 1 && res != GAME_OVER) {
         res = VICTORY;
     }
     return res;
@@ -353,13 +354,16 @@ int lwr_case(int key_pressed) {
     return res > 0 ? res: key_pressed;
 }
 
-void repairSeed(food_t f[], size_t nfood, snake_t *head)
+bool repairSeed(food_t f[], size_t nfood, snake_t *head)
 {
-    for( size_t i = 0; i < head -> tsize; i++  )
+    bool res = FALSE;
+    for(size_t s = 0; s < PLAYERS; s++){
+    for( size_t i = 0; i < head[ s ].tsize; i++  )
         for( size_t j = 0; j < nfood; j++  )
         {
-            if (f[j].x == head -> tail[i].x && f[j].y == head -> tail[i].y) {
-                putFoodSeed(&f[i]);
+            if (f[j].x == head[ s ].tail[i].x && f[j].y == head[ s ].tail[i].y) {
+                res = TRUE;
+                putFoodSeed(&f[j]);
             }
         }
 
@@ -367,29 +371,41 @@ void repairSeed(food_t f[], size_t nfood, snake_t *head)
         for( size_t j = 0; j < nfood; j++  )
         {
             if(i != j && f[i].x == f[j].x && f[i].y == f[j].y) {
-                putFoodSeed(&f[i]);
+                res = TRUE;
+                putFoodSeed(&f[j]);
             }
         }
-
+    }
+    if(res) {
+        res = repairSeed(f, nfood, head);
+    }
+    return res;
 }
+
 /*
  * AI PLAYER
  */
 int distance(snake_t *snake, food_t *food) {   // вычисляет количество ходов до еды
     return (abs(snake -> x - food -> x) + abs(snake -> y - food -> y));
 }
+
 //Для автоизменения направления напишем функцию
 //Она определяет ближайшую к себе еду и движется по направлению к ней
 void autoChangeDirection(snake_t *snake, food_t food[], int foodSize)
 {
     int pointer = 0;
-    for (int i = 1; i < foodSize; i++) {   // ищем ближайшую еду
-        pointer = (distance(snake, &food[i]) < distance(snake, &food[pointer])) ? i : pointer;
+// ищем ближайшую еду
+    for (int i = 1; i < foodSize; i++) {
+        if(food[i].enable) {
+            pointer = (distance(snake, &food[i]) < distance(snake, &food[pointer])) ? i : pointer;
+        }
     }
-
-    if ((snake -> direction == RIGHT || snake -> direction == LEFT) && (snake -> y != food[pointer].y)) {  // горизонтальное движение
+    /*
+     * Горизонтальное и вертикальное движение
+     */
+    if ((snake -> direction == RIGHT || snake -> direction == LEFT) && (snake -> y != food[pointer].y)) {
         snake -> direction = (food[pointer].y > snake -> y) ? DOWN : UP;
-    } else if ((snake -> direction == DOWN || snake -> direction == UP) && (snake -> x != food[pointer].x)) {  // вертикальное движение
+    } else if ((snake -> direction == DOWN || snake -> direction == UP) && (snake -> x != food[pointer].x)) {
         snake -> direction = (food[pointer].x > snake -> x) ? RIGHT : LEFT;
     }
 }
@@ -398,9 +414,10 @@ int32_t update(snake_t *head, food_t *food) {
     int key_pressed = 0;
     int res = 0;
     while( key_pressed !=  STOP_GAME && !res ) {
-        key_pressed = getch(); // Считываем клавишу
-        key_pressed = lwr_case(key_pressed);		       //
-        //
+        key_pressed = getch();
+        key_pressed = lwr_case(key_pressed);
+        repairSeed(food, SEED_NUMBER, head);
+
         for(uint8_t i = 0; i < PLAYERS && !res; i++) {
             setColor(i + 1);
             go(&head[ i ]);
@@ -429,17 +446,14 @@ int32_t update(snake_t *head, food_t *food) {
                 }
             }
 
-
             timeout(100);
             changeDirection(&head[ i ], key_pressed, i);
 
-	    if( i > 0 && AI == TRUE ){
-		    autoChangeDirection(head, food, SEED_NUMBER);
-	    }
-
+            if( i > 0 && AI == TRUE ) {
+                autoChangeDirection(head, food, SEED_NUMBER);
+            }
         }
         refreshFood(food, SEED_NUMBER);// Обновляем еду
-        repairSeed(food, SEED_NUMBER, head);
     }
     return res;
 }
@@ -474,7 +488,7 @@ void startMenu() {
         break;
     case '3':
         PLAYERS = 2;
-	AI = TRUE;
+        AI = TRUE;
         break;
     default:
         PLAYERS = 1;

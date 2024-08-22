@@ -63,6 +63,10 @@ int8_t plot_functions(func fn[], float xl, float xr, int32_t step_cnt) {
         fprintf(gnuplot_p, "set title 'Visualisation of functions. Zelenin-EV' font 'Helvetica Bold, 20'\n");
         fprintf(gnuplot_p, "set xlabel 'x'\n");
         fprintf(gnuplot_p, "set ylabel 'y'\n");
+	fprintf(gnuplot_p, "set xrange [0.5:4.5]\n");
+	fprintf(gnuplot_p, "set yrange [0:7]\n");
+	fprintf(gnuplot_p, "set grid\n");
+
 
         char fname[20] = "_data.txt";
         FILE *f_data = fopen(fname, "w");
@@ -72,8 +76,8 @@ int8_t plot_functions(func fn[], float xl, float xr, int32_t step_cnt) {
             for(int32_t j = 0; j < step_cnt; j++)
             {
                 x = xl + j * step;
-                fprintf(f_data,"%f ", x);
-                for(int8_t i = 0; i < F_CNT; i++)
+			fprintf(f_data,"%f ", x);
+			for(int8_t i = 0; i < F_CNT; i++)
                 {
                     y = fn[i](x);
                     fprintf(f_data,"%f ", y);
@@ -87,6 +91,7 @@ int8_t plot_functions(func fn[], float xl, float xr, int32_t step_cnt) {
                 fprintf(gnuplot_p, "'_data.txt' using 1:%d with lines title 'Function %d', ", i + 2, i);
             }
             fprintf(gnuplot_p, "\n");
+	    
         }
 
         fflush(gnuplot_p);
@@ -105,7 +110,7 @@ float f0(float x) {
 }
 
 float f1(float x) {
-    return (x - 2) * (x-2) * (x-2) - 1;
+    return (x - 2) * (x - 2) * (x - 2) - 1;
 }
 
 float f2(float x) {

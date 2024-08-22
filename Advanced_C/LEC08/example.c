@@ -14,7 +14,7 @@ double f1(double x)
 
 double f2(double x)
 {
-    return pow((x - 2), 3) - 1;
+    return (x - 2) * (x - 2) * (x - 2) - 1;
 }
 
 double f3(double x)
@@ -30,7 +30,7 @@ double f1_derivative(double x)
 
 double f2_derivative(double x)
 {
-    return 3 * pow((x - 2), 2);
+    return 3 * (x - 2)* (x - 2);
 }
 
 double f3_derivative(double x)
@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
     if (plot_graphs)
     {
         // Вызов Gnuplot для построения графиков
-        FILE *gnuplotPipe = _popen("gnuplot -persistent", "w");
+        FILE *gnuplotPipe = popen("gnuplot -persistent", "w");
 
         if (gnuplotPipe)
         {
@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
             fprintf(gnuplotPipe, "set yrange [-1:6]\n"); // Ограничение диапазона Y
             fprintf(gnuplotPipe, "plot 0.6*x + 3 title 'f1 = 0.6x + 3', (x - 2)**3 - 1 title 'f2 = (x - 2)^3 - 1', 3/x title 'f3 = 3/x'\n");
             fflush(gnuplotPipe);
-            _pclose(gnuplotPipe);
+            pclose(gnuplotPipe);
         }
         else
         {

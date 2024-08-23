@@ -1,4 +1,5 @@
 all: prg
+	./find_square -a
 
 prg: find_square.o
 	gcc -o find_square find_square.o -ggdb3

@@ -4,10 +4,10 @@
 #include <unistd.h>
 #include <stdlib.h>
 /*To make gnu_plut pipe working in Windows system you should add
-  c:\Program Files\gnuplot\bin\ 
- * to Windwos PATH variable 
+  c:\Program Files\gnuplot\bin\
+ * to Windows PATH variable
  */
-// function count
+// functions count
 #define F_CNT 3
 
 typedef float (* func)(float);
@@ -36,20 +36,20 @@ void print_help();
 
 int main(int argc, char *argv[]) {
     if(argc > 1 ) {
-	    //using standart function getopt to parse arguments
+        //using standart function getopt to parse arguments
         char *opts = "ahrpf:ts";
         int32_t opt = 0;
-	
-	//function array
+
+        //function array
         func fn[F_CNT] = {&f0, &f1, &f2};
         float roots[3], integrals[3];
-	
-	//num - function number in command options
+
+        //num - function number in command options
         int8_t num = -1;
 
         while((opt = getopt(argc, argv, opts)) != -1) {
             switch(opt) {
-		    //perform all operations in automatic mode
+            //perform all operations in automatic mode
             case 'a':
                 plot_functions(fn, 0.5, 4.3, 100);
                 printf("--------------------------\n");
@@ -59,22 +59,22 @@ int main(int argc, char *argv[]) {
                 printf("--------------------------\n");
                 printf("Square between f1(x), f2(x) and f3(x) = %f\n", integrals[0] - integrals[1] - integrals[2]);
                 break;
-		//find roots only
+            //find roots only
             case 'r':
                 find_roots(fn, roots);
                 break;
 
-		//plot functions only
+            //plot functions only
             case 'p':
                 plot_functions(fn, 0.5, 4.3, 100);
                 break;
-		
-		//select specified function number
+
+            //select specified function number
             case 'f':
                 num = optarg[0] - '0';
                 break;
-		
-		//test specified function
+
+            //test specified function
             case 't':
                 if(num > -1 && num < 3) {
                     switch(num) {
@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
                 }
                 break;
 
-		//calculating square between functions
+            //calculating square between functions
             case 's':
                 printf("--------------------------\n");
                 find_roots(fn, roots);
@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
                 printf("Square between f1(x), f2(x) and f3(x) = %f\n", integrals[0] - integrals[1] - integrals[2]);
                 break;
 
-		//printing help
+            //printing help
             default:
                 print_help();
             }
@@ -166,7 +166,7 @@ int8_t plot_functions(func fn[], float xl, float xr, int32_t step_cnt) {
     //testing if gnuplot persistent and opening a pipe
     FILE *gnuplot_p = popen("gnuplot -persistent","w");
     if(gnuplot_p != NULL) {
-	    
+
         //prepairing a graph
         fprintf(gnuplot_p, "set title 'Visualisation of functions. Zelenin-EV' font 'Helvetica Bold, 20'\n");
         fprintf(gnuplot_p, "set xlabel 'x'\n");
@@ -175,11 +175,11 @@ int8_t plot_functions(func fn[], float xl, float xr, int32_t step_cnt) {
         fprintf(gnuplot_p, "set yrange [0:7]\n");
         fprintf(gnuplot_p, "set grid\n");
 
-	//opening a file for function data
+        //opening a file for function data
         char fname[20] = "_data.txt";
         FILE *f_data = fopen(fname, "w");
         if(f_data != NULL) {
-	    //calculating functions data and writing int in a file
+            //calculating functions data and writing int in a file
             double x = 0, y = 0, step = 0;
             step = fabs(xr - xl)/step_cnt;
             for(int32_t j = 0; j < step_cnt; j++)
@@ -195,17 +195,17 @@ int8_t plot_functions(func fn[], float xl, float xr, int32_t step_cnt) {
             }
             fclose(f_data);
 
-	    //prepairing a plot command
+            //prepairing a plot command
             fprintf(gnuplot_p, "plot ");
             for(int8_t i = 0; i < F_CNT; i++)
             {
                 fprintf(gnuplot_p, "'_data.txt' using 1:%d with lines title 'f%d(x)', ", i + 2, i);
             }
 
-	    //perform a plot
+            //perform a plot
             fprintf(gnuplot_p, "\n");
         }
-	//closing gnu_plot pipe
+        //closing gnu_plot pipe
         fflush(gnuplot_p);
         pclose(gnuplot_p);
     }

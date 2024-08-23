@@ -3,6 +3,10 @@
 #include <inttypes.h>
 #include <unistd.h>
 #include <stdlib.h>
+/*To make gnu_plut pipe working in Windows system you should add
+  c:\Program Files\gnuplot\bin\ 
+ * to Windwos PATH variable 
+ */
 // function count
 #define F_CNT 3
 

@@ -11,27 +11,99 @@ float f0(float x), f1(float x), f2(float x);
 float root(func f, func g, float a, float b, float eps);
 int8_t plot_functions(func fn[], float a, float b, int32_t steps);
 void find_roots(func fn[], float *roots);
-void find_interals(func fn[], float *roots, float *integrals);
+void find_integrals(func fn[], float *roots, float *integrals);
 float integral(func f, float a, float b, float eps2);
+void print_help();
 
 int main(int argc, char *argv[]) {
-    func fn[F_CNT] = {&f0, &f1, &f2};
-    float roots[3], intgs[3];
+    if(argc > 1 ) {
+        char *opts = "ahrpf:ts";
+        int32_t opt = 0;
+        func fn[F_CNT] = {&f0, &f1, &f2};
+        float roots[3], integrals[3];
+        int8_t num = -1;
 
-    plot_functions(fn, 0.5, 4.3, 100);
-    find_roots(fn, roots);
-    find_interals(fn, roots, intgs);
+        while((opt = getopt(argc, argv, opts)) != -1) {
+            switch(opt) {
+            case 'a':
+                plot_functions(fn, 0.5, 4.3, 100);
+                printf("--------------------------\n");
+                find_roots(fn, roots);
+                printf("--------------------------\n");
+                find_integrals(fn, roots, integrals);
+                printf("--------------------------\n");
+                printf("Square between f1(x), f2(x) and f3(x) = %f\n", integrals[0] - integrals[1] - integrals[2]);
+                break;
+            case 'r':
+                find_roots(fn, roots);
+                break;
+            case 'p':
+                plot_functions(fn, 0.5, 4.3, 100);
+                break;
+            case 'f':
+                num = optarg[0] - '0';
+                break;
+            case 't':
+                if(num > -1 && num < 3) {
+                    switch(num) {
+                    case 0:
 
-    printf("Result = %f\n", intgs[0] - intgs[1] - intgs[2]);
+                        roots[0] = root(fn[0],fn[2], 0.5, 1, 0.00001);
+                        printf("root(f0, f2) = %f\n", roots[0]);
+                        break;
+                    case 1:
 
+                        roots[1] = root(fn[1],fn[2], 3, 3.5, 0.00001);
+                        printf("root(f1, f2) = %f\n", roots[1]);
+                        break;
+                    case 2:
+
+                        roots[2] = root(fn[0],fn[1], 3.5, 4, 0.00001);
+                        printf("root(f0, f1) = %f\n", roots[2]);
+                        break;
+                    }
+                }
+                else {
+                    printf("Function number should be in 0..%d\n", F_CNT);
+                }
+                break;
+
+            case 's':
+                printf("--------------------------\n");
+                find_roots(fn, roots);
+                printf("--------------------------\n");
+                find_integrals(fn, roots, integrals);
+                printf("--------------------------\n");
+                printf("Square between f1(x), f2(x) and f3(x) = %f\n", integrals[0] - integrals[1] - integrals[2]);
+                break;
+            default:
+                print_help();
+            }
+        }
+    }
+    else
+    {
+        print_help();
+    }
     return 0;
 }
 
-void find_interals(func fn[], float *roots, float *integrals) {
-	integrals[0] = integral(fn[0], roots[0], roots[2], 0.0001);
-	integrals[1] = integral(fn[1], roots[1], roots[2], 0.0001);
-	integrals[2] = integral(fn[2], roots[0], roots[1], 0.0001);
-printf("Int 1 = %f\nInt 2 = %f\nInt 3 = %f\n", integrals[0], integrals[1], integrals[2]);
+void print_help() {
+    printf("Command line options:\n");
+    printf("-a :	automatic mode\n");
+    printf("-h :	print help\n");
+    printf("-r :	find roots\n");
+    printf("-s :	find square between f1(x), f2(x) and f3(x)\n");
+    printf("-p :	plot graph\n");
+    printf("-f [n]:	select function\n");
+    printf("-t :	test selected function\n");
+}
+
+void find_integrals(func fn[], float *roots, float *integrals) {
+    integrals[0] = integral(fn[0], roots[0], roots[2], 0.0001);
+    integrals[1] = integral(fn[1], roots[1], roots[2], 0.0001);
+    integrals[2] = integral(fn[2], roots[0], roots[1], 0.0001);
+    printf("Square f0(x) = %f\nSquare f1(x) = %f\nSquare f2(x) = %f\n", integrals[0], integrals[1], integrals[2]);
 
 }
 
@@ -46,13 +118,13 @@ float integral(func f, float a, float b, float eps2) {
 
 void find_roots(func fn[], float *roots) {
     roots[0] = root(fn[0],fn[2], 0.5, 1, 0.00001);
-    printf("root(f1, f2) = %f\n", roots[0]);
+    printf("root(f0, f2) = %f\n", roots[0]);
 
     roots[1] = root(fn[1],fn[2], 3, 3.5, 0.00001);
     printf("root(f1, f2) = %f\n", roots[1]);
 
     roots[2] = root(fn[0],fn[1], 3.5, 4, 0.00001);
-    printf("root(f1, f2) = %f\n", roots[2]);
+    printf("root(f0, f1) = %f\n", roots[2]);
 }
 
 int8_t plot_functions(func fn[], float xl, float xr, int32_t step_cnt) {
@@ -63,10 +135,9 @@ int8_t plot_functions(func fn[], float xl, float xr, int32_t step_cnt) {
         fprintf(gnuplot_p, "set title 'Visualisation of functions. Zelenin-EV' font 'Helvetica Bold, 20'\n");
         fprintf(gnuplot_p, "set xlabel 'x'\n");
         fprintf(gnuplot_p, "set ylabel 'y'\n");
-	fprintf(gnuplot_p, "set xrange [0.5:4.5]\n");
-	fprintf(gnuplot_p, "set yrange [0:7]\n");
-	fprintf(gnuplot_p, "set grid\n");
-
+        fprintf(gnuplot_p, "set xrange [0.5:4.5]\n");
+        fprintf(gnuplot_p, "set yrange [0:7]\n");
+        fprintf(gnuplot_p, "set grid\n");
 
         char fname[20] = "_data.txt";
         FILE *f_data = fopen(fname, "w");
@@ -76,8 +147,8 @@ int8_t plot_functions(func fn[], float xl, float xr, int32_t step_cnt) {
             for(int32_t j = 0; j < step_cnt; j++)
             {
                 x = xl + j * step;
-			fprintf(f_data,"%f ", x);
-			for(int8_t i = 0; i < F_CNT; i++)
+                fprintf(f_data,"%f ", x);
+                for(int8_t i = 0; i < F_CNT; i++)
                 {
                     y = fn[i](x);
                     fprintf(f_data,"%f ", y);
@@ -88,20 +159,16 @@ int8_t plot_functions(func fn[], float xl, float xr, int32_t step_cnt) {
             fprintf(gnuplot_p, "plot ");
             for(int8_t i = 0; i < F_CNT; i++)
             {
-                fprintf(gnuplot_p, "'_data.txt' using 1:%d with lines title 'Function %d', ", i + 2, i);
+                fprintf(gnuplot_p, "'_data.txt' using 1:%d with lines title 'f%d(x)', ", i + 2, i);
             }
             fprintf(gnuplot_p, "\n");
-	    
         }
-
         fflush(gnuplot_p);
         pclose(gnuplot_p);
-
     }
     else {
         res = 1;
     }
-
     return res;
 }
 
@@ -116,7 +183,6 @@ float f1(float x) {
 float f2(float x) {
     return 3 / x;
 }
-
 
 float root(func f, func g, float a, float b, float eps) {
     size_t stepcount=0;

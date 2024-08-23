@@ -40,8 +40,10 @@ int main(int argc, char *argv[]) {
         char *opts = "ahrpf:ts";
         int32_t opt = 0;
 
-        //function array
+        //functions array
         func fn[F_CNT] = {&f0, &f1, &f2};
+
+	//arrays to store the results of calculations
         float roots[3], integrals[3];
 
         //num - function number in command options

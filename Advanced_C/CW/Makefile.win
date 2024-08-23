@@ -1,4 +1,5 @@
 all: prg
+	./find_square -a
 
 prg: find_square.o
 	gcc -o find_square.exe find_square.o
@@ -6,6 +7,6 @@ prg: find_square.o
 find_square.o: find_square.c
 	gcc -c -o find_square.o find_square.c
 
-clean: 
+clean:
 	del find_square.exe
-	del *.o   
+	del *.o

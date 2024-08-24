@@ -134,9 +134,9 @@ void print_help() {
 }
 
 void find_integrals(func fn[], float *roots, float *integrals) {
-    integrals[0] = integral(fn[0], roots[0], roots[2], 0.0001);
-    integrals[1] = integral(fn[1], roots[1], roots[2], 0.0001);
-    integrals[2] = integral(fn[2], roots[0], roots[1], 0.0001);
+    integrals[0] = integral(fn[0], roots[0], roots[2], 0.00001);
+    integrals[1] = integral(fn[1], roots[1], roots[2], 0.00001);
+    integrals[2] = integral(fn[2], roots[0], roots[1], 0.00001);
     printf("Square f0(x) = %f\nSquare f1(x) = %f\nSquare f2(x) = %f\n", integrals[0], integrals[1], integrals[2]);
 
 }

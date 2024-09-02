@@ -1,8 +1,10 @@
-(footprint "HLK-7628N"
+(footprint "My_HLK-7628N"
 	(version 20240108)
 	(generator "pcbnew")
 	(generator_version "8.0")
 	(layer "F.Cu")
+	(descr "HLK-7628N")
+	(tags "HLK-7628N")
 	(property "Reference" "REF**"
 		(at 0 -11.75 0)
 		(unlocked yes)
@@ -54,8 +56,8 @@
 			)
 		)
 	)
-	(property "Description" ""
-		(at 0 0 0)
+	(property "Description" "HLK-7628N footprint"
+		(at -0.4 6.6 0)
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)

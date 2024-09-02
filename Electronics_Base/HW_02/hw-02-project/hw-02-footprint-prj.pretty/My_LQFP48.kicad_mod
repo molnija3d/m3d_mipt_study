@@ -4,7 +4,7 @@
 	(generator_version "8.0")
 	(layer "F.Cu")
 	(descr "BL0910")
-	(tags "LQFP QFP")
+	(tags "LQFP QFP BL0910")
 	(property "Reference" "REF**"
 		(at -0.03 -5.34 0)
 		(layer "F.SilkS")
@@ -54,8 +54,8 @@
 			)
 		)
 	)
-	(property "Description" ""
-		(at 0.025 0.275 0)
+	(property "Description" "My_LQFP48"
+		(at 0.1 6.9 0)
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)

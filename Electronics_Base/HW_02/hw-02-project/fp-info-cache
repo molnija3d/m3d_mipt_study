@@ -1,4 +1,4 @@
-23691800740990840
+23693526112054607
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -96405,15 +96405,15 @@ Varistor VF
 2
 hw-02-footprint-prj
 My_HLK-7628N
-
-
+HLK-7628N
+HLK-7628N
 0
 59
 59
 hw-02-footprint-prj
 My_LQFP48
 BL0910
-LQFP QFP
+LQFP QFP BL0910
 0
 48
 48
@@ -96424,3 +96424,10 @@ XS2184 QFN48L
 0
 53
 53
+hw-02-footprint-prj
+My_TQFN-24-1EP_4x4mm_EP2.7x2.7mm
+QFN, 24 Pin for AW9523BTQR
+QFN NoLead AW9523BTQR
+0
+29
+25

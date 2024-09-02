@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "hw-02-footprint-prj")(type "KiCad")(uri "${KIPRJMOD}/hw-02-footprint-prj.pretty")(options "")(descr ""))
+)

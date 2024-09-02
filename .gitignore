@@ -6,3 +6,8 @@
 !*Makefile*
 !*.jpg
 !*.png
+!*.kicad*
+!*.dxf
+!fp-info-cache
+!fp-lib-table
+!sym-lib-table

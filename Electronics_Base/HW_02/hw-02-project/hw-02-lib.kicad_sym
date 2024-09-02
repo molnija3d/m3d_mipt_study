@@ -1472,7 +1472,7 @@
 			)
 		)
 		(property "Value" "HLK-7628N"
-			(at 12.7 -48.26 0)
+			(at 16.51 -49.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1528,7 +1528,7 @@
 				)
 			)
 			(pin power_in line
-				(at -5.08 -48.26 90)
+				(at -8.89 -48.26 90)
 				(length 2.54)
 				(name "GND"
 					(effects
@@ -1762,7 +1762,7 @@
 				)
 			)
 			(pin power_in line
-				(at 0 -48.26 90)
+				(at -3.81 -48.26 90)
 				(length 2.54)
 				(name "GND"
 					(effects
@@ -1798,7 +1798,7 @@
 				)
 			)
 			(pin power_in line
-				(at 2.54 -48.26 90)
+				(at -1.27 -48.26 90)
 				(length 2.54)
 				(name "GND"
 					(effects
@@ -2122,7 +2122,7 @@
 				)
 			)
 			(pin power_in line
-				(at -2.54 -48.26 90)
+				(at -6.35 -48.26 90)
 				(length 2.54)
 				(name "GND"
 					(effects
@@ -2446,7 +2446,7 @@
 				)
 			)
 			(pin power_in line
-				(at 5.08 -48.26 90)
+				(at 1.27 -48.26 90)
 				(length 2.54)
 				(name "GND"
 					(effects
@@ -2456,6 +2456,60 @@
 					)
 				)
 				(number "56"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at 3.81 -48.26 90)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "57"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at 6.35 -48.26 90)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "58"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at 8.89 -48.26 90)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "59"
 					(effects
 						(font
 							(size 1.27 1.27)

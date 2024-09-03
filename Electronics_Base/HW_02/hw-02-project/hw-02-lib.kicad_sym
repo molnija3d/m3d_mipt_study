@@ -380,8 +380,8 @@
 				)
 			)
 			(pin power_in line
-				(at 1.27 -24.13 90)
-				(length 2.54)
+				(at 0 -24.13 90)
+				(length 2.54) hide
 				(name "GND"
 					(effects
 						(font
@@ -506,7 +506,7 @@
 				)
 			)
 			(pin power_in line
-				(at -1.27 -24.13 90)
+				(at 0 -24.13 90)
 				(length 2.54)
 				(name "GND"
 					(effects
@@ -1528,7 +1528,7 @@
 				)
 			)
 			(pin power_in line
-				(at -8.89 -48.26 90)
+				(at 0 -48.26 90)
 				(length 2.54)
 				(name "GND"
 					(effects
@@ -1726,7 +1726,7 @@
 				)
 			)
 			(pin power_in line
-				(at -2.54 45.72 270)
+				(at -1.27 45.72 270)
 				(length 2.54)
 				(name "3.3VD"
 					(effects
@@ -1762,8 +1762,8 @@
 				)
 			)
 			(pin power_in line
-				(at -3.81 -48.26 90)
-				(length 2.54)
+				(at 0 -48.26 90)
+				(length 2.54) hide
 				(name "GND"
 					(effects
 						(font
@@ -1780,7 +1780,7 @@
 				)
 			)
 			(pin power_in line
-				(at 3.81 45.72 270)
+				(at 1.27 45.72 270)
 				(length 2.54)
 				(name "ANT"
 					(effects
@@ -1798,8 +1798,8 @@
 				)
 			)
 			(pin power_in line
-				(at -1.27 -48.26 90)
-				(length 2.54)
+				(at 0 -48.26 90)
+				(length 2.54) hide
 				(name "GND"
 					(effects
 						(font
@@ -1924,8 +1924,8 @@
 				)
 			)
 			(pin power_in line
-				(at 0 45.72 270)
-				(length 2.54)
+				(at -1.27 45.72 270)
+				(length 2.54) hide
 				(name "3.3VD"
 					(effects
 						(font
@@ -2122,8 +2122,8 @@
 				)
 			)
 			(pin power_in line
-				(at -6.35 -48.26 90)
-				(length 2.54)
+				(at 0 -48.26 90)
+				(length 2.54) hide
 				(name "GND"
 					(effects
 						(font
@@ -2446,8 +2446,8 @@
 				)
 			)
 			(pin power_in line
-				(at 1.27 -48.26 90)
-				(length 2.54)
+				(at 0 -48.26 90)
+				(length 2.54) hide
 				(name "GND"
 					(effects
 						(font
@@ -2464,8 +2464,8 @@
 				)
 			)
 			(pin power_in line
-				(at 3.81 -48.26 90)
-				(length 2.54)
+				(at 0 -48.26 90)
+				(length 2.54) hide
 				(name "GND"
 					(effects
 						(font
@@ -2482,8 +2482,8 @@
 				)
 			)
 			(pin power_in line
-				(at 6.35 -48.26 90)
-				(length 2.54)
+				(at 0 -48.26 90)
+				(length 2.54) hide
 				(name "GND"
 					(effects
 						(font
@@ -2500,8 +2500,8 @@
 				)
 			)
 			(pin power_in line
-				(at 8.89 -48.26 90)
-				(length 2.54)
+				(at 0 -48.26 90)
+				(length 2.54) hide
 				(name "GND"
 					(effects
 						(font
@@ -2596,7 +2596,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(property "Reference" "U"
-			(at -11.43 53.848 0)
+			(at -11.43 35.56 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2604,7 +2604,7 @@
 			)
 		)
 		(property "Value" "XS2184"
-			(at 8.382 49.784 0)
+			(at 8.89 34.29 0)
 			(do_not_autoplace)
 			(effects
 				(font
@@ -2613,7 +2613,7 @@
 			)
 		)
 		(property "Footprint" "hw-02-footprint-prj:My_QFN48L"
-			(at 9.144 -29.21 0)
+			(at 19.05 -27.94 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2631,7 +2631,7 @@
 			)
 		)
 		(property "Description" "quad-channel, Power Sourcing Equipment (PSE) power controller with built-in N-channel MOSFETs"
-			(at 0 -8.89 0)
+			(at 1.27 -7.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2650,8 +2650,8 @@
 		)
 		(symbol "XS2184_1_1"
 			(rectangle
-				(start -12.7 48.26)
-				(end 12.7 -48.26)
+				(start -12.7 31.75)
+				(end 12.7 -31.75)
 				(stroke
 					(width 0)
 					(type default)
@@ -2661,8 +2661,8 @@
 				)
 			)
 			(pin no_connect line
-				(at -15.24 45.72 0)
-				(length 2.54)
+				(at -5.08 -34.29 90)
+				(length 2.54) hide
 				(name "N.C."
 					(effects
 						(font
@@ -2679,7 +2679,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -8.89 0)
+				(at -15.24 8.89 0)
 				(length 2.54)
 				(name "A3"
 					(effects
@@ -2697,7 +2697,7 @@
 				)
 			)
 			(pin power_in line
-				(at 1.27 -50.8 90)
+				(at 1.27 -34.29 90)
 				(length 2.54)
 				(name "DGND"
 					(effects
@@ -2715,7 +2715,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -15.24 0)
+				(at -15.24 2.54 0)
 				(length 2.54)
 				(name "SVEE2"
 					(effects
@@ -2733,7 +2733,7 @@
 				)
 			)
 			(pin power_in line
-				(at -1.27 50.8 270)
+				(at -1.27 34.29 270)
 				(length 2.54)
 				(name "VEE"
 					(effects
@@ -2751,7 +2751,7 @@
 				)
 			)
 			(pin power_in line
-				(at 1.27 50.8 270)
+				(at 1.27 34.29 270)
 				(length 2.54)
 				(name "VDD"
 					(effects
@@ -2769,8 +2769,8 @@
 				)
 			)
 			(pin no_connect line
-				(at -15.24 43.18 0)
-				(length 2.54)
+				(at -5.08 -34.29 90)
+				(length 2.54) hide
 				(name "N.C."
 					(effects
 						(font
@@ -2787,8 +2787,8 @@
 				)
 			)
 			(pin no_connect line
-				(at -15.24 40.64 0)
-				(length 2.54)
+				(at -5.08 -34.29 90)
+				(length 2.54) hide
 				(name "N.C."
 					(effects
 						(font
@@ -2805,8 +2805,8 @@
 				)
 			)
 			(pin no_connect line
-				(at -15.24 38.1 0)
-				(length 2.54)
+				(at -5.08 -34.29 90)
+				(length 2.54) hide
 				(name "N.C."
 					(effects
 						(font
@@ -2823,7 +2823,7 @@
 				)
 			)
 			(pin power_in line
-				(at -1.27 -50.8 90)
+				(at -1.27 -34.29 90)
 				(length 2.54)
 				(name "AGND"
 					(effects
@@ -2841,8 +2841,8 @@
 				)
 			)
 			(pin no_connect line
-				(at -15.24 35.56 0)
-				(length 2.54)
+				(at -5.08 -34.29 90)
+				(length 2.54) hide
 				(name "N.C."
 					(effects
 						(font
@@ -2859,7 +2859,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 20.32 180)
+				(at 15.24 6.35 180)
 				(length 2.54)
 				(name "~{INT}"
 					(effects
@@ -2877,8 +2877,8 @@
 				)
 			)
 			(pin no_connect line
-				(at -15.24 33.02 0)
-				(length 2.54)
+				(at -5.08 -34.29 90)
+				(length 2.54) hide
 				(name "N.C."
 					(effects
 						(font
@@ -2895,7 +2895,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 -6.35 180)
+				(at 15.24 -2.54 180)
 				(length 2.54)
 				(name "DRAIN3"
 					(effects
@@ -2913,7 +2913,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 -19.05 180)
+				(at 15.24 -5.08 180)
 				(length 2.54)
 				(name "DRAIN4"
 					(effects
@@ -2931,7 +2931,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -19.05 0)
+				(at -15.24 -1.27 0)
 				(length 2.54)
 				(name "SENSE4"
 					(effects
@@ -2949,8 +2949,8 @@
 				)
 			)
 			(pin no_connect line
-				(at -15.24 30.48 0)
-				(length 2.54)
+				(at -5.08 -34.29 90)
+				(length 2.54) hide
 				(name "N.C."
 					(effects
 						(font
@@ -2967,8 +2967,8 @@
 				)
 			)
 			(pin output line
-				(at 15.24 -21.59 180)
-				(length 2.54)
+				(at 15.24 -5.08 180)
+				(length 2.54) hide
 				(name "DRAIN4"
 					(effects
 						(font
@@ -2985,8 +2985,8 @@
 				)
 			)
 			(pin output line
-				(at 15.24 -24.13 180)
-				(length 2.54)
+				(at 15.24 -5.08 180)
+				(length 2.54) hide
 				(name "DRAIN4"
 					(effects
 						(font
@@ -3003,7 +3003,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -30.48 0)
+				(at -15.24 -12.7 0)
 				(length 2.54)
 				(name "OUT4"
 					(effects
@@ -3021,7 +3021,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -21.59 0)
+				(at -15.24 -3.81 0)
 				(length 2.54)
 				(name "SENSE3"
 					(effects
@@ -3039,8 +3039,8 @@
 				)
 			)
 			(pin output line
-				(at 15.24 -8.89 180)
-				(length 2.54)
+				(at 15.24 -2.54 180)
+				(length 2.54) hide
 				(name "DRAIN3"
 					(effects
 						(font
@@ -3057,7 +3057,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 10.16 0)
+				(at -15.24 27.94 0)
 				(length 2.54)
 				(name "SCL"
 					(effects
@@ -3075,8 +3075,8 @@
 				)
 			)
 			(pin output line
-				(at 15.24 -11.43 180)
-				(length 2.54)
+				(at 15.24 -2.54 180)
+				(length 2.54) hide
 				(name "DRAIN3"
 					(effects
 						(font
@@ -3093,7 +3093,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -33.02 0)
+				(at -15.24 -15.24 0)
 				(length 2.54)
 				(name "OUT3"
 					(effects
@@ -3111,7 +3111,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 3.81 180)
+				(at 15.24 0 180)
 				(length 2.54)
 				(name "DRAIN2"
 					(effects
@@ -3129,7 +3129,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -24.13 0)
+				(at -15.24 -6.35 0)
 				(length 2.54)
 				(name "SENSE2"
 					(effects
@@ -3147,7 +3147,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -35.56 0)
+				(at -15.24 -17.78 0)
 				(length 2.54)
 				(name "OUT2"
 					(effects
@@ -3165,7 +3165,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 16.51 180)
+				(at 15.24 2.54 180)
 				(length 2.54)
 				(name "DRAIN1"
 					(effects
@@ -3183,8 +3183,8 @@
 				)
 			)
 			(pin output line
-				(at 15.24 13.97 180)
-				(length 2.54)
+				(at 15.24 2.54 180)
+				(length 2.54) hide
 				(name "DRAIN1"
 					(effects
 						(font
@@ -3201,7 +3201,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -26.67 0)
+				(at -15.24 -8.89 0)
 				(length 2.54)
 				(name "SENSE1"
 					(effects
@@ -3219,8 +3219,8 @@
 				)
 			)
 			(pin no_connect line
-				(at -15.24 27.94 0)
-				(length 2.54)
+				(at -5.08 -34.29 90)
+				(length 2.54) hide
 				(name "N.C."
 					(effects
 						(font
@@ -3237,8 +3237,8 @@
 				)
 			)
 			(pin output line
-				(at 15.24 11.43 180)
-				(length 2.54)
+				(at 15.24 2.54 180)
+				(length 2.54) hide
 				(name "DRAIN1"
 					(effects
 						(font
@@ -3255,7 +3255,7 @@
 				)
 			)
 			(pin output line
-				(at -15.24 7.62 0)
+				(at -15.24 25.4 0)
 				(length 2.54)
 				(name "SDAOUT"
 					(effects
@@ -3273,8 +3273,8 @@
 				)
 			)
 			(pin output line
-				(at 15.24 1.27 180)
-				(length 2.54)
+				(at 15.24 0 180)
+				(length 2.54) hide
 				(name "DRAIN2"
 					(effects
 						(font
@@ -3291,7 +3291,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -38.1 0)
+				(at -15.24 -20.32 0)
 				(length 2.54)
 				(name "OUT1"
 					(effects
@@ -3309,8 +3309,8 @@
 				)
 			)
 			(pin no_connect line
-				(at -15.24 25.4 0)
-				(length 2.54)
+				(at -5.08 -34.29 90)
+				(length 2.54) hide
 				(name "N.C."
 					(effects
 						(font
@@ -3327,8 +3327,8 @@
 				)
 			)
 			(pin no_connect line
-				(at -15.24 22.86 0)
-				(length 2.54)
+				(at -5.08 -34.29 90)
+				(length 2.54) hide
 				(name "N.C."
 					(effects
 						(font
@@ -3345,8 +3345,8 @@
 				)
 			)
 			(pin no_connect line
-				(at -15.24 20.32 0)
-				(length 2.54)
+				(at -5.08 -34.29 90)
+				(length 2.54) hide
 				(name "N.C."
 					(effects
 						(font
@@ -3363,7 +3363,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -12.7 0)
+				(at -15.24 5.08 0)
 				(length 2.54)
 				(name "SVEE1"
 					(effects
@@ -3381,8 +3381,8 @@
 				)
 			)
 			(pin no_connect line
-				(at -15.24 17.78 0)
-				(length 2.54)
+				(at -5.08 -34.29 90)
+				(length 2.54) hide
 				(name "N.C."
 					(effects
 						(font
@@ -3399,7 +3399,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -41.91 0)
+				(at -15.24 -24.13 0)
 				(length 2.54)
 				(name "AUTO"
 					(effects
@@ -3417,7 +3417,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -45.72 0)
+				(at -15.24 -27.94 0)
 				(length 2.54)
 				(name "MIDSPAN"
 					(effects
@@ -3435,8 +3435,8 @@
 				)
 			)
 			(pin power_in line
-				(at -3.81 50.8 270)
-				(length 2.54)
+				(at -1.27 34.29 270)
+				(length 2.54) hide
 				(name "VEE_BTM"
 					(effects
 						(font
@@ -3453,7 +3453,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 5.08 0)
+				(at -15.24 22.86 0)
 				(length 2.54)
 				(name "SDAIN"
 					(effects
@@ -3471,8 +3471,8 @@
 				)
 			)
 			(pin output line
-				(at 15.24 8.89 180)
-				(length 2.54)
+				(at 15.24 2.54 180)
+				(length 2.54) hide
 				(name "DRAIN1_BTM"
 					(effects
 						(font
@@ -3489,8 +3489,8 @@
 				)
 			)
 			(pin output line
-				(at 15.24 -1.27 180)
-				(length 2.54)
+				(at 15.24 0 180)
+				(length 2.54) hide
 				(name "DRAIN2_BTM"
 					(effects
 						(font
@@ -3507,8 +3507,8 @@
 				)
 			)
 			(pin output line
-				(at 15.24 -13.97 180)
-				(length 2.54)
+				(at 15.24 -2.54 180)
+				(length 2.54) hide
 				(name "DRAIN3_BTM"
 					(effects
 						(font
@@ -3525,8 +3525,8 @@
 				)
 			)
 			(pin output line
-				(at 15.24 -26.67 180)
-				(length 2.54)
+				(at 15.24 -5.08 180)
+				(length 2.54) hide
 				(name "DRAIN4_BTM"
 					(effects
 						(font
@@ -3543,7 +3543,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 1.27 0)
+				(at -15.24 19.05 0)
 				(length 2.54)
 				(name "EN"
 					(effects
@@ -3561,7 +3561,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -1.27 0)
+				(at -15.24 16.51 0)
 				(length 2.54)
 				(name "A0"
 					(effects
@@ -3579,7 +3579,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -3.81 0)
+				(at -15.24 13.97 0)
 				(length 2.54)
 				(name "A1"
 					(effects
@@ -3597,7 +3597,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -6.35 0)
+				(at -15.24 11.43 0)
 				(length 2.54)
 				(name "A2"
 					(effects

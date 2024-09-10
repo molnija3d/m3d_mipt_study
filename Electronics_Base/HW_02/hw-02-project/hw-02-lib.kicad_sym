@@ -92,7 +92,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at -11.43 8.89 0)
+				(at 11.43 -12.7 180)
 				(length 2.54)
 				(name "P0_4"
 					(effects
@@ -110,7 +110,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at -11.43 6.35 0)
+				(at 11.43 -15.24 180)
 				(length 2.54)
 				(name "P0_5"
 					(effects
@@ -128,7 +128,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at -11.43 3.81 0)
+				(at 11.43 -17.78 180)
 				(length 2.54)
 				(name "P0_6"
 					(effects
@@ -146,7 +146,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at -11.43 1.27 0)
+				(at 11.43 -20.32 180)
 				(length 2.54)
 				(name "P0_7"
 					(effects
@@ -236,7 +236,7 @@
 				)
 			)
 			(pin input line
-				(at -11.43 -2.54 0)
+				(at -11.43 7.62 0)
 				(length 2.54)
 				(name "AD0"
 					(effects
@@ -254,7 +254,7 @@
 				)
 			)
 			(pin input line
-				(at -11.43 -8.89 0)
+				(at -11.43 1.27 0)
 				(length 2.54)
 				(name "SCL"
 					(effects
@@ -289,8 +289,8 @@
 					)
 				)
 			)
-			(pin input line
-				(at -11.43 -11.43 0)
+			(pin bidirectional line
+				(at -11.43 -1.27 0)
 				(length 2.54)
 				(name "SDA"
 					(effects
@@ -325,10 +325,10 @@
 					)
 				)
 			)
-			(pin output line
-				(at -11.43 -15.24 0)
+			(pin open_collector line
+				(at -11.43 -5.08 0)
 				(length 2.54)
-				(name "INTN"
+				(name "~{INTN}"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -344,9 +344,9 @@
 				)
 			)
 			(pin output line
-				(at -11.43 -17.78 0)
+				(at -11.43 -7.62 0)
 				(length 2.54)
-				(name "RSTN"
+				(name "~{RSTN}"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -362,7 +362,7 @@
 				)
 			)
 			(pin input line
-				(at -11.43 -5.08 0)
+				(at -11.43 5.08 0)
 				(length 2.54)
 				(name "AD1"
 					(effects
@@ -434,7 +434,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at -11.43 19.05 0)
+				(at 11.43 -2.54 180)
 				(length 2.54)
 				(name "P0_0"
 					(effects
@@ -452,7 +452,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at -11.43 16.51 0)
+				(at 11.43 -5.08 180)
 				(length 2.54)
 				(name "P0_1"
 					(effects
@@ -470,7 +470,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at -11.43 13.97 0)
+				(at 11.43 -7.62 180)
 				(length 2.54)
 				(name "P0_2"
 					(effects
@@ -488,7 +488,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at -11.43 11.43 0)
+				(at 11.43 -10.16 180)
 				(length 2.54)
 				(name "P0_3"
 					(effects
@@ -530,7 +530,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(property "Reference" "U"
-			(at 15.24 69.85 0)
+			(at -20.32 54.61 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -538,7 +538,7 @@
 			)
 		)
 		(property "Value" "BL0910"
-			(at 17.78 66.04 0)
+			(at 19.05 54.61 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -546,7 +546,7 @@
 			)
 		)
 		(property "Footprint" "hw-02-footprint-prj:My_LQFP48"
-			(at -20.32 59.69 0)
+			(at -19.05 48.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -555,7 +555,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.compel.ru/item-pdf/5ba3245acc89f7213ea0cc7e9a0b8c0e/pn/cn-bell~bl0910.pdf"
-			(at 20.32 -56.388 0)
+			(at 7.62 -55.88 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -564,7 +564,7 @@
 			)
 		)
 		(property "Description" "Ten phase energy measuring chip"
-			(at -33.782 63.754 0)
+			(at 0 6.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -583,8 +583,8 @@
 		)
 		(symbol "BL0910_1_1"
 			(rectangle
-				(start -22.86 62.23)
-				(end 22.86 -62.23)
+				(start -21.59 50.8)
+				(end 21.59 -50.8)
 				(stroke
 					(width 0)
 					(type default)
@@ -594,7 +594,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 57.15 0)
+				(at -26.67 46.99 0)
 				(length 5.08)
 				(name "VT"
 					(effects
@@ -612,7 +612,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 22.86 0)
+				(at -26.67 2.54 0)
 				(length 5.08)
 				(name "IP9"
 					(effects
@@ -630,7 +630,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 19.05 0)
+				(at -26.67 -1.27 0)
 				(length 5.08)
 				(name "IN10"
 					(effects
@@ -648,7 +648,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 15.24 0)
+				(at -26.67 -5.08 0)
 				(length 5.08)
 				(name "IP10"
 					(effects
@@ -666,7 +666,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 10.16 0)
+				(at -26.67 39.37 0)
 				(length 5.08)
 				(name "VN"
 					(effects
@@ -684,7 +684,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 6.35 0)
+				(at -26.67 35.56 0)
 				(length 5.08)
 				(name "VP"
 					(effects
@@ -702,7 +702,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 1.27 0)
+				(at 26.67 -12.7 180)
 				(length 5.08)
 				(name "~{RST}"
 					(effects
@@ -719,8 +719,8 @@
 					)
 				)
 			)
-			(pin power_in inverted
-				(at -2.54 -68.58 90)
+			(pin power_in line
+				(at -2.54 -55.88 90)
 				(length 5.08)
 				(name "AGND"
 					(effects
@@ -737,8 +737,8 @@
 					)
 				)
 			)
-			(pin power_in inverted
-				(at 2.54 -68.58 90)
+			(pin power_in line
+				(at 2.54 -55.88 90)
 				(length 5.08)
 				(name "DGND"
 					(effects
@@ -756,7 +756,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 -2.54 0)
+				(at 26.67 -16.51 180)
 				(length 5.08)
 				(name "CS"
 					(effects
@@ -774,7 +774,7 @@
 				)
 			)
 			(pin output line
-				(at -27.94 -6.35 0)
+				(at 26.67 -20.32 180)
 				(length 5.08)
 				(name "TX/SDO"
 					(effects
@@ -792,7 +792,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 53.34 0)
+				(at -26.67 43.18 0)
 				(length 5.08)
 				(name "VREF"
 					(effects
@@ -810,7 +810,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 -10.16 0)
+				(at 26.67 -24.13 180)
 				(length 5.08)
 				(name "RX/SDI"
 					(effects
@@ -828,7 +828,7 @@
 				)
 			)
 			(pin input clock
-				(at -27.94 -13.97 0)
+				(at 26.67 -27.94 180)
 				(length 5.08)
 				(name "SCLK"
 					(effects
@@ -846,7 +846,7 @@
 				)
 			)
 			(pin output line
-				(at 27.94 54.61 180)
+				(at 26.67 40.64 180)
 				(length 5.08)
 				(name "~{IRQ1}"
 					(effects
@@ -864,7 +864,7 @@
 				)
 			)
 			(pin output line
-				(at 27.94 50.8 180)
+				(at 26.67 36.83 180)
 				(length 5.08)
 				(name "~{IRQ2}"
 					(effects
@@ -882,7 +882,7 @@
 				)
 			)
 			(pin power_in line
-				(at -8.89 64.77 270)
+				(at -7.62 53.34 270)
 				(length 2.54)
 				(name "VPP"
 					(effects
@@ -900,7 +900,7 @@
 				)
 			)
 			(pin output line
-				(at 27.94 43.18 180)
+				(at 26.67 29.21 180)
 				(length 5.08)
 				(name "M1"
 					(effects
@@ -918,7 +918,7 @@
 				)
 			)
 			(pin output line
-				(at 27.94 39.37 180)
+				(at 26.67 25.4 180)
 				(length 5.08)
 				(name "M2/CF_watt"
 					(effects
@@ -936,7 +936,7 @@
 				)
 			)
 			(pin output line
-				(at 27.94 35.56 180)
+				(at 26.67 21.59 180)
 				(length 5.08)
 				(name "M3/CF_var"
 					(effects
@@ -954,7 +954,7 @@
 				)
 			)
 			(pin output line
-				(at 27.94 12.7 180)
+				(at 26.67 -1.27 180)
 				(length 5.08)
 				(name "M4"
 					(effects
@@ -972,7 +972,7 @@
 				)
 			)
 			(pin output line
-				(at 27.94 16.51 180)
+				(at 26.67 2.54 180)
 				(length 5.08)
 				(name "M5"
 					(effects
@@ -990,7 +990,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 49.53 0)
+				(at -26.67 29.21 0)
 				(length 5.08)
 				(name "IN6"
 					(effects
@@ -1008,7 +1008,7 @@
 				)
 			)
 			(pin output line
-				(at 27.94 20.32 180)
+				(at 26.67 6.35 180)
 				(length 5.08)
 				(name "M6"
 					(effects
@@ -1026,7 +1026,7 @@
 				)
 			)
 			(pin output line
-				(at 27.94 24.13 180)
+				(at 26.67 10.16 180)
 				(length 5.08)
 				(name "M7"
 					(effects
@@ -1044,7 +1044,7 @@
 				)
 			)
 			(pin output line
-				(at 27.94 27.94 180)
+				(at 26.67 13.97 180)
 				(length 5.08)
 				(name "M8"
 					(effects
@@ -1062,7 +1062,7 @@
 				)
 			)
 			(pin output line
-				(at 27.94 31.75 180)
+				(at 26.67 17.78 180)
 				(length 5.08)
 				(name "M9"
 					(effects
@@ -1080,7 +1080,7 @@
 				)
 			)
 			(pin output line
-				(at 27.94 8.89 180)
+				(at 26.67 -5.08 180)
 				(length 5.08)
 				(name "M10"
 					(effects
@@ -1098,7 +1098,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at -3.81 64.77 270)
+				(at -2.54 53.34 270)
 				(length 2.54)
 				(name "DVDD18"
 					(effects
@@ -1116,7 +1116,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 -17.78 0)
+				(at 26.67 -31.75 180)
 				(length 5.08)
 				(name "SEL"
 					(effects
@@ -1134,7 +1134,7 @@
 				)
 			)
 			(pin power_in line
-				(at 1.27 64.77 270)
+				(at 2.54 53.34 270)
 				(length 2.54)
 				(name "DVDD"
 					(effects
@@ -1152,7 +1152,7 @@
 				)
 			)
 			(pin power_in line
-				(at 6.35 64.77 270)
+				(at 7.62 53.34 270)
 				(length 2.54)
 				(name "AVDD"
 					(effects
@@ -1170,7 +1170,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 -24.13 0)
+				(at -26.67 -11.43 0)
 				(length 5.08)
 				(name "IN1"
 					(effects
@@ -1188,7 +1188,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 45.72 0)
+				(at -26.67 25.4 0)
 				(length 5.08)
 				(name "IP6"
 					(effects
@@ -1206,7 +1206,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 -27.94 0)
+				(at -26.67 -15.24 0)
 				(length 5.08)
 				(name "IP1"
 					(effects
@@ -1224,7 +1224,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 -31.75 0)
+				(at -26.67 -19.05 0)
 				(length 5.08)
 				(name "IN2"
 					(effects
@@ -1242,7 +1242,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 -35.56 0)
+				(at -26.67 -22.86 0)
 				(length 5.08)
 				(name "IP2"
 					(effects
@@ -1260,7 +1260,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 -39.37 0)
+				(at -26.67 -26.67 0)
 				(length 5.08)
 				(name "IN3"
 					(effects
@@ -1278,7 +1278,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 -43.18 0)
+				(at -26.67 -30.48 0)
 				(length 5.08)
 				(name "IP3"
 					(effects
@@ -1296,7 +1296,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 -46.99 0)
+				(at -26.67 -34.29 0)
 				(length 5.08)
 				(name "IN4"
 					(effects
@@ -1314,7 +1314,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 -50.8 0)
+				(at -26.67 -38.1 0)
 				(length 5.08)
 				(name "IP4"
 					(effects
@@ -1332,7 +1332,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 -54.61 0)
+				(at -26.67 -41.91 0)
 				(length 5.08)
 				(name "IN5"
 					(effects
@@ -1350,7 +1350,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 -58.42 0)
+				(at -26.67 -45.72 0)
 				(length 5.08)
 				(name "IP5"
 					(effects
@@ -1368,7 +1368,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 41.91 0)
+				(at -26.67 21.59 0)
 				(length 5.08)
 				(name "IN7"
 					(effects
@@ -1386,7 +1386,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 38.1 0)
+				(at -26.67 17.78 0)
 				(length 5.08)
 				(name "IP7"
 					(effects
@@ -1404,7 +1404,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 34.29 0)
+				(at -26.67 13.97 0)
 				(length 5.08)
 				(name "IN8"
 					(effects
@@ -1422,7 +1422,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 30.48 0)
+				(at -26.67 10.16 0)
 				(length 5.08)
 				(name "IP8"
 					(effects
@@ -1440,7 +1440,7 @@
 				)
 			)
 			(pin input line
-				(at -27.94 26.67 0)
+				(at -26.67 6.35 0)
 				(length 5.08)
 				(name "IN9"
 					(effects
@@ -1480,7 +1480,7 @@
 			)
 		)
 		(property "Footprint" "hw-02-footprint-prj:My_HLK-7628N"
-			(at 1.27 -39.37 0)
+			(at 1.27 -42.545 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1489,7 +1489,7 @@
 			)
 		)
 		(property "Datasheet" "https://files.rct.ru/pdf/modules/hlk-7628n.pdf"
-			(at -1.27 11.43 0)
+			(at -1.27 8.255 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1498,7 +1498,7 @@
 			)
 		)
 		(property "Description" "low power consumption IOT module"
-			(at 0 -7.62 0)
+			(at 0 -10.795 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1546,7 +1546,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 29.21 180)
+				(at 16.51 26.035 180)
 				(length 2.54)
 				(name "EPHY_LED3"
 					(effects
@@ -1564,7 +1564,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 31.75 180)
+				(at 16.51 28.575 180)
 				(length 2.54)
 				(name "EPHY_LED2"
 					(effects
@@ -1582,7 +1582,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 34.29 180)
+				(at 16.51 31.115 180)
 				(length 2.54)
 				(name "EPHY_LED1"
 					(effects
@@ -1600,7 +1600,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 36.83 180)
+				(at 16.51 33.655 180)
 				(length 2.54)
 				(name "EPHY_LED0"
 					(effects
@@ -1653,7 +1653,7 @@
 					)
 				)
 			)
-			(pin input line
+			(pin bidirectional line
 				(at -16.51 19.05 0)
 				(length 2.54)
 				(name "UART_RXD1"
@@ -1779,8 +1779,8 @@
 					)
 				)
 			)
-			(pin power_in line
-				(at 1.27 45.72 270)
+			(pin bidirectional line
+				(at 16.51 38.735 180)
 				(length 2.54)
 				(name "ANT"
 					(effects
@@ -1977,7 +1977,7 @@
 					)
 				)
 			)
-			(pin input line
+			(pin bidirectional line
 				(at -16.51 12.7 0)
 				(length 2.54)
 				(name "UART_RXD0"
@@ -2014,7 +2014,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 13.97 180)
+				(at 16.51 10.795 180)
 				(length 2.54)
 				(name "MDI_RP_P0"
 					(effects
@@ -2032,7 +2032,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 16.51 180)
+				(at 16.51 13.335 180)
 				(length 2.54)
 				(name "MDI_RN_P0"
 					(effects
@@ -2050,7 +2050,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 19.05 180)
+				(at 16.51 15.875 180)
 				(length 2.54)
 				(name "MDI_TP_P0"
 					(effects
@@ -2068,7 +2068,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 21.59 180)
+				(at 16.51 18.415 180)
 				(length 2.54)
 				(name "MDI_TN_P0"
 					(effects
@@ -2086,7 +2086,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 2.54 180)
+				(at 16.51 -0.635 180)
 				(length 2.54)
 				(name "MDI_TP_P1"
 					(effects
@@ -2104,7 +2104,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 5.08 180)
+				(at 16.51 1.905 180)
 				(length 2.54)
 				(name "MDI_TN_P1"
 					(effects
@@ -2140,7 +2140,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 7.62 180)
+				(at 16.51 4.445 180)
 				(length 2.54)
 				(name "MDI_RP_P1"
 					(effects
@@ -2158,7 +2158,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 10.16 180)
+				(at 16.51 6.985 180)
 				(length 2.54)
 				(name "MDI_RN_P1"
 					(effects
@@ -2176,7 +2176,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 -10.16 180)
+				(at 16.51 -13.335 180)
 				(length 2.54)
 				(name "MDI_RP_P2"
 					(effects
@@ -2194,7 +2194,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 -7.62 180)
+				(at 16.51 -10.795 180)
 				(length 2.54)
 				(name "MDI_RN_P2"
 					(effects
@@ -2212,7 +2212,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 -5.08 180)
+				(at 16.51 -8.255 180)
 				(length 2.54)
 				(name "MDI_TP_P2"
 					(effects
@@ -2230,7 +2230,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 -2.54 180)
+				(at 16.51 -5.715 180)
 				(length 2.54)
 				(name "MDI_TN_P2"
 					(effects
@@ -2248,7 +2248,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 -22.86 180)
+				(at 16.51 -26.035 180)
 				(length 2.54)
 				(name "MDI_TP_P3"
 					(effects
@@ -2266,7 +2266,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 -20.32 180)
+				(at 16.51 -23.495 180)
 				(length 2.54)
 				(name "MDI_TN_P3"
 					(effects
@@ -2284,7 +2284,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 -17.78 180)
+				(at 16.51 -20.955 180)
 				(length 2.54)
 				(name "MDI_RP_P3"
 					(effects
@@ -2302,7 +2302,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 -15.24 180)
+				(at 16.51 -18.415 180)
 				(length 2.54)
 				(name "MDI_RN_P3"
 					(effects
@@ -2338,7 +2338,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 -35.56 180)
+				(at 16.51 -38.735 180)
 				(length 2.54)
 				(name "MDI_RP_P4"
 					(effects
@@ -2356,7 +2356,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 -33.02 180)
+				(at 16.51 -36.195 180)
 				(length 2.54)
 				(name "MDI_RN_P4"
 					(effects
@@ -2374,7 +2374,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 -30.48 180)
+				(at 16.51 -33.655 180)
 				(length 2.54)
 				(name "MDI_TP_P4"
 					(effects
@@ -2392,7 +2392,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 -27.94 180)
+				(at 16.51 -31.115 180)
 				(length 2.54)
 				(name "MDI_TN_P4"
 					(effects
@@ -2572,7 +2572,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 16.51 26.67 180)
+				(at 16.51 23.495 180)
 				(length 2.54)
 				(name "EPHY_LED4"
 					(effects
@@ -2596,7 +2596,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(property "Reference" "U"
-			(at -11.43 35.56 0)
+			(at -12.065 32.385 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2604,7 +2604,7 @@
 			)
 		)
 		(property "Value" "XS2184"
-			(at 8.89 34.29 0)
+			(at 8.255 31.115 0)
 			(do_not_autoplace)
 			(effects
 				(font
@@ -2613,7 +2613,7 @@
 			)
 		)
 		(property "Footprint" "hw-02-footprint-prj:My_QFN48L"
-			(at 19.05 -27.94 0)
+			(at 19.05 -29.845 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2622,7 +2622,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 0 -8.89 0)
+			(at -0.635 -12.065 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2631,7 +2631,7 @@
 			)
 		)
 		(property "Description" "quad-channel, Power Sourcing Equipment (PSE) power controller with built-in N-channel MOSFETs"
-			(at 1.27 -7.62 0)
+			(at -8.255 -32.385 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2650,8 +2650,8 @@
 		)
 		(symbol "XS2184_1_1"
 			(rectangle
-				(start -12.7 31.75)
-				(end 12.7 -31.75)
+				(start -13.335 28.575)
+				(end 12.065 -28.575)
 				(stroke
 					(width 0)
 					(type default)
@@ -2661,7 +2661,7 @@
 				)
 			)
 			(pin no_connect line
-				(at -5.08 -34.29 90)
+				(at -5.715 -31.115 90)
 				(length 2.54) hide
 				(name "N.C."
 					(effects
@@ -2679,7 +2679,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 8.89 0)
+				(at -15.875 5.715 0)
 				(length 2.54)
 				(name "A3"
 					(effects
@@ -2697,7 +2697,7 @@
 				)
 			)
 			(pin power_in line
-				(at 1.27 -34.29 90)
+				(at -0.635 -31.115 90)
 				(length 2.54)
 				(name "DGND"
 					(effects
@@ -2715,7 +2715,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 2.54 0)
+				(at -15.875 -0.635 0)
 				(length 2.54)
 				(name "SVEE2"
 					(effects
@@ -2733,7 +2733,7 @@
 				)
 			)
 			(pin power_in line
-				(at -1.27 34.29 270)
+				(at 1.905 -31.115 90)
 				(length 2.54)
 				(name "VEE"
 					(effects
@@ -2751,7 +2751,7 @@
 				)
 			)
 			(pin power_in line
-				(at 1.27 34.29 270)
+				(at 0.635 31.115 270)
 				(length 2.54)
 				(name "VDD"
 					(effects
@@ -2769,7 +2769,7 @@
 				)
 			)
 			(pin no_connect line
-				(at -5.08 -34.29 90)
+				(at -5.715 -31.115 90)
 				(length 2.54) hide
 				(name "N.C."
 					(effects
@@ -2787,7 +2787,7 @@
 				)
 			)
 			(pin no_connect line
-				(at -5.08 -34.29 90)
+				(at -5.715 -31.115 90)
 				(length 2.54) hide
 				(name "N.C."
 					(effects
@@ -2805,7 +2805,7 @@
 				)
 			)
 			(pin no_connect line
-				(at -5.08 -34.29 90)
+				(at -5.715 -31.115 90)
 				(length 2.54) hide
 				(name "N.C."
 					(effects
@@ -2823,7 +2823,7 @@
 				)
 			)
 			(pin power_in line
-				(at -1.27 -34.29 90)
+				(at -3.175 -31.115 90)
 				(length 2.54)
 				(name "AGND"
 					(effects
@@ -2841,7 +2841,7 @@
 				)
 			)
 			(pin no_connect line
-				(at -5.08 -34.29 90)
+				(at -5.715 -31.115 90)
 				(length 2.54) hide
 				(name "N.C."
 					(effects
@@ -2858,8 +2858,8 @@
 					)
 				)
 			)
-			(pin output line
-				(at 15.24 6.35 180)
+			(pin input line
+				(at -15.875 -16.51 0)
 				(length 2.54)
 				(name "~{INT}"
 					(effects
@@ -2877,7 +2877,7 @@
 				)
 			)
 			(pin no_connect line
-				(at -5.08 -34.29 90)
+				(at -5.715 -31.115 90)
 				(length 2.54) hide
 				(name "N.C."
 					(effects
@@ -2895,7 +2895,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 -2.54 180)
+				(at 14.605 -3.175 180)
 				(length 2.54)
 				(name "DRAIN3"
 					(effects
@@ -2913,7 +2913,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 -5.08 180)
+				(at 14.605 -10.16 180)
 				(length 2.54)
 				(name "DRAIN4"
 					(effects
@@ -2931,7 +2931,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -1.27 0)
+				(at -15.875 -4.445 0)
 				(length 2.54)
 				(name "SENSE4"
 					(effects
@@ -2949,7 +2949,7 @@
 				)
 			)
 			(pin no_connect line
-				(at -5.08 -34.29 90)
+				(at -5.715 -31.115 90)
 				(length 2.54) hide
 				(name "N.C."
 					(effects
@@ -2967,7 +2967,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 -5.08 180)
+				(at 14.605 -10.16 180)
 				(length 2.54) hide
 				(name "DRAIN4"
 					(effects
@@ -2985,7 +2985,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 -5.08 180)
+				(at 14.605 -10.16 180)
 				(length 2.54) hide
 				(name "DRAIN4"
 					(effects
@@ -3003,7 +3003,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -12.7 0)
+				(at 14.605 -12.7 180)
 				(length 2.54)
 				(name "OUT4"
 					(effects
@@ -3021,7 +3021,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -3.81 0)
+				(at -15.875 -6.985 0)
 				(length 2.54)
 				(name "SENSE3"
 					(effects
@@ -3039,7 +3039,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 -2.54 180)
+				(at 14.605 -3.175 180)
 				(length 2.54) hide
 				(name "DRAIN3"
 					(effects
@@ -3057,7 +3057,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 27.94 0)
+				(at -15.875 24.765 0)
 				(length 2.54)
 				(name "SCL"
 					(effects
@@ -3075,7 +3075,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 -2.54 180)
+				(at 14.605 -3.175 180)
 				(length 2.54) hide
 				(name "DRAIN3"
 					(effects
@@ -3093,7 +3093,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -15.24 0)
+				(at 14.605 -5.715 180)
 				(length 2.54)
 				(name "OUT3"
 					(effects
@@ -3111,7 +3111,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 0 180)
+				(at 14.605 3.175 180)
 				(length 2.54)
 				(name "DRAIN2"
 					(effects
@@ -3129,7 +3129,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -6.35 0)
+				(at -15.875 -9.525 0)
 				(length 2.54)
 				(name "SENSE2"
 					(effects
@@ -3147,7 +3147,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -17.78 0)
+				(at 14.605 0.635 180)
 				(length 2.54)
 				(name "OUT2"
 					(effects
@@ -3165,7 +3165,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 2.54 180)
+				(at 14.605 9.525 180)
 				(length 2.54)
 				(name "DRAIN1"
 					(effects
@@ -3183,7 +3183,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 2.54 180)
+				(at 14.605 9.525 180)
 				(length 2.54) hide
 				(name "DRAIN1"
 					(effects
@@ -3201,7 +3201,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -8.89 0)
+				(at -15.875 -12.065 0)
 				(length 2.54)
 				(name "SENSE1"
 					(effects
@@ -3219,7 +3219,7 @@
 				)
 			)
 			(pin no_connect line
-				(at -5.08 -34.29 90)
+				(at -5.715 -31.115 90)
 				(length 2.54) hide
 				(name "N.C."
 					(effects
@@ -3237,7 +3237,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 2.54 180)
+				(at 14.605 9.525 180)
 				(length 2.54) hide
 				(name "DRAIN1"
 					(effects
@@ -3255,7 +3255,7 @@
 				)
 			)
 			(pin output line
-				(at -15.24 25.4 0)
+				(at -15.875 22.225 0)
 				(length 2.54)
 				(name "SDAOUT"
 					(effects
@@ -3273,7 +3273,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 0 180)
+				(at 14.605 3.175 180)
 				(length 2.54) hide
 				(name "DRAIN2"
 					(effects
@@ -3291,7 +3291,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -20.32 0)
+				(at 14.605 6.985 180)
 				(length 2.54)
 				(name "OUT1"
 					(effects
@@ -3309,7 +3309,7 @@
 				)
 			)
 			(pin no_connect line
-				(at -5.08 -34.29 90)
+				(at -5.715 -31.115 90)
 				(length 2.54) hide
 				(name "N.C."
 					(effects
@@ -3327,7 +3327,7 @@
 				)
 			)
 			(pin no_connect line
-				(at -5.08 -34.29 90)
+				(at -5.715 -31.115 90)
 				(length 2.54) hide
 				(name "N.C."
 					(effects
@@ -3345,7 +3345,7 @@
 				)
 			)
 			(pin no_connect line
-				(at -5.08 -34.29 90)
+				(at -5.715 -31.115 90)
 				(length 2.54) hide
 				(name "N.C."
 					(effects
@@ -3363,7 +3363,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 5.08 0)
+				(at -15.875 1.905 0)
 				(length 2.54)
 				(name "SVEE1"
 					(effects
@@ -3381,7 +3381,7 @@
 				)
 			)
 			(pin no_connect line
-				(at -5.08 -34.29 90)
+				(at -5.715 -31.115 90)
 				(length 2.54) hide
 				(name "N.C."
 					(effects
@@ -3399,7 +3399,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -24.13 0)
+				(at -15.875 -20.955 0)
 				(length 2.54)
 				(name "AUTO"
 					(effects
@@ -3417,7 +3417,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 -27.94 0)
+				(at -15.875 -24.765 0)
 				(length 2.54)
 				(name "MIDSPAN"
 					(effects
@@ -3435,7 +3435,7 @@
 				)
 			)
 			(pin power_in line
-				(at -1.27 34.29 270)
+				(at 1.905 -31.115 90)
 				(length 2.54) hide
 				(name "VEE_BTM"
 					(effects
@@ -3453,7 +3453,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 22.86 0)
+				(at -15.875 19.685 0)
 				(length 2.54)
 				(name "SDAIN"
 					(effects
@@ -3471,7 +3471,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 2.54 180)
+				(at 14.605 9.525 180)
 				(length 2.54) hide
 				(name "DRAIN1_BTM"
 					(effects
@@ -3489,7 +3489,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 0 180)
+				(at 14.605 3.175 180)
 				(length 2.54) hide
 				(name "DRAIN2_BTM"
 					(effects
@@ -3507,7 +3507,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 -2.54 180)
+				(at 14.605 -3.175 180)
 				(length 2.54) hide
 				(name "DRAIN3_BTM"
 					(effects
@@ -3525,7 +3525,7 @@
 				)
 			)
 			(pin output line
-				(at 15.24 -5.08 180)
+				(at 14.605 -10.16 180)
 				(length 2.54) hide
 				(name "DRAIN4_BTM"
 					(effects
@@ -3543,7 +3543,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 19.05 0)
+				(at -15.875 15.875 0)
 				(length 2.54)
 				(name "EN"
 					(effects
@@ -3561,7 +3561,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 16.51 0)
+				(at -15.875 13.335 0)
 				(length 2.54)
 				(name "A0"
 					(effects
@@ -3579,7 +3579,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 13.97 0)
+				(at -15.875 10.795 0)
 				(length 2.54)
 				(name "A1"
 					(effects
@@ -3597,7 +3597,7 @@
 				)
 			)
 			(pin input line
-				(at -15.24 11.43 0)
+				(at -15.875 8.255 0)
 				(length 2.54)
 				(name "A2"
 					(effects

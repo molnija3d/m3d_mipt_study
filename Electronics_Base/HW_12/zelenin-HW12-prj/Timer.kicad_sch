@@ -1549,16 +1549,27 @@
 		)
 		(uuid "e6ecedb6-4f50-4777-b440-7e9428c6e34e")
 	)
-	(label "Gen"
+	(global_label "Gen"
+		(shape input)
 		(at 173.99 93.98 0)
 		(fields_autoplaced yes)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify left bottom)
+			(justify left)
 		)
-		(uuid "30ad5db9-55ef-447f-8719-390b95c0a5ce")
+		(uuid "a0a207e3-416a-46e5-8cc1-dc7dc808ca2d")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 180.4828 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
 	)
 	(symbol
 		(lib_id "Device:C")
@@ -1656,7 +1667,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_THT:CP_Radial_D8.0mm_P3.80mm"
 			(at 107.6452 88.9 0)
 			(effects
 				(font
@@ -1693,75 +1704,6 @@
 			(project "zelenin-HW12-prj"
 				(path "/d8282999-5d3e-4eb4-8155-ce42c9555059/8c71588c-cd00-42fb-a4d6-e4944b0e4adb"
 					(reference "C5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C_Polarized")
-		(at 162.56 102.87 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "2f180618-25c2-4b40-9d33-7c1b21fd36d1")
-		(property "Reference" "C8"
-			(at 156.21 102.108 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "220pF"
-			(at 155.702 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_THT:CP_Radial_D4.0mm_P1.50mm"
-			(at 163.5252 106.68 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 162.56 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Polarized capacitor"
-			(at 162.56 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "f48dca63-1a53-48ab-8f96-545482fac512")
-		)
-		(pin "2"
-			(uuid "8d6b0d68-3b35-4ab1-8c34-bc3f514df9d0")
-		)
-		(instances
-			(project "zelenin-HW12-prj"
-				(path "/d8282999-5d3e-4eb4-8155-ce42c9555059/8c71588c-cd00-42fb-a4d6-e4944b0e4adb"
-					(reference "C8")
 					(unit 1)
 				)
 			)
@@ -1882,7 +1824,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
 			(at 164.338 71.12 90)
 			(effects
 				(font
@@ -2151,7 +2093,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Diode_THT:D_A-405_P10.16mm_Horizontal"
 			(at 170.18 100.33 0)
 			(effects
 				(font
@@ -2220,7 +2162,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
 			(at 164.338 88.9 90)
 			(effects
 				(font
@@ -2289,7 +2231,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal"
+		(property "Footprint" "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P2.54mm_Vertical"
 			(at 171.958 85.09 90)
 			(effects
 				(font
@@ -2326,6 +2268,75 @@
 			(project "zelenin-HW12-prj"
 				(path "/d8282999-5d3e-4eb4-8155-ce42c9555059/8c71588c-cd00-42fb-a4d6-e4944b0e4adb"
 					(reference "R19")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C")
+		(at 162.56 102.87 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ebfb1585-897b-4056-ade3-c534b55cba31")
+		(property "Reference" "C8"
+			(at 159.512 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22нФ"
+			(at 159.004 108.712 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_THT:C_Disc_D3.0mm_W2.0mm_P2.50mm"
+			(at 163.5252 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 162.56 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor"
+			(at 162.56 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "9515ce3e-c0d4-43ae-9e85-431e796e47fe")
+		)
+		(pin "1"
+			(uuid "b4176418-d4c2-44d2-8621-46e7a68a0125")
+		)
+		(instances
+			(project "zelenin-HW12-prj"
+				(path "/d8282999-5d3e-4eb4-8155-ce42c9555059/8c71588c-cd00-42fb-a4d6-e4944b0e4adb"
+					(reference "C8")
 					(unit 1)
 				)
 			)

@@ -4,13 +4,17 @@
 // If you dismantle all LEDS and disconnect power pin from CH341 it will be capable to reach 2.5mA in IDLE mode.
 // You can solder CH341 power directly from USB socket.
 // To launch menu hold encoder button during screensaver
+// Battery monitoring was made with 10:100k resistors divider at ADC port (PIN_BATT A3)
 // To erase EEPROM, set "ERASE EEPROM" to 1 and remove a power from the device.
+// Here is used 320x240 SPI display.
 // Идея игры "Columns" и принцип управления энкодером из этого очень интересного проекта https://mysku.club/blog/diy/65413.html
 // Если отпаять светодиоды с платы и перенести питание CH341 на прямую от USB порта, 
 // то в режиме сна потребление около 2.5мА. Для выхода из спящего режима - нажать на кнопку энкодера.
 // В игре реализована система меню. Для входа в которое нужно зажать энкодер во время простоя.
 // Из меню можно включить или отключить звук, выбрать режим тетриса, цвет кубиков, длительность заставки
 // для сброса EEPROM нужно включить в 1 соответствующий параметр меню и перезагрузить устройство по питанию.
+// Индикатор заряда сделан с помощью делителя 10:100кОм и АЦП.
+// Используется SPI дисплей 320х240
 */
 #include <Adafruit_GFX.h>
 #include <Adafruit_ST7789.h>
@@ -239,17 +243,17 @@ void loop() {
 }
 
 //==================================================
-void navigate_menu() {
+void navigate_menu() { // навигация по меню
   if (enc_rot != 0) {
-    menu_item += enc_rot;
+    menu_item += enc_rot; //если было вращение энкодера, переместиться на другой пункт меню
     menu_item< 0 ? menu_item = 5 : menu_item > 5 ? menu_item = 0 : menu_item;
     last_activity = millis();
   }
   switch (menu_item) {
     case 0:
-      draw_menu_asterisk(MENU_T + 15 * 5, 0);
+      draw_menu_asterisk(MENU_T + 15 * 5, 0); //затереть звездочку в старом положении
       draw_menu_asterisk(MENU_T, 1);
-      draw_menu_asterisk(MENU_T + 15, 0);
+      draw_menu_asterisk(MENU_T + 15, 0); //поставить новую звездочку
       if (push_res == short_push) {
         params.sound = !params.sound;
         params.menu_update = true;
@@ -271,7 +275,7 @@ void navigate_menu() {
       draw_menu_asterisk(MENU_T + 15 * menu_item, 1);
       draw_menu_asterisk(MENU_T + 15 * (menu_item + 1), 0);
       if (push_res == short_push) {
-        eeprom_write_byte(KEY_ADDR, eeprom_read_byte(KEY_ADDR) != 0 ? 0 : EEPROM_KEY);
+        eeprom_write_byte(KEY_ADDR, eeprom_read_byte(KEY_ADDR) != 0 ? 0 : EEPROM_KEY); //записть в EEPROM несовпадающего с ключем значения, для сброса при включении
         params.menu_update = true;
       }
       break;
@@ -354,8 +358,8 @@ void upd_info() {
 }
 
 //==================================================
-void menu() {
-  if (params.menu_update) {
+void menu() {  // отрисовка меню
+  if (params.menu_update) {  
     tft.drawRect(MENU_X, MENU_Y, MENU_W, MENU_H, ST77XX_BLACK);
     tft.fillRect(MENU_X + 1, MENU_Y + 1, MENU_W - 2, MENU_H - 2, ST77XX_WHITE);
     tft.setCursor(MENU_X + 1, MENU_T - 25);
@@ -379,6 +383,7 @@ void menu() {
     eeprom_read_byte(KEY_ADDR) == EEPROM_KEY ? tft.print("  RESET EEPROM = 0") : tft.print("  RESET EEPROM = 1");
 
     //{ ST77XX_WHITE, ST77XX_BLACK, ST77XX_RED, ST77XX_BLUE, ST77XX_GREEN, ST77XX_YELLOW, ST77XX_MAGENTA, ST77XX_CYAN }
+    // отображение выбранного цвета
     tft.setCursor(MENU_X + 1, MENU_T + 45);
     tft.setTextSize(1);
     tft.setTextColor(ST77XX_BLACK);
@@ -402,7 +407,7 @@ void menu() {
   }
 }
 //================================================
-void draw_menu_asterisk(uint8_t yy, bool mode) {
+void draw_menu_asterisk(uint8_t yy, bool mode) { //поставить звездочку
   tft.setCursor(MENU_X + 1, yy);
   tft.setTextSize(1);
   tft.setTextColor(ST77XX_BLACK);
@@ -414,7 +419,7 @@ void draw_menu_asterisk(uint8_t yy, bool mode) {
 }
 
 //================================================
-void process_pushes() {
+void process_pushes() {  //обраотка нажатий в пазуе
   if (enc_rot != 0 || push_res == short_push) {
     params.new_game = true;
     params.demo = false;
@@ -426,7 +431,7 @@ void process_pushes() {
 }
 
 //================================================
-void get_movements() {
+void get_movements() {  //обработка движений в паузе
   enc_rot = 0;
   push_res = my_push();
   if (encoder.timeRight)  // обрабатываем повороты энкодера
@@ -445,7 +450,7 @@ void get_movements() {
 }
 
 //================================================
-void my_delay(int delay) {
+void my_delay(int delay) { // работаем, пока пауза
   unsigned long starttime = millis();
   while (millis() - starttime < delay) {
     get_movements();
@@ -464,19 +469,19 @@ void my_delay(int delay) {
 }
 
 //================================================
-void navigate_tetris() {
+void navigate_tetris() { //навигация в тетрисе
   if (enc_rot) {
-    if_move(enc_rot, 0);
+    if_move(enc_rot, 0); //движение в бок
   } else if (push_res == short_push) {  // вращение
     tt.do_rotate = true;
-    if_move(0, 0);
+    if_move(0, 0); //вращение
   } else if (push_res == long_push) {
     speed = 5;  // падение
   }
 }
 
 //================================================
-void navigate_columns() {
+void navigate_columns() {  //навигация в игре "columns"
   if (enc_rot != 0 && if_move(enc_rot, 0)) {
     for (uint8_t yy = 0; yy < 3; yy++) {
       a_field[x + enc_rot][y + yy] = a_field[x][y + yy];
@@ -509,14 +514,14 @@ void upd_field() {  //перерисовать поле
   }
 }
 //=================================================
-void update_tetris() {
+void update_tetris() { //обновить поле тетриса
   for (uint8_t yy = 3; yy < MAX_Y; yy++)
     for (uint8_t xx = 0; xx < MAX_X; xx++) {
       draw_square(xx, yy, a_field[xx][yy]);
     }
 }
 //=================================================
-void draw_columns() {
+void draw_columns() { //обновить поле columns
   for (uint8_t yy = 3; yy < MAX_Y; yy++)
     for (uint8_t xx = 0; xx < MAX_X; xx++) {
       if (a_field[xx][yy] != a_prev[xx][yy]) {
@@ -527,7 +532,7 @@ void draw_columns() {
 }
 
 //================================================
-bool if_move(int8_t dx, int8_t dy) {
+bool if_move(int8_t dx, int8_t dy) { //проверка возможности движения и движение, если ок
   bool res = true;
   if (params.tetris) {
     res = move_tetris(dx, dy);
@@ -538,7 +543,7 @@ bool if_move(int8_t dx, int8_t dy) {
 }
 //================================================
 
-bool move_tetris(int8_t dx, int8_t dy) {
+bool move_tetris(int8_t dx, int8_t dy) { //движение тетриса
 
   if (dx && check_tetris(tt.x + dx, tt.y, tt.shape, tt.rot)) {  //проверка движения в бок
     draw_tetris(tt.x, tt.y, tt.shape, tt.rot, 0);
@@ -559,7 +564,7 @@ bool move_tetris(int8_t dx, int8_t dy) {
         }
       if (tt.y < 3) {
         gameover();
-      } else {
+      } else { // если фигура остановилась, проверяем не нужно ли начислить очки
         TScore = 0;
         full_tetris();
         switch (TScore) {
@@ -637,7 +642,7 @@ bool check_tetris(int8_t t_x, int8_t t_y, uint8_t shape, uint8_t rot) {  //пр�
   bool res = true;
   for (uint8_t xx = 0; xx < 4; xx++)
     for (uint8_t yy = 0; yy < 4; yy++) {
-      if (read_shape(xx, yy, shape, rot)) {
+      if (read_shape(xx, yy, shape, rot)) { //если есть пиксель по упакованной координате, смещает координату по желаемому направлению и проверяет, свободно ли это место на поле.
         real_x = 1 & rot ? xx + t_x + 1 : xx + t_x;
         real_y = 1 & rot ? yy + t_y : yy + t_y + 1;
         if (real_x < 0 || real_x >= MAX_X || real_y >= MAX_Y || a_field[real_x][real_y]) {
@@ -653,8 +658,8 @@ void draw_tetris(int8_t t_x, int8_t t_y, uint8_t shape, uint8_t rot, uint8_t col
   int8_t real_x, real_y;
   for (uint8_t xx = 0; xx < 4; xx++)
     for (uint8_t yy = 0; yy < 4; yy++) {
-      if (read_shape(xx, yy, shape, rot)) {
-        real_x = 1 & rot ? xx + t_x + 1 : xx + t_x;
+      if (read_shape(xx, yy, shape, rot)) { //если есть пиксель по координате
+        real_x = 1 & rot ? xx + t_x + 1 : xx + t_x; //получить реальную координату и нарисовать квадрат
         real_y = 1 & rot ? yy + t_y : yy + t_y + 1;
         draw_square(real_x, real_y, color);
         if (real_y + 2 > MAX_Y) {
@@ -880,7 +885,7 @@ void find_full_block(uint8_t xx, uint8_t yy, block *full_body, uint8_t dir) {  /
   if (dir != 2 && yy > 2 && a_field[xx][yy - 1] == a_field[xx][yy]) {  //вверх
     collision = add_node(xx, yy, full_body);
     res = true;
-    if (!collision) {  // чтобы избежать хождения по кольцу
+    if (!collision) {  // чтобы избежать хождения по кольцу, в любом из ветвлений нужно блокировать переход
       find_full_block(xx, yy - 1, full_body, 3);
     }
     add_node(xx, yy - 1, full_body);
@@ -971,7 +976,7 @@ bool analyze()  // ищем одноцветные цепочки
 //==================================================
 void update() {
   TScore = 0;
-  while (analyze()) {
+  while (analyze()) { // анализ поля, подсчет очков
     if (TScore > 7) {
       score += TScore + (TScore - 8) * 2;
     } else {
@@ -988,7 +993,7 @@ void update() {
 //================================================
 void new_game() {
   params.tetris ? game_data.tetris_games++ : game_data.columns_games++;
-  eeprom_write_block((void *)&game_data, GDATA_ADDR, sizeof(game_data));
+  eeprom_write_block((void *)&game_data, GDATA_ADDR, sizeof(game_data)); //записываем количество игр в EEPROM
   if (params.tetris) {
     begin_tetris();
   } else {
@@ -997,7 +1002,7 @@ void new_game() {
 }
 //================================================
 void begin_tetris() {
-  memset(a_field, 0, sizeof(a_field));
+  memset(a_field, 0, sizeof(a_field)); //обнуление игрового поля
   score = 0;
   fig_count = 0;
   params.in_game = true;
@@ -1175,8 +1180,9 @@ void init_tft() {
   tft.drawFastVLine(236, 300, 15, ST77XX_BLACK);
 }
 
-//================================================
-void my_print_num(uint32_t num, uint8_t digits) {  //рекурсивный вывод, чтобы без использования строк вывести число в виде 00005
+//=================================================
+void my_print_num(uint32_t num, uint8_t digits) {  // Рекурсивный вывод, чтобы без использования строк вывести число в виде 00005
+                                                  // Библиотека для работы со строками занимает много места
   if (--digits > 0) {
     my_print_num(num / 10, digits);
     num %= 10;
@@ -1190,7 +1196,7 @@ void show_battery_level() {
   diff = prev_batt - b_level;
   if (diff > 5 || diff < -5) {
     prev_batt = b_level;
-    if (b_level > 444) {  //5.1v
+    if (b_level > 444) {  //5.1v значения измерены мультиметром, записана таблица соответствия напряжения и АЦП
       draw_battery_bars(19, ST77XX_CYAN);
     } else if (b_level > 434) {  //5v
       draw_battery_bars(19, ST77XX_GREEN);
@@ -1239,7 +1245,7 @@ void show_battery_level() {
 }
 
 //==================================================
-void draw_battery_bars(uint8_t num, uint16_t color) {
+void draw_battery_bars(uint8_t num, uint16_t color) { //нарисовать шкалу батареи
   tft.fillRect(7, 302, 228, 12, ST77XX_WHITE);
   for (uint8_t i = 0; i < num; i++) {
     tft.fillRect(7 + 12 * i, 302, 10, 12, color);
@@ -1248,11 +1254,11 @@ void draw_battery_bars(uint8_t num, uint16_t color) {
 
 //===================================================================
 void eeprom_enable() {
-  if (EEPROM_KEY == eeprom_read_byte(KEY_ADDR)) {
+  if (EEPROM_KEY == eeprom_read_byte(KEY_ADDR)) { //если ключ совпадает, считать значения из памяти
     eeprom_read_block((void *)&game_data, GDATA_ADDR, sizeof(game_data));
     eeprom_read_block((void *)&params, PARAM_ADDR, sizeof(params));
     tt.color = params.t_color;
-  } else {
+  } else {                     // если ключ не совпадает, восстановить параметры по умолчанию
     game_data.columns_record = 0;
     game_data.columns_level = 1;
     game_data.columns_games = 0;
@@ -1260,7 +1266,8 @@ void eeprom_enable() {
     game_data.tetris_level = 1;
     game_data.tetris_games = 0;
     params.demo = 1;
-    params.t_color = 4;
+    params.sound = 1;
+    params.t_color = 4;   //зеленый цвет
     params.screen_time = 5;  // 1-15 screen_time * 5 = время скринсейверв в секундах
     eeprom_write_block((void *)&game_data, GDATA_ADDR, sizeof(game_data));
     eeprom_write_block((void *)&params, PARAM_ADDR, sizeof(params));

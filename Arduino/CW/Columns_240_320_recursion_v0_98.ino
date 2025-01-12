@@ -76,25 +76,29 @@ uint8_t a_field[MAX_X][MAX_Y], a_prev[MAX_X][MAX_Y];
 Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
 Encod_er encoder(PIN_CLK, PIN_DT, PIN_SW);
 
+typedef struct block {  //определение списка с координатами одинаковых блоков
+  uint8_t x;
+  uint8_t y;
+  block *next;
+};
+
 uint8_t fig_count, full_fig_count, cur_level = 1, prev_level, speed;
 const uint16_t colors[] = { ST77XX_WHITE, ST77XX_BLACK, ST77XX_RED, ST77XX_BLUE, ST77XX_GREEN, ST77XX_YELLOW, ST77XX_MAGENTA, ST77XX_CYAN };
 uint32_t last_activity = 0, battery_time = 0;
 uint16_t TScore = 0, top_score = 0, score = 0;
 int prev_batt = 2000;
-int8_t enc_rot, menu_item = 0, push_res, x, y;
-const uint8_t a_speeds[MAX_LEVEL] = { 50, 45, 40, 35, 30, 25, 20, 10, 5 };  // задержки уровней
 
-typedef struct {
+struct eeprom_data {
   uint16_t columns_record;
   uint16_t columns_games;
   uint8_t columns_level;
   uint8_t tetris_level;
   uint16_t tetris_record;
   uint16_t tetris_games;
-} eeprom_data;
-eeprom_data game_data;
+} game_data;
 
-typedef struct {  //упаковка в структуру
+bool test = true;
+typedef struct b_params {  //упаковка в структуру
   uint8_t demo : 1;
   uint8_t in_game : 1;
   uint8_t new_game : 1;
@@ -106,32 +110,21 @@ typedef struct {  //упаковка в структуру
   uint8_t t_color : 3;
   uint8_t reserved : 1;  // зарезервировано на будущее
   uint8_t screen_time : 4;
-} b_params;
+};
+
 b_params params{ 0 };
 
-typedef struct block {  //определение списка с координатами одинаковых блоков
-  uint8_t x;
-  uint8_t y;
-  block *next;
-} block;
+int8_t enc_rot, menu_item = 0, push_res, x, y;
+const uint8_t a_speeds[MAX_LEVEL] = { 50, 45, 40, 35, 30, 25, 20, 10, 5 };  // задержки уровней
 
-typedef struct {  //отвечает за разрешение обновления информации в полях
-  uint8_t score : 1;
-  uint8_t top_score : 1;
-  uint8_t level : 1;
-  uint8_t max_level : 1;
-  uint8_t games : 1;
-} my_bools;
-my_bools changed = { 1, 1, 1, 1, 1 };
-
-typedef struct {
+typedef struct tetris_figure {
   uint8_t shape : 3;
   int8_t x : 5;
   uint8_t color : 3;
   uint8_t y : 5;
   uint8_t rot : 2;
   uint8_t do_rotate : 1;
-} tetris_figure;
+};
 tetris_figure tt;
 
 //=================================================
@@ -250,17 +243,17 @@ void loop() {
 }
 
 //==================================================
-void navigate_menu() {  // навигация по меню
+void navigate_menu() { // навигация по меню
   if (enc_rot != 0) {
-    menu_item += enc_rot;  //если было вращение энкодера, переместиться на другой пункт меню
+    menu_item += enc_rot; //если было вращение энкодера, переместиться на другой пункт меню
     menu_item< 0 ? menu_item = 5 : menu_item > 5 ? menu_item = 0 : menu_item;
     last_activity = millis();
   }
   switch (menu_item) {
     case 0:
-      draw_menu_asterisk(MENU_T + 15 * 5, 0);  //затереть звездочку в старом положении
+      draw_menu_asterisk(MENU_T + 15 * 5, 0); //затереть звездочку в старом положении
       draw_menu_asterisk(MENU_T, 1);
-      draw_menu_asterisk(MENU_T + 15, 0);  //поставить новую звездочку
+      draw_menu_asterisk(MENU_T + 15, 0); //поставить новую звездочку
       if (push_res == short_push) {
         params.sound = !params.sound;
         params.menu_update = true;
@@ -282,7 +275,7 @@ void navigate_menu() {  // навигация по меню
       draw_menu_asterisk(MENU_T + 15 * menu_item, 1);
       draw_menu_asterisk(MENU_T + 15 * (menu_item + 1), 0);
       if (push_res == short_push) {
-        eeprom_write_byte(KEY_ADDR, eeprom_read_byte(KEY_ADDR) != 0 ? 0 : EEPROM_KEY);  //записть в EEPROM несовпадающего с ключем значения, для сброса при включении
+        eeprom_write_byte(KEY_ADDR, eeprom_read_byte(KEY_ADDR) != 0 ? 0 : EEPROM_KEY); //записть в EEPROM несовпадающего с ключем значения, для сброса при включении
         params.menu_update = true;
       }
       break;
@@ -310,13 +303,11 @@ void navigate_menu() {  // навигация по меню
       draw_menu_asterisk(MENU_T + 15 * (menu_item - 1), 0);
       draw_menu_asterisk(MENU_T + 15 * menu_item, 1);
       draw_menu_asterisk(MENU_T, 0);
-
       if (push_res == short_push) {
         params.menu = false;
         params.demo = true;
         menu_item = 0;
         eeprom_write_block((void *)&params, PARAM_ADDR, sizeof(params));
-        changed = (my_bools){ 1, 1, 1, 1, 1 };
 
         init_tft();
         upd_info();
@@ -340,48 +331,35 @@ void upd_info() {
   tft.setTextColor(ST77XX_BLUE);
   tft.setTextSize(1);
   ///
-  if (changed.score) {                                       //если есть изменения, перерисовываем
+  if (TScore) {                                              //если очки изменились, то TScore  > 0, перерисовываем
     tft.fillRect(L_INFO, Y_INFO + 45, 30, 8, ST77XX_WHITE);  // 113 - 60
     tft.setCursor(L_INFO, Y_INFO + 45);                      // 113 - 60
     my_print_num(score, 5);
-    changed.score = false;
-  }
-  ///
-  if (changed.top_score) {
+    ///
     tft.setCursor(L_INFO, Y_INFO + 90);
     tft.fillRect(L_INFO, Y_INFO + 90, 30, 8, ST77XX_WHITE);
-    my_print_num(params.tetris ? game_data.tetris_record : game_data.columns_record, 5);
-    changed.top_score = false;
+    my_print_num(top_score, 5);
   }
   ///
-  if (changed.level) {
-    tft.fillRect(L_INFO + 8, Y_INFO + 15, 30, 20, ST77XX_WHITE);
-    tft.setCursor(L_INFO + 8, Y_INFO + 15);
-    tft.setTextSize(2);
-    tft.print(cur_level);
-    changed.level = false;
-  }
+  tft.fillRect(L_INFO + 8, Y_INFO + 15, 30, 20, ST77XX_WHITE);
+  tft.setCursor(L_INFO + 8, Y_INFO + 15);
+  tft.setTextSize(2);
+  tft.print(cur_level);
   ///
-  if (changed.max_level) {
-    tft.fillRect(L_INFO + 8, Y_INFO + 125, 30, 10, ST77XX_WHITE);
-    tft.setCursor(L_INFO + 8, Y_INFO + 125);
-    tft.setTextSize(1);
-    tft.print(params.tetris ? game_data.tetris_level : game_data.columns_level);
-    changed.max_level = false;
-  }
+  tft.fillRect(L_INFO + 8, Y_INFO + 125, 30, 10, ST77XX_WHITE);
+  tft.setCursor(L_INFO + 8, Y_INFO + 125);
+  tft.setTextSize(1);
+  tft.print(params.tetris ? game_data.tetris_level : game_data.columns_level);
   ///
-  if (changed.games) {
-    tft.fillRect(L_INFO, Y_INFO + 165, 30, 8, ST77XX_WHITE);
-    tft.setCursor(L_INFO, Y_INFO + 165);
-    tft.setTextSize(1);
-    params.tetris ? my_print_num(game_data.tetris_games, 5) : my_print_num(game_data.columns_games, 5);
-    changed.games = false;
-  }
+  tft.fillRect(L_INFO, Y_INFO + 165, 30, 8, ST77XX_WHITE);
+  tft.setCursor(L_INFO, Y_INFO + 165);
+  tft.setTextSize(1);
+  params.tetris ? my_print_num(game_data.tetris_games, 5) : my_print_num(game_data.columns_games, 5);
 }
 
 //==================================================
 void menu() {  // отрисовка меню
-  if (params.menu_update) {
+  if (params.menu_update) {  
     tft.drawRect(MENU_X, MENU_Y, MENU_W, MENU_H, ST77XX_BLACK);
     tft.fillRect(MENU_X + 1, MENU_Y + 1, MENU_W - 2, MENU_H - 2, ST77XX_WHITE);
     tft.setCursor(MENU_X + 1, MENU_T - 25);
@@ -429,7 +407,7 @@ void menu() {  // отрисовка меню
   }
 }
 //================================================
-void draw_menu_asterisk(uint8_t yy, bool mode) {  //поставить звездочку
+void draw_menu_asterisk(uint8_t yy, bool mode) { //поставить звездочку
   tft.setCursor(MENU_X + 1, yy);
   tft.setTextSize(1);
   tft.setTextColor(ST77XX_BLACK);
@@ -472,7 +450,7 @@ void get_movements() {  //обработка движений в паузе
 }
 
 //================================================
-void my_delay(int delay) {  // работаем, пока пауза
+void my_delay(int delay) { // работаем, пока пауза
   unsigned long starttime = millis();
   while (millis() - starttime < delay) {
     get_movements();
@@ -491,12 +469,12 @@ void my_delay(int delay) {  // работаем, пока пауза
 }
 
 //================================================
-void navigate_tetris() {  //навигация в тетрисе
+void navigate_tetris() { //навигация в тетрисе
   if (enc_rot) {
-    if_move(enc_rot, 0);                //движение в бок
+    if_move(enc_rot, 0); //движение в бок
   } else if (push_res == short_push) {  // вращение
     tt.do_rotate = true;
-    if_move(0, 0);  //вращение
+    if_move(0, 0); //вращение
   } else if (push_res == long_push) {
     speed = 5;  // падение
   }
@@ -536,14 +514,14 @@ void upd_field() {  //перерисовать поле
   }
 }
 //=================================================
-void update_tetris() {  //обновить поле тетриса
+void update_tetris() { //обновить поле тетриса
   for (uint8_t yy = 3; yy < MAX_Y; yy++)
     for (uint8_t xx = 0; xx < MAX_X; xx++) {
       draw_square(xx, yy, a_field[xx][yy]);
     }
 }
 //=================================================
-void draw_columns() {  //обновить поле columns
+void draw_columns() { //обновить поле columns
   for (uint8_t yy = 3; yy < MAX_Y; yy++)
     for (uint8_t xx = 0; xx < MAX_X; xx++) {
       if (a_field[xx][yy] != a_prev[xx][yy]) {
@@ -554,7 +532,7 @@ void draw_columns() {  //обновить поле columns
 }
 
 //================================================
-bool if_move(int8_t dx, int8_t dy) {  //проверка возможности движения и движение, если ок
+bool if_move(int8_t dx, int8_t dy) { //проверка возможности движения и движение, если ок
   bool res = true;
   if (params.tetris) {
     res = move_tetris(dx, dy);
@@ -565,7 +543,7 @@ bool if_move(int8_t dx, int8_t dy) {  //проверка возможности 
 }
 //================================================
 
-bool move_tetris(int8_t dx, int8_t dy) {  //движение тетриса
+bool move_tetris(int8_t dx, int8_t dy) { //движение тетриса
 
   if (dx && check_tetris(tt.x + dx, tt.y, tt.shape, tt.rot)) {  //проверка движения в бок
     draw_tetris(tt.x, tt.y, tt.shape, tt.rot, 0);
@@ -581,15 +559,34 @@ bool move_tetris(int8_t dx, int8_t dy) {  //движение тетриса
       for (uint8_t xx = 0; xx < 4; xx++)
         for (uint8_t yy = 0; yy < 4; yy++) {
           if (read_shape(xx, yy, tt.shape, tt.rot)) {
-            a_field[1 & tt.rot ? xx + tt.x + 1 : xx + tt.x][1 & tt.rot ? yy + tt.y : yy + tt.y + 1] = tt.color;  // 1&tt.rot - выбирает вертикальную или горизонтальную ориеентацию
+            a_field[1 & tt.rot ? xx + tt.x + 1 : xx + tt.x][1 & tt.rot ? yy + tt.y : yy + tt.y + 1] = tt.color;
           }
         }
       if (tt.y < 3) {
         gameover();
-      } else {  // если фигура остановилась, проверяем не нужно ли начислить очки
+      } else { // если фигура остановилась, проверяем не нужно ли начислить очки
         TScore = 0;
-        full_tetris();   //поиск полных линий
-        tetris_score();  // подсчет очков
+        full_tetris();
+        switch (TScore) {
+          case 0:
+            break;
+          case 1:
+            score += 10;
+            break;
+          case 2:
+            score += 30;
+            break;
+          case 3:
+            score += 70;
+            break;
+          case 4:
+            score += 150;
+          default:
+            score += 10;
+        }
+        if (top_score < score) {
+          top_score = score;
+        }
       }
       draw_next();
     }
@@ -603,47 +600,20 @@ bool move_tetris(int8_t dx, int8_t dy) {  //движение тетриса
   return false;
 }
 //===============================================
-void tetris_score() {
-  switch (TScore) {
-    case 0:
-      break;
-    case 1:
-      score += 10;
-      break;
-    case 2:
-      score += 30;
-      break;
-    case 3:
-      score += 70;
-      break;
-    case 4:
-      score += 150;
-    default:
-      score += 10;
-  }
-  if (score) {
-    changed.score = true;
-  }
-  if (top_score < score) {
-    top_score = score;
-    changed.top_score = true;
-  }
-}
-//===============================================
-void full_tetris() {        //поиск и удаление полных строк
-  params.allow_mv = false;  //запрет движения в паузе
+void full_tetris() {  //поиск и удаление полных строк
+  params.allow_mv = false;
   for (uint8_t yy = MAX_Y - 1; yy > 2; yy--) {
     uint8_t cnt = 0;
     for (uint8_t xx = 0; xx < MAX_X - 1; xx++) {
       if (a_field[xx][yy] && a_field[xx + 1][yy]) {
-        cnt++;  //считаем количество квадратов в одной линии
+        cnt++;
       }
     }
-    if (cnt == MAX_X - 1) {  //если количество равно длине линии
+    if (cnt == MAX_X - 1) {
       my_delay(50);
       for (uint8_t xx = 0; xx < MAX_X; xx++) {
         a_field[xx][yy] = 1;
-        draw_square(xx, yy, 1);  // окрашиваем линию в черный цвет
+        draw_square(xx, yy, 1);
       }
       TScore++;
     }
@@ -652,9 +622,9 @@ void full_tetris() {        //поиск и удаление полных стр
     for (uint8_t yy = MAX_Y - 1; yy > 2; yy--) {
       if (a_field[xx][yy] == 1) {
         for (uint8_t my = yy; my > 2; my--) {
-          a_field[xx][my] = a_field[xx][my - 1];  //удаляем все черные квадраты и свдигаем все содержимое вниз
+          a_field[xx][my] = a_field[xx][my - 1];
         }
-        yy++;  // если удалили линию и переместили содержимое, то возвращаемся на предыдущую позицию и проверяем заново
+        yy++;
       }
     }
   }
@@ -663,7 +633,7 @@ void full_tetris() {        //поиск и удаление полных стр
   if (TScore) {
     my_tone(60, 100);
   }
-  params.allow_mv = true;  //опять разрешаем движение
+  params.allow_mv = true;
 }
 
 //================================================
@@ -672,8 +642,8 @@ bool check_tetris(int8_t t_x, int8_t t_y, uint8_t shape, uint8_t rot) {  //пр�
   bool res = true;
   for (uint8_t xx = 0; xx < 4; xx++)
     for (uint8_t yy = 0; yy < 4; yy++) {
-      if (read_shape(xx, yy, shape, rot)) {          //если есть пиксель по упакованной координате, смещает координату по желаемому направлению и проверяет, свободно ли это место на поле.
-        real_x = 1 & rot ? xx + t_x + 1 : xx + t_x;  //1&rot - вертикаль или горизонталь
+      if (read_shape(xx, yy, shape, rot)) { //если есть пиксель по упакованной координате, смещает координату по желаемому направлению и проверяет, свободно ли это место на поле.
+        real_x = 1 & rot ? xx + t_x + 1 : xx + t_x;
         real_y = 1 & rot ? yy + t_y : yy + t_y + 1;
         if (real_x < 0 || real_x >= MAX_X || real_y >= MAX_Y || a_field[real_x][real_y]) {
           res = false;
@@ -688,8 +658,8 @@ void draw_tetris(int8_t t_x, int8_t t_y, uint8_t shape, uint8_t rot, uint8_t col
   int8_t real_x, real_y;
   for (uint8_t xx = 0; xx < 4; xx++)
     for (uint8_t yy = 0; yy < 4; yy++) {
-      if (read_shape(xx, yy, shape, rot)) {          //если есть пиксель по координате
-        real_x = 1 & rot ? xx + t_x + 1 : xx + t_x;  //получить реальную координату и нарисовать квадрат
+      if (read_shape(xx, yy, shape, rot)) { //если есть пиксель по координате
+        real_x = 1 & rot ? xx + t_x + 1 : xx + t_x; //получить реальную координату и нарисовать квадрат
         real_y = 1 & rot ? yy + t_y : yy + t_y + 1;
         draw_square(real_x, real_y, color);
         if (real_y + 2 > MAX_Y) {
@@ -786,9 +756,7 @@ void draw_next() {
     draw_tetris(dx - 1, dy, prev_tt.shape, 1, tt.color);
   } else {
     for (uint8_t yy = 0; yy < 3; yy++) {
-      if (!params.demo) {
-        a_field[x][yy] = a_next_color[yy];
-      }
+      if (!params.demo) a_field[x][yy] = a_next_color[yy];
       a_next_color[yy] = random(TOTAL_COLORS) + 2;
       draw_square(dx, dy + yy, a_next_color[yy]);
     }
@@ -798,18 +766,15 @@ void draw_next() {
     if (fig_count == NEXT_LEVEL) {
       fig_count = 0;
       cur_level < MAX_LEVEL ? cur_level++ : cur_level = MAX_LEVEL;
-      changed.level = true;
     }
   }
   if (params.tetris) {
     if (cur_level > game_data.tetris_level) {
       game_data.tetris_level = cur_level;
-      changed.max_level = true;
     }
   } else {
     if (cur_level > game_data.columns_level) {
       game_data.tetris_level = cur_level;
-      changed.max_level = true;
     }
   }
 
@@ -983,7 +948,6 @@ bool search() {  //поиск блоков одинакового цвета
           TScore += full_fig_count;
           paint_black(full_body);  //если квадратов 4 и больше, красим в черный
           fnd = true;
-          changed.score = true;
         }
         free_block(full_body);  //освободить память списка
       }
@@ -1012,7 +976,7 @@ bool analyze()  // ищем одноцветные цепочки
 //==================================================
 void update() {
   TScore = 0;
-  while (analyze()) {  // анализ поля, подсчет очков
+  while (analyze()) { // анализ поля, подсчет очков
     if (TScore > 7) {
       score += TScore + (TScore - 8) * 2;
     } else {
@@ -1020,7 +984,6 @@ void update() {
     }
     if (score > top_score) {
       top_score = score;
-      changed.top_score = true;
     }
     upd_info();
   }
@@ -1030,11 +993,7 @@ void update() {
 //================================================
 void new_game() {
   params.tetris ? game_data.tetris_games++ : game_data.columns_games++;
-  changed.games = true;
-  eeprom_write_block((void *)&game_data, GDATA_ADDR, sizeof(game_data));  //записываем количество игр в EEPROM
-  memset(a_prev, 255, sizeof(a_prev));                                    // заполним буфер сравнения значением, которого нет
-  memset(a_field, 0, sizeof(a_field));
-  changed = (my_bools){ 1, 1, 1, 1, 1 };
+  eeprom_write_block((void *)&game_data, GDATA_ADDR, sizeof(game_data)); //записываем количество игр в EEPROM
   if (params.tetris) {
     begin_tetris();
   } else {
@@ -1043,7 +1002,7 @@ void new_game() {
 }
 //================================================
 void begin_tetris() {
-
+  memset(a_field, 0, sizeof(a_field)); //обнуление игрового поля
   score = 0;
   fig_count = 0;
   params.in_game = true;
@@ -1060,6 +1019,8 @@ void begin_columns() {
   for (uint8_t xx = 0; xx < MAX_X - 1; xx++) {
     tft.drawFastVLine(3 + (PUZZLE_SZ - 1) * xx, 2, 255, ST77XX_BLACK);  // направляющие
   }
+  memset(a_prev, 255, sizeof(a_prev));  // заполним буфер сравнения значением, которого нет
+  memset(a_field, 0, sizeof(a_field));
 
   score = 0;
   fig_count = 0;
@@ -1075,10 +1036,7 @@ void begin_columns() {
 
 //================================================
 void gameover() {
-  params.demo = true;
   params.in_game = false;
-  params.menu = false;
-
   tft.drawRect(43, 100, 90, 50, ST77XX_BLACK);
   tft.fillRect(44, 101, 88, 48, ST77XX_WHITE);
   tft.setCursor(52, 107);
@@ -1087,7 +1045,7 @@ void gameover() {
   tft.print("GAME");
   tft.setCursor(77, 127);
   tft.print("OVER");
-  changed = (my_bools){ 1, 1, 1, 1, 1 };
+
   if (params.tetris) {
     if (score > game_data.tetris_record) {
       game_data.tetris_record = score;
@@ -1109,12 +1067,16 @@ void gameover() {
     my_tone(50, 300);
     my_delay(50);
   }
-  eeprom_write_block((void *)&game_data, GDATA_ADDR, sizeof(game_data));  //сохранить результаты
+  eeprom_write_block((void *)&game_data, GDATA_ADDR, sizeof(game_data)); //сохранить результаты
   memset(a_prev, 255, sizeof(a_prev));
   memset(a_field, 0, sizeof(a_field));
 
+  params.demo = true;
+  params.in_game = false;
+  params.menu = false;
+
   my_delay(500);
-  tft.fillRect(3, 3, 178, 265, ST77XX_WHITE);  //стереть экран, чтобы не было полос от надписи
+  tft.fillRect(3, 3, 178, 265, ST77XX_WHITE); //стереть экран, чтобы не было полос от надписи
 }
 //==================================================
 void my_tone(uint8_t pwm, uint16_t delay) {
@@ -1130,7 +1092,7 @@ void screensaver() {
   if (params.demo) {
     score = 0;
     draw_next();
-    if (!params.tetris) {  // screensaver только для Columns
+    if (!params.tetris) { // screensaver только для Columns
       for (uint8_t yy = 3; yy < MAX_Y; yy++)
         for (uint8_t xx = 0; xx < MAX_X; xx++) {
           a_field[xx][yy] = random(6) + 2;
@@ -1142,15 +1104,14 @@ void screensaver() {
     update();
     if (top_score < score) {
       top_score = score;
-      changed.top_score = true;
     }
   }
 }
 
 //================================================
 void go_to_sleep() {  //уход в сон
-                      // если отпаять светодиоды с платы и перенести питание CH341 на прямую от USB порта,
-                      // то в режиме сна потребление устройства вместе со спящим экраном около 2.5мА.
+// если отпаять светодиоды с платы и перенести питание CH341 на прямую от USB порта, 
+// то в режиме сна потребление устройства вместе со спящим экраном около 2.5мА.
   digitalWrite(TFT_BL, LOW);
   tft.sendCommand(ST77XX_SLPIN);
 
@@ -1187,7 +1148,7 @@ void init_tft() {
   tft.setCursor(L_INFO, Y_INFO);
   tft.print("LEVEL");
 
-  tft.setCursor(L_INFO, Y_INFO + 35);
+  tft.setCursor(L_INFO, Y_INFO + 35); 
   tft.print("SCORE");
 
   tft.setCursor(L_INFO, Y_INFO + 70);
@@ -1221,7 +1182,7 @@ void init_tft() {
 
 //=================================================
 void my_print_num(uint32_t num, uint8_t digits) {  // Рекурсивный вывод, чтобы без использования строк вывести число в виде 00005
-                                                   // Библиотека для работы со строками занимает много места
+                                                  // Библиотека для работы со строками занимает много места
   if (--digits > 0) {
     my_print_num(num / 10, digits);
     num %= 10;
@@ -1284,7 +1245,7 @@ void show_battery_level() {
 }
 
 //==================================================
-void draw_battery_bars(uint8_t num, uint16_t color) {  //нарисовать шкалу батареи
+void draw_battery_bars(uint8_t num, uint16_t color) { //нарисовать шкалу батареи
   tft.fillRect(7, 302, 228, 12, ST77XX_WHITE);
   for (uint8_t i = 0; i < num; i++) {
     tft.fillRect(7 + 12 * i, 302, 10, 12, color);
@@ -1293,11 +1254,11 @@ void draw_battery_bars(uint8_t num, uint16_t color) {  //нарисовать ш
 
 //===================================================================
 void eeprom_enable() {
-  if (EEPROM_KEY == eeprom_read_byte(KEY_ADDR)) {  //если ключ совпадает, считать значения из памяти
+  if (EEPROM_KEY == eeprom_read_byte(KEY_ADDR)) { //если ключ совпадает, считать значения из памяти
     eeprom_read_block((void *)&game_data, GDATA_ADDR, sizeof(game_data));
     eeprom_read_block((void *)&params, PARAM_ADDR, sizeof(params));
     tt.color = params.t_color;
-  } else {  // если ключ не совпадает, восстановить параметры по умолчанию
+  } else {                     // если ключ не совпадает, восстановить параметры по умолчанию
     game_data.columns_record = 0;
     game_data.columns_level = 1;
     game_data.columns_games = 0;
@@ -1306,7 +1267,7 @@ void eeprom_enable() {
     game_data.tetris_games = 0;
     params.demo = 1;
     params.sound = 1;
-    params.t_color = 4;      //зеленый цвет
+    params.t_color = 4;   //зеленый цвет
     params.screen_time = 5;  // 1-15 screen_time * 5 = время скринсейверв в секундах
     eeprom_write_block((void *)&game_data, GDATA_ADDR, sizeof(game_data));
     eeprom_write_block((void *)&params, PARAM_ADDR, sizeof(params));

@@ -102,10 +102,10 @@ int main()
 
     if (connect(client,(struct sockaddr *)&server_addr, sizeof(server_addr)) == 0)
         printf("=> Connection to the server %s with port number: %d\n",inet_ntoa(server_addr.sin_addr),portNum);
-
+/*
     if (connect(client,(struct sockaddr *)&server_addr, sizeof(server_addr)) == 0)
         printf("=> Connection to the server port number: %d \n",portNum);
-
+*/
     /*
     Функция connect вызывается клиентом для установки соединения с сервером.
          Ей нужны 3 аргумента: файловый дескриптор сокета, адрес хоста, к которому

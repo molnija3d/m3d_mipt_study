@@ -37,6 +37,7 @@
 #define PIN_SW 3     // пин 3 подключаем к SW энкодера
 #define PIN_SPK 5    // пин 5 подключаем к + пищалки ( - пищалки на землю)
 #define PIN_BATT A3  // аналоговы пин 3 - делитель батареи
+#define PIN_LOCK A1  // защелка питания
 
 #define no_push 0
 #define short_push 1
@@ -201,6 +202,9 @@ void timerInterrupt();
 //==========================================================
 //==========================================================
 void setup() {
+  pinMode(PIN_LOCK, OUTPUT);
+  digitalWrite(PIN_LOCK, HIGH);
+
 #if (DEBUG)
   Serial.begin(9600);
 #endif
@@ -220,6 +224,7 @@ void setup() {
   pinMode(PIN_BATT, INPUT);
   pinMode(PIN_SW, INPUT_PULLUP);
   pinMode(TFT_BL, OUTPUT);
+  
   digitalWrite(PIN_SW, HIGH);  // подтягиваем к 5V
   delay(100);
   encoder.timeLeft = 0;
@@ -1148,9 +1153,15 @@ void screensaver() {
 }
 
 //================================================
-void go_to_sleep() {  //уход в сон
+void go_to_sleep() {  /* уход в сон или выключение
                       // если отпаять светодиоды с платы и перенести питание CH341 на прямую от USB порта,
                       // то в режиме сна потребление устройства вместе со спящим экраном около 2.5мА.
+                      */
+  digitalWrite(PIN_LOCK, LOW); /*Отключение питания power off +/
+
+
+
+/* Если не выключились, то засыпаем */
   digitalWrite(TFT_BL, LOW);
   tft.sendCommand(ST77XX_SLPIN);
 
@@ -1168,6 +1179,7 @@ void go_to_sleep() {  //уход в сон
   } else {
     params.demo = true;
   }
+  
   last_activity = millis();
 }
 
